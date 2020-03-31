@@ -62,8 +62,7 @@ class Send extends Action
 
         $numberOfRecipients = $this->mailer->send($message);
 
-        // todo move to Sender
-
+        // todo probably abstract to a Sender service
         if ($numberOfRecipients > 0) {
             return $this->respondWithData(['status' => 'Sent']);
         }
