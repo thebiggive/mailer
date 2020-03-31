@@ -1,0 +1,24 @@
+version: "3.7"
+
+volumes:
+  logs:
+    driver: local
+
+services:
+  app:
+    image: thebiggive/php:7.4
+    ports:
+      - 30040:80
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - smtp
+
+  redis:
+    image: redis:5.0
+
+  smtp:
+    image: namshi/smtp

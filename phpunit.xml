@@ -1,0 +1,33 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.0/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    bootstrap="tests/bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="BASE_URI" value="https://unit-test-fake-subdomain.thebiggive.org.uk" force="true" />
+        <env name="MAILER_URL" value="smtp://smtp:25" force="true" />
+        <env name="REDIS_HOST" value="dummy-redis-hostname" force="true" />
+        <env name="SEND_SECRET" value="unitTestSendSecret" force="true" />
+    </php>
+</phpunit>
