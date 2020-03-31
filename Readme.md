@@ -21,9 +21,7 @@ when the app is deployed 'for real' and other developers' machines.
 In advance of the first app run:
 
 * [get Docker](https://www.docker.com/get-started)
-* copy `.env.example` to `.env` and change any values you need to. e.g. if you
-  are working with your own Salesforce sandbox you would want to change most of the `SALESFORCE_*`
-  variables.
+* copy `.env.example` to `.env` and change any values you need to
 
 ### Start the app
 
