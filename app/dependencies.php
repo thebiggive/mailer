@@ -10,6 +10,10 @@ use Monolog\Processor\UidProcessor;
 use Openbuildings\Swiftmailer\CssInlinerPlugin;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -41,6 +45,13 @@ return function (ContainerBuilder $containerBuilder) {
             }
 
             return $redis;
+        },
+
+        SerializerInterface::class => static function (ContainerInterface $c): SerializerInterface {
+            $encoders = [new JsonEncoder()];
+            $normalizers = [new ObjectNormalizer()];
+
+            return new Serializer($normalizers, $encoders);
         },
 
         Swift_Mailer::class => static function (ContainerInterface $c): Swift_Mailer {

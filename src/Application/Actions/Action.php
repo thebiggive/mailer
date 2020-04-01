@@ -10,6 +10,30 @@ use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
+/**
+ * @OA\Info(title="The Big Give Mailer", version="1"),
+ * @OA\Server(
+ *     description="Staging",
+ *     url="https://mailer-staging.thebiggivetest.org.uk",
+ * ),
+ * @OA\SecurityScheme(
+ *     type="apiKey",
+ *     in="header",
+ *     securityScheme="sendHash",
+ *     name="x-send-verify-hash",
+ *     description="A variable content hash based on a shared webhook secret. To calculate
+                    the expected hash, trim leading and trailing whitespace from the
+                    JSON body, and get an HMAC SHA-256 digest using your `SEND_SECRET` as
+                    the key. Convert the hash digest to lowercase hexits. So, in pseudocode,
+                    verify_hash = lowercase_hex(
+                        hash_hmac(
+                            'sha256',
+                            trim(json_body_text),
+                            SEND_SECRET
+                        )
+                    )"
+ * ),
+ */
 abstract class Action
 {
     protected LoggerInterface $logger;

@@ -23,7 +23,7 @@ class SendAuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (false) { // TODO MAIL-2
+        if (!$this->verify($request)) {
             return $this->unauthorised($this->logger);
         }
 
@@ -39,5 +39,18 @@ class SendAuthMiddleware implements MiddlewareInterface
         $response->getBody()->write(json_encode(['error' => 'Unauthorized'], JSON_PRETTY_PRINT));
 
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    private function verify(ServerRequestInterface $request): bool
+    {
+        $givenHash = $request->getHeaderLine('x-send-verify-hash');
+
+        $expectedHash = hash_hmac(
+            'sha256',
+            trim((string) $request->getBody()),
+            getenv('SEND_SECRET')
+        );
+
+        return ($givenHash === $expectedHash);
     }
 }
