@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Swift_Mailer;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Twig;
 
@@ -62,42 +63,53 @@ class Send extends Action
      */
     protected function action(): Response
     {
-        /** @var SendRequest $input */
-        $input = $this->serializer->deserialize(
-            $this->request->getBody(),
-            SendRequest::class,
-            'json'
-        );
+        try {
+            /** @var SendRequest $input */
+            $input = $this->serializer->deserialize(
+                $this->request->getBody(),
+                SendRequest::class,
+                'json'
+            );
+        } catch (UnexpectedValueException $exception) { // This is the Serializer one, not the global one
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Non-deserialisable data');
+            return $this->respond(new ActionPayload(400, null, $error));
+        }
 
-        foreach (get_object_vars($input) as $var) {
-            if (empty($var)) {
-                $error = new ActionError(ActionError::SERVER_ERROR, 'Missing required data');
+        foreach (array_keys(get_class_vars(SendRequest::class)) as $property) {
+            if (empty($input->{$property})) {
+                $error = new ActionError(ActionError::BAD_REQUEST, 'Missing required data');
                 return $this->respond(new ActionPayload(400, null, $error));
             }
         }
 
         $config = $this->config->get($input->templateKey);
         if ($config === null) {
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Template config not found');
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Template config not found');
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
         foreach ($config->requiredParams as $requiredParam) {
             // For required params, boolean false is fine. undefined and null and blank string are all prohibited.
             if (!isset($input->params[$requiredParam]) || $input->params[$requiredParam] === '') {
-                $error = new ActionError(ActionError::SERVER_ERROR, "Missing required param '$requiredParam'");
+                $error = new ActionError(ActionError::BAD_REQUEST, "Missing required param '$requiredParam'");
                 return $this->respond(new ActionPayload(400, null, $error));
             }
         }
 
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        $subjectMergeValues = array_map(fn($p) => $input->params[$p], $config->subjectParams);
+        $subjectMergeValues = array_map(static function ($subjectParam) use ($input) {
+            if (!array_key_exists($subjectParam, $input->params)) {
+                throw new \LogicException("Missing subject param '$subjectParam'");
+            }
+
+            return $input->params[$subjectParam];
+        }, $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         try {
             $bodyRenderedHtml = $this->twig->render("{$input->templateKey}.html.twig", $input->params);
         } catch (Twig\Error\LoaderError $ex) {
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Template file not found');
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Template file not found');
             return $this->respond(new ActionPayload(400, null, $error));
         } catch (Twig\Error\Error $ex) {
             $error = new ActionError(ActionError::SERVER_ERROR, 'Template render failed: ' . $ex->getMessage());

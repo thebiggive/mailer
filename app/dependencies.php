@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Mailer\Application\Auth;
+use Mailer\Application\Email\Config;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -17,11 +18,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        Auth\SendAuthMiddleware::class => function (ContainerInterface $c): Auth\SendAuthMiddleware {
+        Auth\SendAuthMiddleware::class => static function (ContainerInterface $c): Auth\SendAuthMiddleware {
             return new Auth\SendAuthMiddleware($c->get(LoggerInterface::class));
         },
 
-        LoggerInterface::class => function (ContainerInterface $c) {
+        Config::class => static function (ContainerInterface $c): Config {
+            return new Config($c->get('settings')['emails']);
+        },
+
+        LoggerInterface::class => static function (ContainerInterface $c) {
             $settings = $c->get('settings');
 
             $loggerSettings = $settings['logger'];

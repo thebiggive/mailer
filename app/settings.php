@@ -19,7 +19,7 @@ return function (ContainerBuilder $containerBuilder) {
                 new Email(
                     'donor-donation-success',
                     'Thanks for your donation, %s!',
-                    ['firstName'],
+                    ['donorFirstName'],
                     [
                         'campaignName',
                         'campaignThankYouMessage',
