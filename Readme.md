@@ -5,6 +5,7 @@ and sending emails.
 
 * [Run the app](#Run-the-app)
 * [Run unit tests](#Run-unit-tests)
+* [API](#API)
 * [Service dependencies](#Service-dependencies)
 * [Scripts and Docker](#Scripts-and-Docker)
 * [Code structure](#Code-structure)
@@ -48,6 +49,17 @@ Linting is run with
     docker-compose exec app composer run lint:check
 
 To understand how these commands are run in CI, see [the CirleCI config file](./.circleci/config.yml).
+
+## API
+
+Actions are annotated with [swagger-php](https://github.com/zircote/swagger-php) -ready doc block annotations.
+
+Generate OpenAPI documentation corresponding to your local codebase with:
+
+    docker-compose exec app composer run docs
+
+The latest stable docs should be copied to their [live home on SwaggerHub](https://app.swaggerhub.com/apis/thebiggive/mailer/)
+after any changes.
 
 ## Service dependencies
 

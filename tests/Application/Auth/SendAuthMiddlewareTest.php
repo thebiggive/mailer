@@ -25,8 +25,7 @@ class SendAuthMiddlewareTest extends TestCase
 
         $response = $this->getInstance()->process($request, $this->getSuccessHandler());
 
-        // TODO
-//        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testWrongAuthRejected(): void
@@ -37,8 +36,7 @@ class SendAuthMiddlewareTest extends TestCase
 
         $response = $this->getInstance()->process($request, $this->getSuccessHandler());
 
-        // TODO
-//        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testCorrectAuthAccepted(): void
