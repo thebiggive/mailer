@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mailer\Tests\Application\Actions\Donations;
+namespace Mailer\Tests\Application\Actions;
 
 use DI\Container;
 use Mailer\Application\Actions\ActionPayload;
