@@ -28,7 +28,8 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^6.5",
-        "phpunit/phpunit": "^9.0",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.1",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.5",
         "zircote/swagger-php": "^3.0"
