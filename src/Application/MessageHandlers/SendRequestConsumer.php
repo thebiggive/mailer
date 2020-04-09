@@ -6,6 +6,7 @@ namespace Mailer\Application\MessageHandlers;
 
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
+use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
 use Swift_Mailer;
 use Symfony\Component\Messenger\Exception\RuntimeException;
@@ -21,58 +22,46 @@ class SendRequestConsumer implements MessageHandlerInterface
     private LoggerInterface $logger;
     private Swift_Mailer $mailer;
     private Twig\Environment $twig;
+    private Validator\SendRequest $validator;
 
     public function __construct(
         Config $configLoader,
         LoggerInterface $logger,
         Swift_Mailer $mailer,
-        Twig\Environment $twig
+        Twig\Environment $twig,
+        Validator\SendRequest $validator
     ) {
         $this->config = $configLoader;
         $this->logger = $logger;
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->validator = $validator;
     }
 
     /**
-     * @param SendRequest $message
+     * @param SendRequest $sendRequest
      * @return bool Whether sending succeeded
      */
-    public function __invoke(SendRequest $message)/*: bool*/
+    public function __invoke(SendRequest $sendRequest): void
     {
         // Config can change over time and roll out to the API & consumers at slightly different times, so we should
         // re-validate our `SendRequest`'s params before sending.
-//        $this->validator->validate($message); // todo
-
-        try {
-            $bodyRenderedHtml = $this->twig->render("{$message->templateKey}.html.twig", $message->params);
-        } catch (Twig\Error\LoaderError $ex) {
-            $this->logger->error("Template file for {$message->templateKey} not found");
-            return false;
-        } catch (Twig\Error\Error $ex) {
-            $this->logger->error('Template render failed: ' . $ex->getMessage());
-            return false;
+        if (!$this->validator->validate($sendRequest, true)) {
+            $this->logger->error($this->validator->getReason());
+            return;
         }
+
+        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
 
-        $config = $this->config->get($message->templateKey);
-        if ($config === null) {
-            $this->logger->error("Template config for {$message->templateKey} not found");
-            return false;
-        }
+        $config = $this->config->get($sendRequest->templateKey);
 
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        $subjectMergeValues = array_map(static function ($subjectParam) use ($message) {
-            if (!array_key_exists($subjectParam, $message->params)) {
-                throw new \LogicException("Missing subject param '$subjectParam'");
-            }
-
-            return $message->params[$subjectParam];
-        }, $config->subjectParams);
+        $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         $email = (new \Swift_Message())
-            ->addTo($message->recipientEmailAddress)
+            ->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
             ->setBody($bodyPlainText)
             ->addPart($bodyRenderedHtml, 'text/html')
@@ -90,7 +79,5 @@ class SendRequestConsumer implements MessageHandlerInterface
         }
 
         $this->logger->info('Sent'); // todo ID?
-
-        return true;
     }
 }

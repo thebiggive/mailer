@@ -8,6 +8,7 @@ use Mailer\Application\Auth;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\MessageHandlers\SendRequestConsumer;
+use Mailer\Application\Validator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -90,6 +91,7 @@ return function (ContainerBuilder $containerBuilder) {
                 $c->get(LoggerInterface::class),
                 $c->get(Swift_Mailer::class),
                 $c->get(Twig\Environment::class),
+                $c->get(Validator\SendRequest::class),
             );
         },
 
@@ -140,6 +142,14 @@ return function (ContainerBuilder $containerBuilder) {
                 'cache' => $twigSettings['cachePath'],
                 'debug' => $twigSettings['debug'],
             ]);
+        },
+
+        Validator\SendRequest::class => static function (ContainerInterface $c): Validator\SendRequest {
+            return new Validator\SendRequest(
+                $c->get(Config::class),
+                $c->get(Twig\Environment::class),
+                $c->get('settings')['twig'],
+            );
         },
     ]);
 };

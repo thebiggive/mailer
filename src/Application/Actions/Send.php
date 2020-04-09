@@ -7,6 +7,7 @@ namespace Mailer\Application\Actions;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\HttpModels\SendResponse;
+use Mailer\Application\Validator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
@@ -41,16 +42,19 @@ class Send extends Action
     private RoutableMessageBus $bus;
     private Config $config;
     private SerializerInterface $serializer;
+    private Validator\SendRequest $validator;
 
     public function __construct(
         Config $configLoader,
         LoggerInterface $logger,
         RoutableMessageBus $bus,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        Validator\SendRequest $validator
     ) {
         $this->bus = $bus;
         $this->config = $configLoader;
         $this->serializer = $serializer;
+        $this->validator = $validator;
 
         parent::__construct($logger);
     }
@@ -62,8 +66,8 @@ class Send extends Action
     protected function action(): Response
     {
         try {
-            /** @var SendRequest $input */
-            $input = $this->serializer->deserialize(
+            /** @var SendRequest $sendRequest */
+            $sendRequest = $this->serializer->deserialize(
                 $this->request->getBody(),
                 SendRequest::class,
                 'json'
@@ -73,28 +77,12 @@ class Send extends Action
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
-        foreach (array_keys(get_class_vars(SendRequest::class)) as $property) {
-            if (empty($input->{$property})) {
-                $error = new ActionError(ActionError::BAD_REQUEST, 'Missing required data');
-                return $this->respond(new ActionPayload(400, null, $error));
-            }
-        }
-
-        $config = $this->config->get($input->templateKey);
-        if ($config === null) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Template config not found');
+        if (!$this->validator->validate($sendRequest, false)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, $this->validator->getReason());
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
-        foreach ($config->requiredParams as $requiredParam) {
-            // For required params, boolean false is fine. undefined and null and blank string are all prohibited.
-            if (!isset($input->params[$requiredParam]) || $input->params[$requiredParam] === '') {
-                $error = new ActionError(ActionError::BAD_REQUEST, "Missing required param '$requiredParam'");
-                return $this->respond(new ActionPayload(400, null, $error));
-            }
-        }
-
-        $this->bus->dispatch(new Envelope($input, [new BusNameStamp('email')]));
+        $this->bus->dispatch(new Envelope($sendRequest, [new BusNameStamp('email')]));
 
         return $this->respondWithData(new SendResponse('queued'));
     }
