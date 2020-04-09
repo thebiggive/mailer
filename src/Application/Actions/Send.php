@@ -10,10 +10,11 @@ use Mailer\Application\HttpModels\SendResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
-use Swift_Mailer;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\RoutableMessageBus;
+use Symfony\Component\Messenger\Stamp\BusNameStamp;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\SerializerInterface;
-use Twig;
 
 /**
  * @OA\Post(
@@ -37,22 +38,19 @@ use Twig;
  */
 class Send extends Action
 {
+    private RoutableMessageBus $bus;
     private Config $config;
-    private Swift_Mailer $mailer;
     private SerializerInterface $serializer;
-    private Twig\Environment $twig;
 
     public function __construct(
         Config $configLoader,
         LoggerInterface $logger,
-        SerializerInterface $serializer,
-        Swift_Mailer $mailer,
-        Twig\Environment $twig
+        RoutableMessageBus $bus,
+        SerializerInterface $serializer
     ) {
+        $this->bus = $bus;
         $this->config = $configLoader;
-        $this->mailer = $mailer;
         $this->serializer = $serializer;
-        $this->twig = $twig;
 
         parent::__construct($logger);
     }
@@ -96,45 +94,8 @@ class Send extends Action
             }
         }
 
-        // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        $subjectMergeValues = array_map(static function ($subjectParam) use ($input) {
-            if (!array_key_exists($subjectParam, $input->params)) {
-                throw new \LogicException("Missing subject param '$subjectParam'");
-            }
+        $this->bus->dispatch(new Envelope($input, [new BusNameStamp('email')]));
 
-            return $input->params[$subjectParam];
-        }, $config->subjectParams);
-        $subject = vsprintf($config->subject, $subjectMergeValues);
-
-        try {
-            $bodyRenderedHtml = $this->twig->render("{$input->templateKey}.html.twig", $input->params);
-        } catch (Twig\Error\LoaderError $ex) {
-            $error = new ActionError(ActionError::BAD_REQUEST, 'Template file not found');
-            return $this->respond(new ActionPayload(400, null, $error));
-        } catch (Twig\Error\Error $ex) {
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Template render failed: ' . $ex->getMessage());
-            return $this->respond(new ActionPayload(500, null, $error));
-        }
-
-        $bodyPlainText = strip_tags($bodyRenderedHtml);
-
-        $message = (new \Swift_Message())
-            ->addTo($input->recipientEmailAddress)
-            ->setSubject($subject)
-            ->setBody($bodyPlainText)
-            ->addPart($bodyRenderedHtml, 'text/html')
-            ->setContentType('text/html')
-            ->setCharset('utf-8')
-            ->setFrom(getenv('SENDER_ADDRESS'));
-
-        $numberOfRecipients = $this->mailer->send($message);
-
-        if ($numberOfRecipients > 0) {
-            return $this->respondWithData(new SendResponse('queued'));
-        }
-
-        $error = new ActionError(ActionError::SERVER_ERROR, 'Send failed');
-
-        return $this->respond(new ActionPayload(500, ['error' => 'Send failed'], $error));
+        return $this->respondWithData(new SendResponse('queued'));
     }
 }

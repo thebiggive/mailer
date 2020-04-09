@@ -72,7 +72,7 @@ Redis is used to queue messages. The two reasons to use a queue like this are:
    sending of emails.
  * Reliability. If an SES send fails for any reason, the message goes back on the queue and will
    be sent once we / Amazon fix the problem.
- 
+
 Message properties are the key placeholders needed for the template / subject line, and the
 recipient's email address.
 
@@ -84,25 +84,29 @@ any emails that are ready to render and send.
 
 ### Discovering more about scripts
 
-The headline for each script's purpose is defined in its description in the PHP class. There is a Composer script
-`mailer:list-commands` which calls `list` to read these. So with an already-running Docker `app` container, you can
-run
+There is a Composer script `list-commands` which calls `list` to read the registered commands.
+With an already-running Docker `web` container, you can run
 
-    docker-compose exec app composer mailer:list-commands
+    docker-compose exec web composer list-commands
 
-for an overview of how all [`Commands`](./src/Application/Commands) in the app describe themselves.
+Currently we define no custom commands, instead pulling in the Symfony dependencies
+necessary to use the `symfony/messenger` component and its built-in commands.
 
 ### Running scripts locally
 
-To run a script in an already-running Docker `app` container, use:
+To run a consumer worker similarly to how our ECS tasks will (distinct from
+the `web` container), run:
 
-    docker-compose exec app composer {name:of:script:from:composer.json}
+    docker-compose run --rm consumer
+
+As you can see in `docker-compose.yml`, this is just a shortcut to get a standalone
+CLI process to run the long-running worker task defined with
+`composer run messenger:consume`.
 
 ### How tasks run on staging & production
 
-[ECS](https://aws.amazon.com/ecs/) task invocations are configured to run the tasks we expect to happen regularly
-on a schedule. Tasks get their own ECS cluster to run on, independent of the web cluster, usually with just one instance
-per environment. They are triggered by CloudWatch Events Rules which fire at regular intervals.
+[ECS](https://aws.amazon.com/ecs/) task invocations are configured to keep at least one consumer task
+running. Tasks get their own ECS cluster/service to run on, independent of the web cluster.
 
 ## Code structure
 

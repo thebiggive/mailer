@@ -21,6 +21,7 @@
         "slim/slim": "^4.4",
         "swiftmailer/swiftmailer": "^6.2",
         "symfony/console": "^5.0",
+        "symfony/event-dispatcher": "^5.0",
         "symfony/messenger": "^5.0",
         "symfony/property-access": "^5.0",
         "symfony/serializer": "^5.0",
@@ -56,7 +57,12 @@
             "Composer\\Config::disableProcessTimeout",
             "php mailer-cli.php mailer:send-emails"
         ],
-        "mailer:list-commands": "php mailer-cli.php list",
+        "list-commands": "php mailer-cli.php list",
+        "messenger:consume": [
+            "Composer\\Config::disableProcessTimeout",
+            "php mailer-cli.php messenger:consume"
+        ],
+        "messenger:failed:show": "php mailer-cli.php messenger:failed:show",
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit"
     }

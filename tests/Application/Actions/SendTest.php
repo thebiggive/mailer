@@ -7,9 +7,9 @@ namespace Mailer\Tests\Application\Actions;
 use DI\Container;
 use Mailer\Application\Actions\ActionPayload;
 use Mailer\Tests\TestCase;
-use Prophecy\Argument;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class SendTest extends TestCase
 {
@@ -18,7 +18,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -37,6 +38,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(401, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     public function testBadAuth(): void
@@ -44,7 +46,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -63,6 +66,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(401, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     public function testDeserialiseError(): void
@@ -70,7 +74,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = '{"not-good-json';
 
@@ -87,6 +92,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(400, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     public function testMissingModelProperty(): void
@@ -94,7 +100,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'some-key',
@@ -113,6 +120,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(400, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     public function testMissingRequiredMergeParam(): void
@@ -120,7 +128,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -140,6 +149,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(400, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     public function testUnknownTemplateKey(): void
@@ -147,7 +157,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(false));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'some-key',
@@ -167,6 +178,7 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(400, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
     }
 
     /**
@@ -177,7 +189,13 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(true, false));
+
+        $failingInMemoryTransportProphecy = $this->prophesize(InMemoryTransport::class);
+        $failingInMemoryTransportProphecy->getSent()->willReturn([]);
+        $failingInMemoryTransportProphecy->getRejected()->willReturn([new Envelope(new \stdClass())]);
+        /** @var InMemoryTransport $transport */
+        $transport = $failingInMemoryTransportProphecy->reveal();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -189,11 +207,14 @@ class SendTest extends TestCase
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
-        $expectedPayload = new ActionPayload(500, ['error' => 'Send failed']);
+        // Initial queueing should work fine and return OK if only the transport / mailer is failing.
+        $expectedPayload = new ActionPayload(200, ['status' => 'queued']);
         $expectedSerialised = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
         $this->assertEquals($expectedSerialised, $payload);
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertCount(0, $transport->getSent());
+        $this->assertCount(1, $transport->getRejected());
     }
 
     public function testSuccess(): void
@@ -201,7 +222,8 @@ class SendTest extends TestCase
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
-        $container->set(Swift_Mailer::class, $this->getTestSwiftMailer(true));
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -218,25 +240,8 @@ class SendTest extends TestCase
 
         $this->assertEquals($expectedSerialised, $payload);
         $this->assertEquals(200, $response->getStatusCode());
-    }
-
-    /**
-     * @param bool $sendExpected
-     * @param bool $successfulSend  If we are simulating a send, should it succeed?
-     * @return Swift_Mailer
-     */
-    private function getTestSwiftMailer(bool $sendExpected, bool $successfulSend = true): Swift_Mailer
-    {
-        $swiftMailerProphecy = $this->prophesize(Swift_Mailer::class);
-        if ($sendExpected) {
-            $swiftMailerProphecy->send(Argument::type(Swift_Message::class))
-                ->willReturn($successfulSend ? 1 : 0) // Number of successful recipients
-                ->shouldBeCalledOnce();
-        } else {
-            $swiftMailerProphecy->send(Argument::type(Swift_Message::class))->shouldNotBeCalled();
-        }
-
-        return $swiftMailerProphecy->reveal();
+        // TODO move transport success expectations out of here and into a new test since we don't send at this point?
+//        $this->assertCount(1, $transport->getSent());
     }
 
     private function getFullDonorParams(): array
