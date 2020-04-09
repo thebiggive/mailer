@@ -6,7 +6,9 @@ namespace Mailer\Tests\Application\Actions;
 
 use DI\Container;
 use Mailer\Application\Actions\ActionPayload;
+use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Tests\TestCase;
+use Prophecy\Argument;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -172,7 +174,7 @@ class SendTest extends TestCase
         $payload = (string) $response->getBody();
         $expectedPayload = new ActionPayload(400, ['error' => [
             'type' => 'BAD_REQUEST',
-            'description' => 'Template config not found',
+            'description' => 'Template config for some-key not found',
         ]]);
         $expectedSerialised = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
@@ -191,6 +193,9 @@ class SendTest extends TestCase
         $container = $app->getContainer();
 
         $failingInMemoryTransportProphecy = $this->prophesize(InMemoryTransport::class);
+        $failingInMemoryTransportProphecy->send(Argument::type(Envelope::class))->willReturn(
+            new Envelope($this->prophesize(SendRequest::class)->reveal())
+        );
         $failingInMemoryTransportProphecy->getSent()->willReturn([]);
         $failingInMemoryTransportProphecy->getRejected()->willReturn([new Envelope(new \stdClass())]);
         /** @var InMemoryTransport $transport */

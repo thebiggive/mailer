@@ -43,13 +43,6 @@ class SendRequest
             return false;
         }
 
-        // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        array_map(static function ($subjectParam) use ($sendRequest) {
-            if (!array_key_exists($subjectParam, $sendRequest->params)) {
-                throw new \LogicException("Missing subject param '$subjectParam'");
-            }
-        }, $config->subjectParams);
-
         foreach ($config->requiredParams as $requiredParam) {
             // For required params, boolean false is fine. undefined and null and blank string are all prohibited.
             if (!isset($sendRequest->params[$requiredParam]) || $sendRequest->params[$requiredParam] === '') {
@@ -57,6 +50,13 @@ class SendRequest
                 return false;
             }
         }
+
+        // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
+        array_map(static function ($subjectParam) use ($sendRequest) {
+            if (!array_key_exists($subjectParam, $sendRequest->params)) {
+                throw new \LogicException("Missing subject param '$subjectParam'");
+            }
+        }, $config->subjectParams);
 
         if ($full) { // Perform a full Twig render to be sure it's going to work
             try {
