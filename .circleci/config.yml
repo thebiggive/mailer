@@ -45,7 +45,7 @@ workflows:
                 environment_type: development
             - slack/notify-on-failure: ~
 
-  deploy-staging-tasks:
+  deploy-staging:
     jobs:
       - test:
           filters:
@@ -67,27 +67,10 @@ workflows:
           container-image-name-updates: 'container=mailer_tasks,tag=staging-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify-on-failure: ~
-            - jira/notify:
-                job_type: deployment
-                environment_type: staging
             - slack/notify:
                 color: '#009900'
                 message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
-                title: 'Staging: Mailer deployed!'
-
-  deploy-staging-web:
-    jobs:
-      - test:
-          filters:
-            branches:
-              only:
-                - develop
-      - aws-ecr/build-and-push-image:
-          requires:
-            - test
-          repo: '${AWS_ECR_REPO_NAME}'
-          region: AWS_REGION
-          tag: 'staging,staging-${CIRCLE_SHA1}'
+                title: 'Staging: Mailer tasks deployed!'
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
@@ -103,7 +86,7 @@ workflows:
             - slack/notify:
                 color: '#009900'
                 message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
-                title: 'Staging: Mailer deployed!'
+                title: 'Staging: Mailer web deployed!'
 
 #  deploy-production:
 #    jobs:
