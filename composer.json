@@ -63,7 +63,6 @@
             "Composer\\Config::disableProcessTimeout",
             "php mailer-cli.php messenger:consume"
         ],
-        "messenger:failed:show": "php mailer-cli.php messenger:failed:show",
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit"
     }

@@ -9,10 +9,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
-use Symfony\Component\Messenger\Command\FailedMessagesShowCommand;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Transport\RedisExt\RedisTransport;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class Console extends Application
 {
@@ -33,7 +31,6 @@ class Console extends Application
 
         $this->addCommands([
             $this->getConsumeCommand(),
-            $this->getErrorDetailsCommand(),
         ]);
 
         parent::__construct();
@@ -49,14 +46,6 @@ class Console extends Application
             new EventDispatcher(),
             $this->logger,
             [$this->receiverName],
-        );
-    }
-
-    private function getErrorDetailsCommand()
-    {
-        return new FailedMessagesShowCommand(
-            TransportInterface::class,
-            $this->transport,
         );
     }
 }
