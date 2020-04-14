@@ -6,10 +6,10 @@ namespace Mailer\Tests\Application\Actions;
 
 use DI\Container;
 use Mailer\Application\Actions\ActionPayload;
-use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
@@ -186,18 +186,19 @@ class SendTest extends TestCase
     /**
      * All valid input but the send() call fails / returns 0 recipients.
      */
-    public function testSendError(): void
+    public function testRedisQueueError(): void
     {
+        $this->expectException(TransportException::class);
+        $this->expectExceptionMessage('Some transport error');
+
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
 
         $failingInMemoryTransportProphecy = $this->prophesize(InMemoryTransport::class);
-        $failingInMemoryTransportProphecy->send(Argument::type(Envelope::class))->willReturn(
-            new Envelope($this->prophesize(SendRequest::class)->reveal())
+        $failingInMemoryTransportProphecy->send(Argument::type(Envelope::class))->willThrow(
+            new TransportException('Some transport error')
         );
-        $failingInMemoryTransportProphecy->getSent()->willReturn([]);
-        $failingInMemoryTransportProphecy->getRejected()->willReturn([new Envelope(new \stdClass())]);
         /** @var InMemoryTransport $transport */
         $transport = $failingInMemoryTransportProphecy->reveal();
         $container->set(TransportInterface::class, $transport);
@@ -209,17 +210,7 @@ class SendTest extends TestCase
         ], JSON_THROW_ON_ERROR, 512);
 
         $request = $this->createRequest('POST', '/v1/send', $data, $this->getAuthHeader($data));
-        $response = $app->handle($request);
-
-        $payload = (string) $response->getBody();
-        // Initial queueing should work fine and return OK if only the transport / mailer is failing.
-        $expectedPayload = new ActionPayload(200, ['status' => 'queued']);
-        $expectedSerialised = json_encode($expectedPayload, JSON_PRETTY_PRINT);
-
-        $this->assertEquals($expectedSerialised, $payload);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertCount(0, $transport->getSent());
-        $this->assertCount(1, $transport->getRejected());
+        $app->handle($request);
     }
 
     public function testSuccess(): void
@@ -240,13 +231,16 @@ class SendTest extends TestCase
         $response = $app->handle($request);
 
         $payload = (string) $response->getBody();
-        $expectedPayload = new ActionPayload(200, ['status' => 'queued']);
-        $expectedSerialised = json_encode($expectedPayload, JSON_PRETTY_PRINT);
+        $payloadData = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
 
-        $this->assertEquals($expectedSerialised, $payload);
+        $this->assertEquals('queued', $payloadData['status']);
+        $this->assertMatchesRegularExpression(
+            '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/',
+            $payloadData['id']
+        );
+
         $this->assertEquals(200, $response->getStatusCode());
-        // TODO move transport success expectations out of here and into a new test since we don't send at this point?
-//        $this->assertCount(1, $transport->getSent());
+        $this->assertCount(1, $transport->getSent());
     }
 
     private function getFullDonorParams(): array
