@@ -2,15 +2,29 @@
 
 declare(strict_types=1);
 
+use DI\Container;
 use DI\ContainerBuilder;
 use Mailer\Application\Auth;
 use Mailer\Application\Email\Config;
+use Mailer\Application\HttpModels\SendRequest;
+use Mailer\Application\Messenger\Handler\SendRequestConsumer;
+use Mailer\Application\Validator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Openbuildings\Swiftmailer\CssInlinerPlugin;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
+use Symfony\Component\Messenger\RoutableMessageBus;
+use Symfony\Component\Messenger\Transport\RedisExt\RedisTransportFactory;
+use Symfony\Component\Messenger\Transport\Sender\SendersLocator;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -41,6 +55,18 @@ return function (ContainerBuilder $containerBuilder) {
             return $logger;
         },
 
+        MessageBusInterface::class => static function (ContainerInterface $c): MessageBusInterface {
+            return new MessageBus([
+                new SendMessageMiddleware(new SendersLocator(
+                    [SendRequest::class => [TransportInterface::class]],
+                    $c,
+                )),
+                new HandleMessageMiddleware(new HandlersLocator(
+                    [SendRequest::class => [$c->get(SendRequestConsumer::class)]],
+                )),
+            ]);
+        },
+
         Redis::class => static function (ContainerInterface $c): ?Redis {
             $redis = new Redis();
             try {
@@ -50,6 +76,23 @@ return function (ContainerBuilder $containerBuilder) {
             }
 
             return $redis;
+        },
+
+        RoutableMessageBus::class => static function (ContainerInterface $c): RoutableMessageBus {
+            $busContainer = new Container();
+            $busContainer->set('email', $c->get(MessageBusInterface::class)); // async, currently via Redis
+
+            return new RoutableMessageBus($busContainer);
+        },
+
+        SendRequestConsumer::class => static function (ContainerInterface $c): SendRequestConsumer {
+            return new SendRequestConsumer(
+                $c->get(Config::class),
+                $c->get(LoggerInterface::class),
+                $c->get(Swift_Mailer::class),
+                $c->get(Twig\Environment::class),
+                $c->get(Validator\SendRequest::class),
+            );
         },
 
         SerializerInterface::class => static function (ContainerInterface $c): SerializerInterface {
@@ -83,6 +126,15 @@ return function (ContainerBuilder $containerBuilder) {
             return $mailer;
         },
 
+        TransportInterface::class => static function (ContainerInterface $c): TransportInterface {
+            $transportFactory = new RedisTransportFactory();
+            return $transportFactory->createTransport(
+                getenv('MESSENGER_TRANSPORT_DSN'),
+                [],
+                new PhpSerializer(),
+            );
+        },
+
         Twig\Environment::class => static function (ContainerInterface $c): Twig\Environment {
             $twigSettings = $c->get('settings')['twig'];
             $loader = new Twig\Loader\FilesystemLoader($twigSettings['templatePath']);
@@ -90,6 +142,14 @@ return function (ContainerBuilder $containerBuilder) {
                 'cache' => $twigSettings['cachePath'],
                 'debug' => $twigSettings['debug'],
             ]);
+        },
+
+        Validator\SendRequest::class => static function (ContainerInterface $c): Validator\SendRequest {
+            return new Validator\SendRequest(
+                $c->get(Config::class),
+                $c->get(Twig\Environment::class),
+                $c->get('settings')['twig'],
+            );
         },
     ]);
 };

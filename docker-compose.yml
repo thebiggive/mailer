@@ -5,10 +5,21 @@ volumes:
     driver: local
 
 services:
-  app:
+  web:
     image: thebiggive/php:7.4
     ports:
       - 30040:80
+    volumes:
+      - .:/var/www/html
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  consumer:
+    image: thebiggive/php:7.4
+    entrypoint: docker-php-entrypoint
+    command: composer run messenger:consume
     volumes:
       - .:/var/www/html
     env_file:

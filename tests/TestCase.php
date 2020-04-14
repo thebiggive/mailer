@@ -7,6 +7,7 @@ namespace Mailer\Tests;
 use DI\ContainerBuilder;
 use Exception;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -19,6 +20,8 @@ use Slim\Psr7\Uri;
 
 class TestCase extends PHPUnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return App
      * @throws Exception
