@@ -14,13 +14,17 @@ return function (ContainerBuilder $containerBuilder) {
 
             'displayErrorDetails' => (getenv('APP_ENV') === 'local'),
 
-            /** 'emails' is an array of Email config objects. @see Email for config format */
+            /**
+             * 'emails' is an array of Email configs. @see Email for properties. Note that you cannot
+             * directly instantiate objects here without breaking PHP-DI compilation, so we use an array
+             * and do it at runtime.
+             */
             'emails' => [
-                new Email(
-                    'donor-donation-success',
-                    'Thanks for your donation, %s!',
-                    ['donorFirstName'],
-                    [
+                [
+                    'templateKey' => 'donor-donation-success',
+                    'subject' => 'Thanks for your donation, %s!',
+                    'subjectParams' => ['donorFirstName'],
+                    'requiredParams' => [
                         'campaignName',
                         'campaignThankYouMessage',
                         'charityName',
@@ -35,7 +39,7 @@ return function (ContainerBuilder $containerBuilder) {
                         'totalCharityValueAmount',
                         'transactionId',
                     ],
-                ),
+                ],
             ],
 
             'logger' => [

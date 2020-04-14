@@ -13,7 +13,7 @@ class Config
 
     public function __construct(array $emailSettings)
     {
-        $this->emailSettings = $emailSettings;
+        $this->emailSettings = array_map(fn ($config) => Email::fromConfigArray($config), $emailSettings);
     }
 
     public function get(string $templateKey): ?Email

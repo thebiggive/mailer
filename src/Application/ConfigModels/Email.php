@@ -38,4 +38,14 @@ class Email
         $this->subjectParams = $subjectParams;
         $this->requiredParams = $requiredParams;
     }
+
+    public static function fromConfigArray(array $configArray): Email
+    {
+        return new Email(
+            $configArray['templateKey'],
+            $configArray['subject'],
+            $configArray['subjectParams'],
+            $configArray['requiredParams'],
+        );
+    }
 }
