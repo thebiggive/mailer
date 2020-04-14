@@ -47,8 +47,9 @@ class SendRequestConsumer implements MessageHandlerInterface
         // Config can change over time and roll out to the API & consumers at slightly different times, so we should
         // re-validate our `SendRequest`'s params before sending.
         if (!$this->validator->validate($sendRequest, true)) {
-            $this->logger->error($this->validator->getReason());
-            return;
+            // We don't treat this as permanent (`UnrecoverableExceptionInterface`) in case a change is rolling out and
+            // the message could become valid with an imminent consumer update.
+            $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
@@ -72,12 +73,15 @@ class SendRequestConsumer implements MessageHandlerInterface
         $numberOfRecipients = $this->mailer->send($email);
 
         if ($numberOfRecipients === 0) {
-            // TODO how do we keep failed messages in the queue?
-            $this->logger->error('Sending failed');
-
-            throw new RuntimeException('Email send failed');
+            $this->fail($sendRequest->id, 'Email send failed');
         }
 
-        $this->logger->info('Sent'); // todo ID?
+        $this->logger->info("Sent ID {$sendRequest->id}");
+    }
+
+    private function fail(string $id, string $reason)
+    {
+        $this->logger->error("Sending ID $id failed: $reason");
+        throw new RuntimeException($reason);
     }
 }
