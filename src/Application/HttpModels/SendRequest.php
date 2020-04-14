@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Mailer\Application\HttpModels;
 
+use Ramsey\Uuid\Uuid;
+
 /**
  * @todo once swagger-php supports class property types, remove explicit `property=` annotations.
  * @link https://github.com/zircote/swagger-php/issues/742
@@ -53,4 +55,11 @@ class SendRequest
      * ),
      */
     public array $params;
+
+    public string $id;
+
+    public function __construct()
+    {
+        $this->id = (Uuid::uuid4())->toString();
+    }
 }

@@ -14,6 +14,7 @@ use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Stamp\BusNameStamp;
+use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -82,8 +83,12 @@ class Send extends Action
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
-        $this->bus->dispatch(new Envelope($sendRequest, [new BusNameStamp('email')]));
+        $stamps = [
+            new BusNameStamp('email'),
+            new TransportMessageIdStamp($sendRequest->id),
+        ];
+        $this->bus->dispatch(new Envelope($sendRequest, $stamps));
 
-        return $this->respondWithData(new SendResponse('queued'));
+        return $this->respondWithData(new SendResponse('queued', $sendRequest->id));
     }
 }

@@ -7,7 +7,7 @@ use DI\ContainerBuilder;
 use Mailer\Application\Auth;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
-use Mailer\Application\MessageHandlers\SendRequestConsumer;
+use Mailer\Application\Messenger\Handler\SendRequestConsumer;
 use Mailer\Application\Validator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

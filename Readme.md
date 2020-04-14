@@ -26,15 +26,15 @@ In advance of the first app run:
 
 ### Start the app
 
-To start the app and its dependencies (`db` and `redis`) locally:
+To start the app and its dependencies locally:
 
-    docker-compose up -d
+    docker-compose up -d web
 
 ### First run
 
 To get PHP dependencies and an initial data in structure in place, you'll need to run these once:
 
-    docker-compose exec app composer install
+    docker-compose exec web composer install
 
 If dependencies change you may occasionally need to re-run the `composer install`.
 
@@ -42,11 +42,11 @@ If dependencies change you may occasionally need to re-run the `composer install
 
 Once you have the app running, you can test with: 
 
-    docker-compose exec app composer run test
+    docker-compose exec web composer run test
 
 Linting is run with
 
-    docker-compose exec app composer run lint:check
+    docker-compose exec web composer run lint:check
 
 To understand how these commands are run in CI, see [the CirleCI config file](./.circleci/config.yml).
 
@@ -56,7 +56,7 @@ Actions are annotated with [swagger-php](https://github.com/zircote/swagger-php)
 
 Generate OpenAPI documentation corresponding to your local codebase with:
 
-    docker-compose exec app composer run docs
+    docker-compose exec web composer run docs
 
 The latest stable docs should be copied to their [live home on SwaggerHub](https://app.swaggerhub.com/apis/thebiggive/mailer/)
 after any changes.

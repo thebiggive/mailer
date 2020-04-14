@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mailer\Application\MessageHandlers;
+namespace Mailer\Application\Messenger\Handler;
 
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
