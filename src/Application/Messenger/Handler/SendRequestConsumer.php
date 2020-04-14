@@ -18,6 +18,7 @@ use Twig;
  */
 class SendRequestConsumer implements MessageHandlerInterface
 {
+    private string $appEnv;
     private Config $config;
     private LoggerInterface $logger;
     private Swift_Mailer $mailer;
@@ -25,12 +26,14 @@ class SendRequestConsumer implements MessageHandlerInterface
     private Validator\SendRequest $validator;
 
     public function __construct(
+        string $appEnv,
         Config $configLoader,
         LoggerInterface $logger,
         Swift_Mailer $mailer,
         Twig\Environment $twig,
         Validator\SendRequest $validator
     ) {
+        $this->appEnv = $appEnv;
         $this->config = $configLoader;
         $this->logger = $logger;
         $this->mailer = $mailer;
@@ -60,6 +63,10 @@ class SendRequestConsumer implements MessageHandlerInterface
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
         $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
+
+        if ($this->appEnv !== 'production') {
+            $subject = "({$this->appEnv}) $subject";
+        }
 
         $email = (new \Swift_Message())
             ->addTo($sendRequest->recipientEmailAddress)

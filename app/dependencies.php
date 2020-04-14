@@ -87,6 +87,7 @@ return function (ContainerBuilder $containerBuilder) {
 
         SendRequestConsumer::class => static function (ContainerInterface $c): SendRequestConsumer {
             return new SendRequestConsumer(
+                $c->get('settings')['appEnv'],
                 $c->get(Config::class),
                 $c->get(LoggerInterface::class),
                 $c->get(Swift_Mailer::class),
