@@ -61,7 +61,7 @@
         "list-commands": "php mailer-cli.php list",
         "messenger:consume": [
             "Composer\\Config::disableProcessTimeout",
-            "php mailer-cli.php messenger:consume"
+            "php mailer-cli.php messenger:consume -vv --time-limit=86400"
         ],
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit"
