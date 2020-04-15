@@ -12,9 +12,12 @@ fi
 # Load the S3 secrets file contents into the environment variables
 export $(aws s3 cp s3://${SECRETS_BUCKET_NAME}/secrets - | grep -v '^#' | xargs)
 
-# TODO remove
-echo "MAILER_URL:"
-echo "$MAILER_URL"
+# https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/in-transit-encryption.html#connect-tls
+echo "Replacing Redis config with secure local stunnel tunnel..."
+printf "fips = no\nsetuid = root\nsetgid = root\npid = /var/run/stunnel.pid\ndebug = 7\ndelay = yes\noptions = NO_SSLv2\noptions = NO_SSLv3\n[redis-cli]\n   client = yes\n   accept = 127.0.0.1:6379\n   connect = %s:6379" "$REDIS_HOST" >> /etc/stunnel/redis-cli.conf
+stunnel /etc/stunnel/redis-cli.conf
+export MESSENGER_TRANSPORT_DSN=redis://localhost:6379/messenger
+export REDIS_HOST=localhost
 
 echo "Starting Apache..."
 # Call the normal web server entry-point script

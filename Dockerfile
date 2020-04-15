@@ -5,7 +5,8 @@ FROM thebiggive/php:7.4
 RUN echo 'opcache.validate_timestamps = 0' >> /usr/local/etc/php/conf.d/opcache-ecs.ini
 
 # Install the AWS CLI - needed to load in secrets safely from S3. See https://aws.amazon.com/blogs/security/how-to-manage-secrets-for-amazon-ec2-container-service-based-applications-by-using-amazon-s3-and-docker/
-RUN apt-get update -qq && apt-get install -y python unzip && \
+# And stunnel, to allow connection to Redis with transit encryption.
+RUN apt-get update -qq && apt-get install -y python stunnel unzip && \
     cd /tmp && \
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && \
