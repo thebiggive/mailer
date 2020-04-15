@@ -10,10 +10,11 @@ if [ -z "$SECRETS_BUCKET_NAME" ]; then
 fi
 
 # Load the S3 secrets file contents into the environment variables
-export "$(aws s3 cp "s3://${SECRETS_BUCKET_NAME}/secrets" - | grep -v '^#' | xargs)"
+export $(aws s3 cp "s3://${SECRETS_BUCKET_NAME}/secrets" - | grep -v '^#' | xargs)
 
 # TODO remove
-echo "$MAILER_URL"
+echo "REDIS:"
+echo "$REDIS_HOST"
 
 echo "Starting Apache..."
 # Call the normal web server entry-point script
