@@ -24,7 +24,7 @@ use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocator;
-use Symfony\Component\Messenger\Transport\Serialization\Serializer as MessengerSerializer;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\TransportFactory;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -126,7 +126,7 @@ return function (ContainerBuilder $containerBuilder) {
             return $transportFactory->createTransport(
                 getenv('MESSENGER_TRANSPORT_DSN'),
                 [],
-                new MessengerSerializer(),
+                new PhpSerializer(),
             );
         },
 
