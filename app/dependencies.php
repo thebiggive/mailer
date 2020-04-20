@@ -15,6 +15,7 @@ use Monolog\Processor\UidProcessor;
 use Openbuildings\Swiftmailer\CssInlinerPlugin;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsTransportFactory;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
@@ -24,6 +25,7 @@ use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocator;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\TransportFactory;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -67,20 +69,9 @@ return function (ContainerBuilder $containerBuilder) {
             ]);
         },
 
-        Redis::class => static function (ContainerInterface $c): ?Redis {
-            $redis = new Redis();
-            try {
-                $redis->connect($c->get('settings')['redis']['host']);
-            } catch (RedisException $exception) {
-                return null;
-            }
-
-            return $redis;
-        },
-
         RoutableMessageBus::class => static function (ContainerInterface $c): RoutableMessageBus {
             $busContainer = new Container();
-            $busContainer->set('email', $c->get(MessageBusInterface::class)); // async, currently via Redis
+            $busContainer->set('email', $c->get(MessageBusInterface::class)); // async, currently via SQS or Redis
 
             return new RoutableMessageBus($busContainer);
         },
@@ -128,7 +119,10 @@ return function (ContainerBuilder $containerBuilder) {
         },
 
         TransportInterface::class => static function (ContainerInterface $c): TransportInterface {
-            $transportFactory = new RedisTransportFactory();
+            $transportFactory = new TransportFactory([
+                new AmazonSqsTransportFactory(),
+                new RedisTransportFactory(),
+            ]);
             return $transportFactory->createTransport(
                 getenv('MESSENGER_TRANSPORT_DSN'),
                 [],
