@@ -8,22 +8,22 @@ use DI\Container;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
 use Symfony\Component\Messenger\RoutableMessageBus;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class Console extends Application
 {
     private RoutableMessageBus $bus;
     private LoggerInterface $logger;
-    private RedisTransport $transport;
+    private TransportInterface $transport;
 
     private string $receiverName = 'consumer';
 
     public function __construct(
         RoutableMessageBus $bus,
         LoggerInterface $logger,
-        RedisTransport $transport
+        TransportInterface $transport
     ) {
         $this->bus = $bus;
         $this->logger = $logger;

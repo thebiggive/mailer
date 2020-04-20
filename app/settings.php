@@ -48,10 +48,6 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
 
-            'redis' => [
-                'host' => getenv('REDIS_HOST'),
-            ],
-
             'swift' => [
                 // Processed in line with Symfony's conventions for `url` property / `MAILER_URL` env var.
                 // https://symfony.com/doc/current/reference/configuration/swiftmailer.html#url

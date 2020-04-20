@@ -186,7 +186,7 @@ class SendTest extends TestCase
     /**
      * All valid input but the send() call fails / returns 0 recipients.
      */
-    public function testRedisQueueError(): void
+    public function testQueueError(): void
     {
         $this->expectException(TransportException::class);
         $this->expectExceptionMessage('Some transport error');

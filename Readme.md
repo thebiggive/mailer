@@ -63,9 +63,9 @@ after any changes.
 
 ## Service dependencies
 
-### Redis
+### Queues
 
-Redis is used to queue messages. The two reasons to use a queue like this are:
+SQS is used to queue messages on AWS, and Redis locally. The two reasons to use a queue like this are:
  
  * Fast response times. While TBG Mailer is healthy it responds quickly, regardless of the
    speed of SES API responses or any issues with our account standing that might delay the actual

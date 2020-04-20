@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig;
 
 /**
- * Takes `SendRequest`s off the Redis queue and (tries to) send emails.
+ * Takes `SendRequest`s off the SQS/Redis queue and (tries to) send emails.
  */
 class SendRequestConsumer implements MessageHandlerInterface
 {

@@ -9,7 +9,7 @@ use Mailer\Tests\TestCase;
 
 class StatusTest extends TestCase
 {
-    public function testRedisErrorWithDummyHostname(): void
+    public function testSuccess(): void
     {
         $app = $this->getAppInstance();
 
@@ -17,10 +17,10 @@ class StatusTest extends TestCase
         $response = $app->handle($request);
         $payload = (string) $response->getBody();
 
-        $expectedPayload = new ActionPayload(500, ['error' => 'Redis not connected']);
+        $expectedPayload = new ActionPayload(200, ['status' => 'OK']);
         $expectedSerialised = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($expectedSerialised, $payload);
     }
 }
