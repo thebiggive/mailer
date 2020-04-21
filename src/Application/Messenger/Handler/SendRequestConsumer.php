@@ -86,7 +86,8 @@ class SendRequestConsumer implements MessageHandlerInterface
             }
         } catch (Swift_SwiftException $exception) {
             // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
-            $this->fail($sendRequest->id, 'Email send failed. ' . get_class($exception) . ": {$exception->getMessage()}");
+            $class = get_class($exception);
+            $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}");
         }
 
         $this->logger->info("Sent ID {$sendRequest->id}");
