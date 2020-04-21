@@ -9,6 +9,7 @@ use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
 use Swift_Mailer;
+use Swift_SwiftException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig;
@@ -77,10 +78,16 @@ class SendRequestConsumer implements MessageHandlerInterface
             ->setCharset('utf-8')
             ->setFrom(getenv('SENDER_ADDRESS'));
 
-        $numberOfRecipients = $this->mailer->send($email);
+        try {
+            $numberOfRecipients = $this->mailer->send($email);
 
-        if ($numberOfRecipients === 0) {
-            $this->fail($sendRequest->id, 'Email send failed');
+            if ($numberOfRecipients === 0) {
+                $this->fail($sendRequest->id, 'Email send reached no recipients');
+            }
+        } catch (Swift_SwiftException $exception) {
+            // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
+            $class = get_class($exception);
+            $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}");
         }
 
         $this->logger->info("Sent ID {$sendRequest->id}");

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Validator;
 
-use Mailer\Application\Actions\ActionError;
-use Mailer\Application\Actions\ActionPayload;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest as SendRequestModel;
 use Twig;
@@ -73,6 +71,12 @@ class SendRequest
                 $this->reason = "Template file for {$sendRequest->templateKey} not found";
                 return false;
             }
+        }
+
+        // Make sure we can never have a consumer sending messages queued in a different environment.
+        if ($sendRequest->env !== getenv('APP_ENV')) {
+            $this->reason = "Cannot process messages for '{$sendRequest->env}' env";
+            return false;
         }
 
         return true;
