@@ -100,10 +100,15 @@ return function (ContainerBuilder $containerBuilder) {
                 throw new \LogicException("Unsupported mailer URL scheme {$mailerUrlPieces['scheme']}");
             }
 
+            $mailerQuery = [];
+            if ($mailerUrlPieces['query'] !== null) {
+                parse_str($mailerUrlPieces['query'], $mailerQuery);
+            }
+
             $transport = new Swift_SmtpTransport(
                 $mailerUrlPieces['host'],
                 $mailerUrlPieces['port'],
-                $mailerUrlPieces['query']['encryption'] ?? null,
+                $mailerQuery['encryption'] ?? null,
             );
             if (!empty($mailerUrlPieces['user'])) {
                 $transport->setUsername($mailerUrlPieces['user']);
@@ -111,6 +116,7 @@ return function (ContainerBuilder $containerBuilder) {
             if (!empty($mailerUrlPieces['pass'])) {
                 $transport->setPassword($mailerUrlPieces['pass']);
             }
+            $transport->setTimeout($mailerQuery['timeout'] ?? 3);
 
             $mailer = new Swift_Mailer($transport);
             $mailer->registerPlugin(new CssInlinerPlugin());

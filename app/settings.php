@@ -49,7 +49,9 @@ return function (ContainerBuilder $containerBuilder) {
             ],
 
             'swift' => [
-                // Processed in line with Symfony's conventions for `url` property / `MAILER_URL` env var.
+                // Processed loosely in line with Symfony's conventions for `url` property / `MAILER_URL` env var,
+                // with query param support ONLY for 'encryption' & 'timeout'. Timeout is in seconds and must be
+                // lower than the SQS VisibilityTimeout when using SQS.
                 // https://symfony.com/doc/current/reference/configuration/swiftmailer.html#url
                 'mailerUrl' => getenv('MAILER_URL'),
             ],
