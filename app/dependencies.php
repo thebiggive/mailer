@@ -101,7 +101,7 @@ return function (ContainerBuilder $containerBuilder) {
             }
 
             $mailerQuery = [];
-            if ($mailerUrlPieces['query'] !== null) {
+            if (!empty($mailerUrlPieces['query'])) {
                 parse_str($mailerUrlPieces['query'], $mailerQuery);
             }
 
