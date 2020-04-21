@@ -57,9 +57,11 @@ class SendRequest
     public array $params;
 
     public string $id;
+    public string $env;
 
     public function __construct()
     {
         $this->id = (Uuid::uuid4())->toString();
+        $this->env = getenv('APP_ENV');
     }
 }
