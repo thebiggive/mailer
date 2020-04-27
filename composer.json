@@ -56,10 +56,6 @@
         "docs": "openapi --output openapi.yaml src",
         "lint:check": "phpcs --standard=phpcs.xml -s .",
         "lint:fix": "phpcbf --standard=phpcs.xml -s .",
-        "mailer:send-emails": [
-            "Composer\\Config::disableProcessTimeout",
-            "php mailer-cli.php mailer:send-emails"
-        ],
         "list-commands": "php mailer-cli.php list",
         "messenger:consume": [
             "Composer\\Config::disableProcessTimeout",

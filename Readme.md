@@ -78,9 +78,10 @@ recipient's email address.
 
 ## Scripts and Docker
 
-You can see how custom scripts are defined in [`composer.json`](./composer.json). For now there
-is just one, `mailer:send-emails`, which starts a long-lived process to listen to the queue for
-any emails that are ready to render and send.
+Scripts are defined in [`composer.json`](./composer.json). The only one designed to run in production is
+`messenger:consume`, which sets up and runs Symfony Messenger's built-in `ConsumeMessagesCommand`,
+which starts a long-lived process to listen to the queue for any emails that are ready to render
+and send. See [`Console`](./src/Application/Console.php) to understand how the command is bootstrapped.
 
 ### Discovering more about scripts
 
