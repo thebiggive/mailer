@@ -88,32 +88,45 @@ workflows:
                 message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
                 title: 'Staging: Mailer web deployed!'
 
-#  deploy-production:
-#    jobs:
-#      - test:
-#          filters:
-#            branches:
-#              only:
-#                - master
-#      - aws-ecr/build-and-push-image:
-#          requires:
-#            - test
-#          repo: '${AWS_ECR_REPO_NAME}'
-#          region: AWS_REGION
-#          tag: 'production,production-${CIRCLE_SHA1}'
-#      - aws-ecs/deploy-service-update:
-#          requires:
-#            - aws-ecr/build-and-push-image
-#          aws-region: '${AWS_REGION}'
-#          family: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
-#          cluster-name: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
-#          container-image-name-updates: 'container=mailer_web,tag=production-${CIRCLE_SHA1}'
-#          post-steps:
-#            - slack/notify-on-failure: ~
-#            - jira/notify:
-#                job_type: deployment
-#                environment_type: production
-#            - slack/notify:
-#                color: '#009900'
-#                message: 'We use rolling blue/green deploys. All visitors to production will see the updated app version within ~30 minutes.'
-#                title: 'Production: Mailer deployed!'
+  deploy-production:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - master
+      - aws-ecr/build-and-push-image:
+          requires:
+            - test
+          repo: '${AWS_ECR_REPO_NAME}'
+          region: AWS_REGION
+          tag: 'production,production-${CIRCLE_SHA1}'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: '${AWS_REGION}'
+          family: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
+          cluster-name: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
+          container-image-name-updates: 'container=mailer_tasks,tag=production-${CIRCLE_SHA1}'
+          post-steps:
+            - slack/notify-on-failure: ~
+            - slack/notify:
+                color: '#009900'
+                message: 'We use rolling blue/green deploys. All visitors to production will see the updated app version within ~30 minutes.'
+                title: 'Production: Mailer tasks deployed!'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: '${AWS_REGION}'
+          family: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
+          cluster-name: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
+          container-image-name-updates: 'container=mailer_web,tag=production-${CIRCLE_SHA1}'
+          post-steps:
+            - slack/notify-on-failure: ~
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+            - slack/notify:
+                color: '#009900'
+                message: 'We use rolling blue/green deploys. All visitors to production will see the updated app version within ~30 minutes.'
+                title: 'Production: Mailer web deployed!'
