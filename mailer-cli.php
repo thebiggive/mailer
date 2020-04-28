@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 $psr11App = require __DIR__ . '/bootstrap.php';
 
-use Symfony\Component\Console\Application;
+use Mailer\Application\Console;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\RoutableMessageBus;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
-$cliApp = new Application();
-
-$commands = [
-    // TODO add queue listener / sender, MAIL-3
-];
-foreach ($commands as $command) {
-    $cliApp->add($command);
-}
+$cliApp = new Console(
+    $psr11App->get(RoutableMessageBus::class),
+    $psr11App->get(LoggerInterface::class),
+    $psr11App->get(TransportInterface::class),
+);
 
 $cliApp->run();

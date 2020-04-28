@@ -5,6 +5,7 @@ and sending emails.
 
 * [Run the app](#Run-the-app)
 * [Run unit tests](#Run-unit-tests)
+* [API](#API)
 * [Service dependencies](#Service-dependencies)
 * [Scripts and Docker](#Scripts-and-Docker)
 * [Code structure](#Code-structure)
@@ -21,21 +22,19 @@ when the app is deployed 'for real' and other developers' machines.
 In advance of the first app run:
 
 * [get Docker](https://www.docker.com/get-started)
-* copy `.env.example` to `.env` and change any values you need to. e.g. if you
-  are working with your own Salesforce sandbox you would want to change most of the `SALESFORCE_*`
-  variables.
+* copy `.env.example` to `.env` and change any values you need to
 
 ### Start the app
 
-To start the app and its dependencies (`db` and `redis`) locally:
+To start the app and its dependencies locally:
 
-    docker-compose up -d
+    docker-compose up -d web
 
 ### First run
 
 To get PHP dependencies and an initial data in structure in place, you'll need to run these once:
 
-    docker-compose exec app composer install
+    docker-compose exec web composer install
 
 If dependencies change you may occasionally need to re-run the `composer install`.
 
@@ -43,56 +42,72 @@ If dependencies change you may occasionally need to re-run the `composer install
 
 Once you have the app running, you can test with: 
 
-    docker-compose exec app composer run test
+    docker-compose exec web composer run test
 
 Linting is run with
 
-    docker-compose exec app composer run lint:check
+    docker-compose exec web composer run lint:check
 
 To understand how these commands are run in CI, see [the CirleCI config file](./.circleci/config.yml).
 
+## API
+
+Actions are annotated with [swagger-php](https://github.com/zircote/swagger-php) -ready doc block annotations.
+
+Generate OpenAPI documentation corresponding to your local codebase with:
+
+    docker-compose exec web composer run docs
+
+The latest stable docs should be copied to their [live home on SwaggerHub](https://app.swaggerhub.com/apis/thebiggive/mailer/)
+after any changes.
+
 ## Service dependencies
 
-### Redis
+### Queues
 
-Redis is used to queue messages. The two reasons to use a queue like this are:
+SQS is used to queue messages on AWS, and Redis locally. The two reasons to use a queue like this are:
  
  * Fast response times. While TBG Mailer is healthy it responds quickly, regardless of the
    speed of SES API responses or any issues with our account standing that might delay the actual
    sending of emails.
  * Reliability. If an SES send fails for any reason, the message goes back on the queue and will
    be sent once we / Amazon fix the problem.
- 
+
 Message properties are the key placeholders needed for the template / subject line, and the
 recipient's email address.
 
 ## Scripts and Docker
 
-You can see how custom scripts are defined in [`composer.json`](./composer.json). For now there
-is just one, `mailer:send-emails`, which starts a long-lived process to listen to the queue for
-any emails that are ready to render and send.
+Scripts are defined in [`composer.json`](./composer.json). The only one designed to run in production is
+`messenger:consume`, which sets up and runs Symfony Messenger's built-in `ConsumeMessagesCommand`,
+which starts a long-lived process to listen to the queue for any emails that are ready to render
+and send. See [`Console`](./src/Application/Console.php) to understand how the command is bootstrapped.
 
 ### Discovering more about scripts
 
-The headline for each script's purpose is defined in its description in the PHP class. There is a Composer script
-`mailer:list-commands` which calls `list` to read these. So with an already-running Docker `app` container, you can
-run
+There is a Composer script `list-commands` which calls `list` to read the registered commands.
+With an already-running Docker `web` container, you can run
 
-    docker-compose exec app composer mailer:list-commands
+    docker-compose exec web composer list-commands
 
-for an overview of how all [`Commands`](./src/Application/Commands) in the app describe themselves.
+Currently we define no custom commands, instead pulling in the Symfony dependencies
+necessary to use the `symfony/messenger` component and its built-in commands.
 
 ### Running scripts locally
 
-To run a script in an already-running Docker `app` container, use:
+To run a consumer worker similarly to how our ECS tasks will (distinct from
+the `web` container), run:
 
-    docker-compose exec app composer {name:of:script:from:composer.json}
+    docker-compose run --rm consumer
+
+As you can see in `docker-compose.yml`, this is just a shortcut to get a standalone
+CLI process to run the long-running worker task defined with
+`composer run messenger:consume`.
 
 ### How tasks run on staging & production
 
-[ECS](https://aws.amazon.com/ecs/) task invocations are configured to run the tasks we expect to happen regularly
-on a schedule. Tasks get their own ECS cluster to run on, independent of the web cluster, usually with just one instance
-per environment. They are triggered by CloudWatch Events Rules which fire at regular intervals.
+[ECS](https://aws.amazon.com/ecs/) task invocations are configured to keep at least one consumer task
+running. Tasks get their own ECS cluster/service to run on, independent of the web cluster.
 
 ## Code structure
 

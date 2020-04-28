@@ -4,22 +4,58 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
+use Mailer\Application\Email\Config;
+use Mailer\Application\HttpModels\SendRequest;
+use Mailer\Application\HttpModels\SendResponse;
+use Mailer\Application\Validator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
-use Swift_Mailer;
-use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
-use Twig;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\RoutableMessageBus;
+use Symfony\Component\Messenger\Stamp\BusNameStamp;
+use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @OA\Post(
+ *     path="/v1/send",
+ *     summary="Send an email",
+ *     operationId="send",
+ *     security={
+ *         {"sendHash": {}}
+ *     },
+ *     @OA\RequestBody(
+ *         description="All details needed to send an email",
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/SendRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Email queued to send",
+ *         @OA\JsonContent(ref="#/components/schemas/SendResponse"),
+ *     ),
+ * ),
+ */
 class Send extends Action
 {
-    private Swift_Mailer $mailer;
-    private Twig\Environment $twig;
+    private RoutableMessageBus $bus;
+    private Config $config;
+    private SerializerInterface $serializer;
+    private Validator\SendRequest $validator;
 
-    public function __construct(LoggerInterface $logger, Swift_Mailer $mailer, Twig\Environment $twig)
-    {
-        $this->mailer = $mailer;
-        $this->twig = $twig;
+    public function __construct(
+        Config $configLoader,
+        LoggerInterface $logger,
+        RoutableMessageBus $bus,
+        SerializerInterface $serializer,
+        Validator\SendRequest $validator
+    ) {
+        $this->bus = $bus;
+        $this->config = $configLoader;
+        $this->serializer = $serializer;
+        $this->validator = $validator;
 
         parent::__construct($logger);
     }
@@ -30,46 +66,29 @@ class Send extends Action
      */
     protected function action(): Response
     {
-        // TODO next multipart w/ Twig
-        $templateKey = 'donor-donation-success';
-
-        // TODO check for required merge params
-        $subject = 'Test mail!';
-
         try {
-            $bodyRenderedHtml = $this->twig->render("{$templateKey}.html.twig", [
-                'firstName' => 'testName',
-                'subject' => $subject,
-            ]);
-        } catch (Twig\Error\LoaderError $ex) {
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Template not found');
+            /** @var SendRequest $sendRequest */
+            $sendRequest = $this->serializer->deserialize(
+                $this->request->getBody(),
+                SendRequest::class,
+                'json'
+            );
+        } catch (UnexpectedValueException $exception) { // This is the Serializer one, not the global one
+            $error = new ActionError(ActionError::BAD_REQUEST, 'Non-deserialisable data');
             return $this->respond(new ActionPayload(400, null, $error));
-        } catch (Twig\Error\Error $ex) {
-            $error = new ActionError(ActionError::SERVER_ERROR, 'Template render failed: ' . $ex->getMessage());
-            return $this->respond(new ActionPayload(500, null, $error));
         }
 
-        $bodyPlainText = strip_tags($bodyRenderedHtml);
-
-        $message = (new \Swift_Message())
-            ->addTo('noel@noellh.com')
-            ->setSubject($subject)
-            ->setBody($bodyPlainText)
-            ->addPart($bodyRenderedHtml, 'text/html')
-            ->setContentType('text/html')
-            ->setCharset('utf-8')
-            ->setFrom('noel@noellh.com'); // todo use TBG address + configure in env var
-
-        $numberOfRecipients = $this->mailer->send($message);
-
-        // todo move to Sender
-
-        if ($numberOfRecipients > 0) {
-            return $this->respondWithData(['status' => 'Sent']);
+        if (!$this->validator->validate($sendRequest, false)) {
+            $error = new ActionError(ActionError::BAD_REQUEST, $this->validator->getReason());
+            return $this->respond(new ActionPayload(400, null, $error));
         }
 
-        $error = new ActionError(ActionError::SERVER_ERROR, 'Send failed');
+        $stamps = [
+            new BusNameStamp('email'),
+            new TransportMessageIdStamp($sendRequest->id),
+        ];
+        $this->bus->dispatch(new Envelope($sendRequest, $stamps));
 
-        return $this->respond(new ActionPayload(500, ['error' => 'Send failed'], $error));
+        return $this->respondWithData(new SendResponse('queued', $sendRequest->id));
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use Mailer\Application\ConfigModels\Email;
 use Monolog\Logger;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -13,15 +14,31 @@ return function (ContainerBuilder $containerBuilder) {
 
             'displayErrorDetails' => (getenv('APP_ENV') === 'local'),
 
-            // Templates live in `templates/{template key}.html.twig`. For each email, set the following config keys:
-            // * subject: A string with %s placeholders for any merge fields
-            // * subjectParams: An array corresponding to those %s values, in order. Repeats allowed. Empty array for no placeholders.
-            // *
+            /**
+             * 'emails' is an array of Email configs. @see Email for properties. Note that you cannot
+             * directly instantiate objects here without breaking PHP-DI compilation, so we use an array
+             * and do it at runtime.
+             */
             'emails' => [
-                'donor-donation-success' => [
+                [
+                    'templateKey' => 'donor-donation-success',
                     'subject' => 'Thanks for your donation, %s!',
-                    'subjectParams' => ['firstName'],
-                    'requiredParams' => ['amount', 'firstName', 'giftAidStatus'], // TODO finish this
+                    'subjectParams' => ['donorFirstName'],
+                    'requiredParams' => [
+                        'campaignName',
+                        'campaignThankYouMessage',
+                        'charityName',
+                        'donationAmount',
+                        'donorFirstName',
+                        'donorLastName',
+                        'isGiftAidClaimed',
+                        'isMatched',
+                        'matchedAmount',
+                        'tipAmount',
+                        'totalChargedAmount',
+                        'totalCharityValueAmount',
+                        'transactionId',
+                    ],
                 ],
             ],
 
@@ -31,12 +48,10 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
 
-            'redis' => [
-                'host' => getenv('REDIS_HOST'),
-            ],
-
             'swift' => [
-                // Processed in line with Symfony's conventions for `url` property / `MAILER_URL` env var.
+                // Processed loosely in line with Symfony's conventions for `url` property / `MAILER_URL` env var,
+                // with query param support ONLY for 'encryption' & 'timeout'. Timeout is in seconds and must be
+                // lower than the SQS VisibilityTimeout when using SQS.
                 // https://symfony.com/doc/current/reference/configuration/swiftmailer.html#url
                 'mailerUrl' => getenv('MAILER_URL'),
             ],
