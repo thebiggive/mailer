@@ -3,6 +3,12 @@
 Mailer is a [Slim](https://www.slimframework.com/) PHP microservice for queueing, rendering
 and sending emails.
 
+It uses [Twig](https://github.com/twigphp/Twig) for email templating and [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles) (via [swiftmailer-css-inliner](https://github.com/OpenBuildings/swiftmailer-css-inliner)) to support clean styling that works in most email clients.
+
+It supports any SMTP transport, via [SwiftMailer](https://github.com/swiftmailer/swiftmailer), but we currently use AWS SES.
+
+It supports SQS and Redis queues via [Symfony Messenger](https://github.com/symfony/messenger).
+
 * [Run the app](#Run-the-app)
 * [Run unit tests](#Run-unit-tests)
 * [API](#API)
