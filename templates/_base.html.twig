@@ -3,16 +3,29 @@
   <head>
     <title>{{ subject }}</title>
     <style type="text/css">
-    p {
-      font-size: 1.2rem;
-    }
+      p, li { 
+        font-size: 1.0rem;
+      },
+
+      blockquote {
+        font-size: 0.9rem;
+        font-style: italic;
+      }
     </style>
   </head>
 <body>
-  <div id="content">{% block content %}{% endblock %}</div>
+  <img src="{{ tbg_logo }}" alt="Image Description">
+  <div id="content">
+    {% block content %}{% endblock %}
+  </div>
   <div id="footer">
     {% block footer %}
-        The Big Give xx
+      <p>
+        Kind regards,<br>
+        The Big Give Team<br>
+        www.thebiggive.org.uk<br>
+      </p>
+      <p>Powered by Charity Checkout</p>
     {% endblock %}
   </div>
 </body>

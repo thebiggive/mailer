@@ -1,5 +1,40 @@
 {% extends  '_base.html.twig' %}
 
 {% block content %}
-  <p>Thanks for donating, {{ donorFirstName }}!</p>
+  <p>Dear {{ donorFirstName }} {{ donorLastName }},</p>
+  <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
+  <p>
+    Here is your donation information:
+      <ul>
+        <li>Total for {{ charityName }}: <strong>£{{ totalCharityValueAmount }}</strong></li>
+        <li>Donation: <strong>£{{ donationAmount}}</strong></li>
+        <li>Gift Aid: <strong>£{{ giftAidAmountClaimed }}</strong></li>
+        {% if matchedAmount > 0 %}
+            <li>Match Funds: <strong>£{{ matchedAmount }}</strong></li>
+        {% endif %}
+      </ul>
+
+  <p>
+    Donation reference: <strong>{{ transactionId }}</strong><br>
+    Reference on credit/debit card statement: 'CharityCheckout.co.uk'
+  </p>
+
+  {% if tipAmount > 0 %}
+    <p>Thank you for leaving a tip of <strong>£{{ tipAmount }}</strong> toward the Big Give.</p>
+  {% endif %}
+
+  <p>Total amount you have been charged is <strong>£{{ totalChargedAmount }}</strong>.</p>
+
+  {# {% if comms > 0 %}
+    <p>We noticed that you decided to no longer receive emails from the Big Give with opportunities to double your donation. We're sorry to hear this.<p>
+    <p>If you've changed your mind and would like to opt-in, simply click Subscribe.<p>
+    <p>It's easy to opt-out at any time; there’s always an unsubscribe link at the bottom of our emails.<p>
+  {% endif %} #}
+
+  {% if campaignThankYouMessage %}
+    <p>A message from {{ charityName }}:</p>
+    <blockquote>{{ campaignThankYouMessage }}</blockquote>
+  {% endif %}
+  
+  <p>If you have any questions, please contact us.</p>
 {% endblock %}
