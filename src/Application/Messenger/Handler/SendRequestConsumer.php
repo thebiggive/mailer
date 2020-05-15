@@ -61,7 +61,7 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $pathToImages = __DIR__ . '/../../../../images/';
 
-        $images['header'] = $email->embed(\Swift_Image::fromPath($pathToImages. 'TBG.jpg'));
+        $images['header'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'TBG.jpg'));
         $images['footer'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'CCh.jpg'));
 
         $params = array_merge($images, $sendRequest->params);
