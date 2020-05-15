@@ -56,27 +56,37 @@ class SendRequestConsumer implements MessageHandlerInterface
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
 
-        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
+        // Instantiate a new Swift Message object
+        $email = new \Swift_Message();
+
+        $pathToImages = __DIR__ . '/../../../../images/';
+
+        $images['header'] = $email->embed(\Swift_Image::fromPath($pathToImages. 'TBG.jpg'));
+        $images['footer'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'CCh.png'));
+
+        $params = array_merge($images, $sendRequest->params);
+
+        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $params);
+        var_dump($bodyRenderedHtml);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
 
         $config = $this->config->get($sendRequest->templateKey);
 
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
+        $subjectMergeValues = array_map(fn($param) => $params[$param], $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         if ($this->appEnv !== 'production') {
             $subject = "({$this->appEnv}) $subject";
         }
 
-        $email = (new \Swift_Message())
-            ->addTo($sendRequest->recipientEmailAddress)
-            ->setSubject($subject)
-            ->setBody($bodyPlainText)
-            ->addPart($bodyRenderedHtml, 'text/html')
-            ->setContentType('text/html')
-            ->setCharset('utf-8')
-            ->setFrom(getenv('SENDER_ADDRESS'));
+        $email->addTo($sendRequest->recipientEmailAddress);
+        $email->setSubject($subject);
+        $email->setBody($bodyPlainText);
+        $email->addPart($bodyRenderedHtml, 'text/html');
+        $email->setContentType('text/html');
+        $email->setCharset('utf-8');
+        $email->setFrom(getenv('SENDER_ADDRESS'));
 
         try {
             $numberOfRecipients = $this->mailer->send($email);
