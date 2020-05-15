@@ -62,12 +62,11 @@ class SendRequestConsumer implements MessageHandlerInterface
         $pathToImages = __DIR__ . '/../../../../images/';
 
         $images['header'] = $email->embed(\Swift_Image::fromPath($pathToImages. 'TBG.jpg'));
-        $images['footer'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'CCh.png'));
+        $images['footer'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'CCh.jpg'));
 
         $params = array_merge($images, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $params);
-        var_dump($bodyRenderedHtml);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
 
         $config = $this->config->get($sendRequest->templateKey);
@@ -82,8 +81,8 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $email->addTo($sendRequest->recipientEmailAddress);
         $email->setSubject($subject);
-        $email->setBody($bodyPlainText);
-        $email->addPart($bodyRenderedHtml, 'text/html');
+        $email->setBody($bodyRenderedHtml);
+        $email->addPart($bodyPlainText, 'text/plain');
         $email->setContentType('text/html');
         $email->setCharset('utf-8');
         $email->setFrom(getenv('SENDER_ADDRESS'));
