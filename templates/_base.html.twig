@@ -2,31 +2,24 @@
 <html lang="en-GB">
   <head>
     <title>{{ subject }}</title>
-    <style type="text/css">
-      p, li { 
-        font-size: 1.0rem;
-      },
-
-      blockquote {
-        font-size: 0.9rem;
-      }
-    </style>
   </head>
 <body>
-  <img src="{{ header }}" alt="TheBigGive" />
-  <div id="content">
-    {% block content %}{% endblock %}
-  </div>
-  <div id="footer">
-    {% block footer %}
-      <p>
-        Kind regards,<br>
-        The Big Give Team<br>
-        www.thebiggive.org.uk<br>
-      </p>
-      <p>Powered by Charity Checkout</p>
-      <img src="{{ footer }}" alt="CharityCheckout" />
-    {% endblock %}
+  <div style="margin: 0 auto; max-width:500px;">
+    <img src="{{ header }}" alt="TheBigGive" title="The Big Give" width="250" height="50"/>
+    <div id="content" style="text-align: left;">
+      {% block content %}{% endblock %}
+    </div>
+    <div id="footer">
+      {% block footer %}
+        <p>
+          Kind regards,<br>
+          The Big Give Team<br>
+          www.thebiggive.org.uk<br>
+        </p>
+        <p>Powered by Charity Checkout</p>
+        <img src="{{ footer }}" alt="CharityCheckout" title="Charity Checkout" width="97" height="67"/>
+      {% endblock %}
+    </div>
   </div>
 </body>
 </html>

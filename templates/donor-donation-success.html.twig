@@ -25,7 +25,7 @@
 
   <p>Total amount you have been charged is <strong>£{{ totalChargedAmount }}</strong>.</p>
 
-  {# {% if comms > 0 %}
+  {# {% if comms %}
     <p>We noticed that you decided to no longer receive emails from the Big Give with opportunities to double your donation. We're sorry to hear this.<p>
     <p>If you've changed your mind and would like to opt-in, simply click Subscribe.<p>
     <p>It's easy to opt-out at any time; there’s always an unsubscribe link at the bottom of our emails.<p>
@@ -33,7 +33,7 @@
 
   {% if campaignThankYouMessage %}
     <p>A message from {{ charityName }}:</p>
-    <blockquote>{{ campaignThankYouMessage }}</blockquote>
+    <blockquote style="font-size: 0.9rem;">{{ campaignThankYouMessage }}</blockquote>
   {% endif %}
   
   <p>If you have any questions, please contact us.</p>
