@@ -1,4 +1,4 @@
-{% extends  '_base.html.twig' %}
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
   <p>Dear {{ donorFirstName }} {{ donorLastName }},</p>

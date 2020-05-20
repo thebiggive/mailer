@@ -59,20 +59,14 @@ class SendRequestConsumer implements MessageHandlerInterface
         // Instantiate a new Swift Message object
         $email = new \Swift_Message();
 
-        $images['headerImageRef'] = $this->embedImages($email, 'TBG.png');
-        $images['footerImageRef'] = $this->embedImages($email, 'CCh.png');
+        $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
+        $additionalParams['footerImageRef'] = $this->embedImages($email, 'CCh.png');
+        $additionalParams['renderHtml'] = true;
 
-        $templateMergeParams = array_merge($images, $sendRequest->params);
+        $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
-
-        // We conduct a preg replace here because `strip_tags()` doesn't remove css class names between <style></style>
-        // Inspired by: https://stackoverflow.com/a/18089200/6620085
-        $bodyRenderedHtmlWithoutStyles = preg_replace("|<style\b[^>]*>(.*?)</style>|s", "", $bodyRenderedHtml);
-
-        $bodyPlainText = strip_tags($bodyRenderedHtmlWithoutStyles);
-
-        var_dump($bodyPlainText);
+        $bodyPlainText =  $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
 
         $config = $this->config->get($sendRequest->templateKey);
 
