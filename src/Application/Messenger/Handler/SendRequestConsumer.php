@@ -88,7 +88,7 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $email->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
-            ->setBody($inline)
+            ->setBody($cssToInlineStyles)
             ->addPart($bodyPlainText, 'text/plain')
             ->setContentType('text/html')
             ->setCharset('utf-8')
