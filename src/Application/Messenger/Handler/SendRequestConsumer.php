@@ -107,7 +107,12 @@ class SendRequestConsumer implements MessageHandlerInterface
         throw new RuntimeException($reason);
     }
 
-    private function embedImages($email, $fileName)
+    /**
+     * @param object $email
+     * @param string $fileName
+     * @return Swift_Image returns the embeded image
+     */
+    private function embedImages($email, string $fileName)
     {
         $pathToImages = dirname(__DIR__, 4) . '/images/';
         return $email->embed(\Swift_Image::fromPath($pathToImages . $fileName));
