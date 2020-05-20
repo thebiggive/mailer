@@ -67,7 +67,7 @@ class SendRequestConsumer implements MessageHandlerInterface
         $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
-        $bodyPlainText = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
+        $bodyPlainText = strip_tags($this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params));
 
         $config = $this->config->get($sendRequest->templateKey);
 
