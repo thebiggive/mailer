@@ -3,16 +3,15 @@
 {% block content %}
   <p>Dear {{ donorFirstName }} {{ donorLastName }},</p>
   <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
-  <p>
-    Here is your donation information:
-      <ul>
-        <li>Total for {{ charityName }}: <strong>£{{ totalCharityValueAmount }}</strong></li>
-        <li>Donation: <strong>£{{ donationAmount}}</strong></li>
-        <li>Gift Aid: <strong>£{{ giftAidAmountClaimed }}</strong></li>
-        {% if matchedAmount > 0 %}
-            <li>Match Funds: <strong>£{{ matchedAmount }}</strong></li>
-        {% endif %}
-      </ul>
+  <p>Here is your donation information:</p>
+  <ul>
+    <li>Total for {{ charityName }}: <strong>£{{ totalCharityValueAmount }}</strong></li>
+    <li>Donation: <strong>£{{ donationAmount}}</strong></li>
+    <li>Gift Aid: <strong>£{{ giftAidAmountClaimed }}</strong></li>
+    {% if matchedAmount > 0 %}
+        <li>Match Funds: <strong>£{{ matchedAmount }}</strong></li>
+    {% endif %}
+  </ul>
 
   <p>
     Donation reference: <strong>{{ transactionId }}</strong><br>
