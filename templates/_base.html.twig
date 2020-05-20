@@ -4,8 +4,8 @@
     <title>{{ subject }}</title>
   </head>
 <body>
-  <div style="margin: 0 auto; max-width:500px;">
-    <img src="{{ header }}" alt="TheBigGive" title="The Big Give" width="250" height="50"/>
+  <container>
+    <img src="{{ headerImageRef }}" alt="TheBigGive" title="The Big Give" width="250" height="50"/>
     <div id="content" style="text-align: left;">
       {% block content %}{% endblock %}
     </div>
@@ -17,9 +17,9 @@
           www.thebiggive.org.uk<br>
         </p>
         <p>Powered by Charity Checkout</p>
-        <img src="{{ footer }}" alt="CharityCheckout" title="Charity Checkout" width="97" height="67"/>
+        <img src="{{ footerImageRef }}" alt="CharityCheckout" title="Charity Checkout" width="97" height="67"/>
       {% endblock %}
     </div>
-  </div>
+  </container>
 </body>
 </html>

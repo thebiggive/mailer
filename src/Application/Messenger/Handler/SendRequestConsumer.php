@@ -12,6 +12,8 @@ use Swift_Mailer;
 use Swift_SwiftException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Openbuildings\Swiftmailer\CssInlinerPlugin;
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use Twig;
 
 /**
@@ -58,34 +60,40 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         // Instantiate a new Swift Message object
         $email = new \Swift_Message();
+        $cssToInlineStyles  = new CssToInlineStyles();
 
-        $pathToImages = __DIR__ . '/../../../../images/';
+        $images['headerImageRef'] = $this->embedImages($email, 'TBG.jpg');
+        $images['footerImageRef'] = $this->embedImages($email, 'CCh.jpg');
 
-        $images['header'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'TBG.jpg'));
-        $images['footer'] = $email->embed(\Swift_Image::fromPath($pathToImages . 'CCh.jpg'));
+        $templateMergeParams = array_merge($images, $sendRequest->params);
 
-        $params = array_merge($images, $sendRequest->params);
-
-        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $params);
+        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
+
+        $cssToInlineStyles->setUseInlineStylesBlock(false)
+            ->convert(
+                $bodyRenderedHtml,
+                file_get_contents(dirname(__DIR__, 4) . '/templates/style.css')
+            );
 
         $config = $this->config->get($sendRequest->templateKey);
 
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
-        $subjectMergeValues = array_map(fn($param) => $params[$param], $config->subjectParams);
+        $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         if ($this->appEnv !== 'production') {
             $subject = "({$this->appEnv}) $subject";
         }
 
-        $email->addTo($sendRequest->recipientEmailAddress);
-        $email->setSubject($subject);
-        $email->setBody($bodyRenderedHtml);
-        $email->addPart($bodyPlainText, 'text/plain');
-        $email->setContentType('text/html');
-        $email->setCharset('utf-8');
-        $email->setFrom(getenv('SENDER_ADDRESS'));
+        $email->addTo($sendRequest->recipientEmailAddress)
+            ->setSubject($subject)
+            ->setBody($inline)
+            ->addPart($bodyPlainText, 'text/plain')
+            ->setContentType('text/html')
+            ->setCharset('utf-8')
+            ->setFrom(getenv('SENDER_ADDRESS')
+            ->registerPlugin(new CssInlinerPlugin($cssToInlineStyles)));
 
         try {
             $numberOfRecipients = $this->mailer->send($email);
@@ -106,5 +114,11 @@ class SendRequestConsumer implements MessageHandlerInterface
     {
         $this->logger->error("Sending ID $id failed: $reason");
         throw new RuntimeException($reason);
+    }
+
+    private function embedImages($email, $fileName)
+    {
+        $pathToImages = dirname(__DIR__, 4) . '/images/';
+        return $email->embed(\Swift_Image::fromPath($pathToImages . $fileName));
     }
 }
