@@ -65,7 +65,12 @@ class SendRequestConsumer implements MessageHandlerInterface
         $templateMergeParams = array_merge($images, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
-        $bodyPlainText = strip_tags($bodyRenderedHtml);
+
+        // We conduct a preg replace here because `strip_tags()` doesn't remove css class names between <style></style>
+        // Inspired by: https://stackoverflow.com/a/18089200/6620085
+        $bodyRenderedHtmlWithoutStyles = preg_replace("|<style\b[^>]*>(.*?)</style>|s", "", $bodyRenderedHtml);
+
+        $bodyPlainText = strip_tags($bodyRenderedHtmlWithoutStyles);
 
         var_dump($bodyPlainText);
 
