@@ -8,7 +8,9 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
+use Swift_Image;
 use Swift_Mailer;
+use Swift_Message;
 use Swift_SwiftException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -56,8 +58,7 @@ class SendRequestConsumer implements MessageHandlerInterface
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
 
-        // Instantiate a new Swift Message object
-        $email = new \Swift_Message();
+        $email = new Swift_Message();
 
         $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
         $additionalParams['footerImageRef'] = $this->embedImages($email, 'CCh.png');
@@ -66,7 +67,7 @@ class SendRequestConsumer implements MessageHandlerInterface
         $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
-        $bodyPlainText =  $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
+        $bodyPlainText = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
 
         $config = $this->config->get($sendRequest->templateKey);
 
@@ -108,13 +109,14 @@ class SendRequestConsumer implements MessageHandlerInterface
     }
 
     /**
-     * @param object $email
+     * @param Swift_Message $email
      * @param string $fileName
-     * @return Swift_Image returns the embeded image
+     * @return string Path-like reference to embedded image, for use in other parts' HTML.
      */
-    private function embedImages($email, string $fileName)
+    private function embedImages(Swift_Message $email, string $fileName): string
     {
         $pathToImages = dirname(__DIR__, 4) . '/images/';
-        return $email->embed(\Swift_Image::fromPath($pathToImages . $fileName));
+
+        return $email->embed(Swift_Image::fromPath($pathToImages . $fileName));
     }
 }
