@@ -1,5 +1,33 @@
-{% extends  '_base.html.twig' %}
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-  <p>Thanks for donating, {{ donorFirstName }}!</p>
+  <p>Dear {{ donorFirstName }} {{ donorLastName }},</p>
+  <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
+  <p>Here is your donation information:</p>
+  <ul>
+    <li>Total for {{ charityName }}: <strong>£{{ totalCharityValueAmount }}</strong></li>
+    <li>Donation: <strong>£{{ donationAmount}}</strong></li>
+    <li>Gift Aid: <strong>£{{ giftAidAmountClaimed }}</strong></li>
+    {% if matchedAmount > 0 %}
+        <li>Match Funds: <strong>£{{ matchedAmount }}</strong></li>
+    {% endif %}
+  </ul>
+
+  <p>
+    Donation reference: <strong>{{ transactionId }}</strong><br>
+    Reference on credit/debit card statement: CharityCheckout.co.uk
+  </p>
+
+  {% if tipAmount > 0 %}
+    <p>Thank you for leaving a tip of <strong>£{{ tipAmount }}</strong> toward the Big Give.</p>
+  {% endif %}
+
+  <p>Total amount you have been charged is <strong>£{{ totalChargedAmount }}</strong>.</p>
+
+  {% if campaignThankYouMessage %}
+    <p>A message from {{ charityName }}:</p>
+    <blockquote>{{ campaignThankYouMessage }}</blockquote>
+  {% endif %}
+
+  <p>If you have any questions, please contact us.</p>
 {% endblock %}

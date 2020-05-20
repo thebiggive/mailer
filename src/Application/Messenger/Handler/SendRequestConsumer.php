@@ -8,7 +8,9 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
+use Swift_Image;
 use Swift_Mailer;
+use Swift_Message;
 use Swift_SwiftException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -56,8 +58,16 @@ class SendRequestConsumer implements MessageHandlerInterface
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
 
-        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
-        $bodyPlainText = strip_tags($bodyRenderedHtml);
+        $email = new Swift_Message();
+
+        $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
+        $additionalParams['footerImageRef'] = $this->embedImages($email, 'CCh.png');
+        $additionalParams['renderHtml'] = true;
+
+        $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
+
+        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
+        $bodyPlainText = strip_tags($this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params));
 
         $config = $this->config->get($sendRequest->templateKey);
 
@@ -69,11 +79,10 @@ class SendRequestConsumer implements MessageHandlerInterface
             $subject = "({$this->appEnv}) $subject";
         }
 
-        $email = (new \Swift_Message())
-            ->addTo($sendRequest->recipientEmailAddress)
+        $email->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
-            ->setBody($bodyPlainText)
-            ->addPart($bodyRenderedHtml, 'text/html')
+            ->setBody($bodyRenderedHtml)
+            ->addPart($bodyPlainText, 'text/plain')
             ->setContentType('text/html')
             ->setCharset('utf-8')
             ->setFrom(getenv('SENDER_ADDRESS'));
@@ -97,5 +106,17 @@ class SendRequestConsumer implements MessageHandlerInterface
     {
         $this->logger->error("Sending ID $id failed: $reason");
         throw new RuntimeException($reason);
+    }
+
+    /**
+     * @param Swift_Message $email
+     * @param string $fileName
+     * @return string Path-like reference to embedded image, for use in other parts' HTML.
+     */
+    private function embedImages(Swift_Message $email, string $fileName): string
+    {
+        $pathToImages = dirname(__DIR__, 4) . '/images/';
+
+        return $email->embed(Swift_Image::fromPath($pathToImages . $fileName));
     }
 }
