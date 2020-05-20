@@ -12,8 +12,6 @@ use Swift_Mailer;
 use Swift_SwiftException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Openbuildings\Swiftmailer\CssInlinerPlugin;
-use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use Twig;
 
 /**
@@ -60,7 +58,6 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         // Instantiate a new Swift Message object
         $email = new \Swift_Message();
-        $cssToInlineStyles  = new CssToInlineStyles();
 
         $images['headerImageRef'] = $this->embedImages($email, 'TBG.jpg');
         $images['footerImageRef'] = $this->embedImages($email, 'CCh.jpg');
@@ -69,12 +66,6 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
-
-        $cssToInlineStyles->setUseInlineStylesBlock(false)
-            ->convert(
-                $bodyRenderedHtml,
-                file_get_contents(dirname(__DIR__, 4) . '/templates/style.css')
-            );
 
         $config = $this->config->get($sendRequest->templateKey);
 
@@ -88,12 +79,11 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $email->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
-            ->setBody($cssToInlineStyles)
+            ->setBody($bodyRenderedHtml)
             ->addPart($bodyPlainText, 'text/plain')
             ->setContentType('text/html')
             ->setCharset('utf-8')
-            ->setFrom(getenv('SENDER_ADDRESS')
-            ->registerPlugin(new CssInlinerPlugin($cssToInlineStyles)));
+            ->setFrom(getenv('SENDER_ADDRESS'));
 
         try {
             $numberOfRecipients = $this->mailer->send($email);

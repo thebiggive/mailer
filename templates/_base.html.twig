@@ -2,11 +2,40 @@
 <html lang="en-GB">
   <head>
     <title>{{ subject }}</title>
+    <style type="text/css">
+      p, ul, li {
+        font-size: 0.9rem;
+      }
+
+      blockquote {
+        font-size: 0.7rem;
+        font-style: italic;
+      }
+
+      .container {
+        margin: 0 auto;
+        max-width: 500px;
+      }
+      
+      .content {
+        text-align: left;
+      }
+
+      .headerImg {
+        max-width: 50%;
+        height: auto;
+      }
+
+      .footerImg {
+        max-width: 30%;
+        height: auto;
+      }
+    </style>
   </head>
 <body>
-  <container>
-    <img src="{{ headerImageRef }}" alt="TheBigGive" title="The Big Give" width="250" height="50"/>
-    <div id="content" style="text-align: left;">
+  <div class="container">
+    <img class="headerImg" src="{{ headerImageRef }}" alt="TheBigGive" title="The Big Give"/>
+    <div id="content" class="content">
       {% block content %}{% endblock %}
     </div>
     <div id="footer">
@@ -17,7 +46,7 @@
           www.thebiggive.org.uk<br>
         </p>
         <p>Powered by Charity Checkout</p>
-        <img src="{{ footerImageRef }}" alt="CharityCheckout" title="Charity Checkout" width="97" height="67"/>
+        <img class="footerImg" src="{{ footerImageRef }}" alt="CharityCheckout" title="Charity Checkout"/>
       {% endblock %}
     </div>
   </container>
