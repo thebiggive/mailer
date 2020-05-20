@@ -59,13 +59,15 @@ class SendRequestConsumer implements MessageHandlerInterface
         // Instantiate a new Swift Message object
         $email = new \Swift_Message();
 
-        $images['headerImageRef'] = $this->embedImages($email, 'TBG.jpg');
-        $images['footerImageRef'] = $this->embedImages($email, 'CCh.jpg');
+        $images['headerImageRef'] = $this->embedImages($email, 'TBG.png');
+        $images['footerImageRef'] = $this->embedImages($email, 'CCh.png');
 
         $templateMergeParams = array_merge($images, $sendRequest->params);
 
         $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
         $bodyPlainText = strip_tags($bodyRenderedHtml);
+
+        var_dump($bodyPlainText);
 
         $config = $this->config->get($sendRequest->templateKey);
 
