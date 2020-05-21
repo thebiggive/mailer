@@ -102,7 +102,12 @@ class SendRequestConsumer implements MessageHandlerInterface
         $this->logger->info("Sent ID {$sendRequest->id}");
     }
 
-    private function fail(string $id, string $reason)
+    /**
+     * @param string $id
+     * @param string $reason
+     * @throws RuntimeException
+     */
+    private function fail(string $id, string $reason): void
     {
         $this->logger->error("Sending ID $id failed: $reason");
         throw new RuntimeException($reason);

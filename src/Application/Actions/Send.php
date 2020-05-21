@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
-use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\HttpModels\SendResponse;
 use Mailer\Application\Validator;
@@ -41,19 +40,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 class Send extends Action
 {
     private RoutableMessageBus $bus;
-    private Config $config;
     private SerializerInterface $serializer;
     private Validator\SendRequest $validator;
 
     public function __construct(
-        Config $configLoader,
         LoggerInterface $logger,
         RoutableMessageBus $bus,
         SerializerInterface $serializer,
         Validator\SendRequest $validator
     ) {
         $this->bus = $bus;
-        $this->config = $configLoader;
         $this->serializer = $serializer;
         $this->validator = $validator;
 

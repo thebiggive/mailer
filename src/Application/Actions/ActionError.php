@@ -19,7 +19,7 @@ class ActionError implements JsonSerializable
     public const VERIFICATION_ERROR = 'VERIFICATION_ERROR';
 
     private string $type;
-    private string $description;
+    private ?string $description;
 
     /**
      * @param string        $type
@@ -67,10 +67,7 @@ class ActionError implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'type' => $this->type,

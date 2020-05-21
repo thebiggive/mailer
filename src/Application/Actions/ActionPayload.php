@@ -15,7 +15,7 @@ class ActionPayload implements JsonSerializable
      */
     private $data;
 
-    private ?ActionError $error = null;
+    private ?ActionError $error;
 
     /**
      * @param int                   $statusCode
@@ -61,6 +61,7 @@ class ActionPayload implements JsonSerializable
      */
     public function jsonSerialize()
     {
+        $payload = [];
         if ($this->data !== null) {
             $payload = $this->data;
         } elseif ($this->error !== null) {

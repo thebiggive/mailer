@@ -99,10 +99,11 @@ abstract class Action
     /**
      * @param ActionPayload $payload
      * @return Response
+     * @throws \JsonException
      */
     protected function respond(ActionPayload $payload): Response
     {
-        $json = json_encode($payload, JSON_PRETTY_PRINT);
+        $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
         $this->response->getBody()->write($json);
 
         return $this->response
