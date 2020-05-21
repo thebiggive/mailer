@@ -12,6 +12,7 @@ use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SwiftException;
+use Swift_TransportException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig;
@@ -92,6 +93,20 @@ class SendRequestConsumer implements MessageHandlerInterface
 
             if ($numberOfRecipients === 0) {
                 $this->fail($sendRequest->id, 'Email send reached no recipients');
+            }
+        } catch (Swift_TransportException $exception) {
+            // It's very likely that the long running process's connection timed out. We don't disconnect after
+            // every send because we ideally want to benefit from the connection sharing when we *do* have a lot
+            // of mails to process in a few seconds. So the best thing to do for the high- and low-volume case is
+            // to catch this error, and when it happens re-connect before proceeding with the send.
+            // See https://stackoverflow.com/a/22629213/2803757
+            $this->mailer->getTransport()->stop();
+            $this->logger->info("Reset connection for ID {$sendRequest->id} following '{$exception->getMessage()}'");
+
+            $numberOfRecipients = $this->mailer->send($email);
+
+            if ($numberOfRecipients === 0) {
+                $this->fail($sendRequest->id, 'Email send reached no recipients on post-transport-error retry');
             }
         } catch (Swift_SwiftException $exception) {
             // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
