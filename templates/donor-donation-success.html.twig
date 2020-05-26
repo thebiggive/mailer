@@ -2,8 +2,11 @@
 
 {% block content %}
   <p>Dear {{ donorFirstName }} {{ donorLastName }},</p>
+
   <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
+
   <p>Here is your donation information:</p>
+
   <ul>
     <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
     <li>Donation: <strong>{{ donationAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
@@ -26,7 +29,7 @@
 
   {% if campaignThankYouMessage %}
     <p>A message from {{ charityName }}:</p>
-    <blockquote>{{ campaignThankYouMessage }}</blockquote>
+    <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
   {% endif %}
 
   <p>If you have any questions, please contact us.</p>
