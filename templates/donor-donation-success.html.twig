@@ -8,11 +8,11 @@
   <p>Here is your donation information:</p>
 
   <ul>
-    <li>Total for {{ charityName }}: <strong>£{{ totalCharityValueAmount }}</strong></li>
-    <li>Donation: <strong>£{{ donationAmount}}</strong></li>
-    <li>Gift Aid: <strong>£{{ giftAidAmountClaimed }}</strong></li>
+    <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
+    <li>Donation: <strong>{{ donationAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
+    <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
     {% if matchedAmount > 0 %}
-        <li>Match Funds: <strong>£{{ matchedAmount }}</strong></li>
+        <li>Match Funds: <strong>{{ matchedAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong></li>
     {% endif %}
   </ul>
 
@@ -22,10 +22,10 @@
   </p>
 
   {% if tipAmount > 0 %}
-    <p>Thank you for leaving a tip of <strong>£{{ tipAmount }}</strong> toward the Big Give.</p>
+    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
   {% endif %}
 
-  <p>Total amount you have been charged is <strong>£{{ totalChargedAmount }}</strong>.</p>
+  <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }}</strong>.</p>
 
   {% if campaignThankYouMessage %}
     <p>A message from {{ charityName }}:</p>
