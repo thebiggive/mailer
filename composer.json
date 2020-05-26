@@ -2,7 +2,7 @@
     "name": "thebiggive/mailer",
     "description": "Microservice for queueing, rendering and sending emails",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "RC",
     "prefer-stable": true,
     "type": "project",
     "authors": [
@@ -22,10 +22,10 @@
         "slim/psr7": "^1.0",
         "slim/slim": "^4.5",
         "swiftmailer/swiftmailer": "^6.2",
-        "symfony/amazon-sqs-messenger": "^5.1@dev",
+        "symfony/amazon-sqs-messenger": "^5.1.0-RC2",
         "symfony/console": "^5.0",
         "symfony/event-dispatcher": "^5.0",
-        "symfony/messenger": "^5.1@dev",
+        "symfony/messenger": "^5.1.0-RC2",
         "symfony/property-access": "^5.0",
         "symfony/serializer": "^5.0",
         "twig/twig": "^3.0"
