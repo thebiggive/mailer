@@ -26,7 +26,7 @@
 
   {% if campaignThankYouMessage %}
     <p>A message from {{ charityName }}:</p>
-    <blockquote>{{ campaignThankYouMessage }}</blockquote>
+    <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
   {% endif %}
 
   <p>If you have any questions, please contact us.</p>
