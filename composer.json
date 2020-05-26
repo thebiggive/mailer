@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": "7.4.*",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-redis": "*",
         "monolog/monolog": "^2.0",
@@ -28,6 +29,7 @@
         "symfony/messenger": "^5.1.0-RC2",
         "symfony/property-access": "^5.0",
         "symfony/serializer": "^5.0",
+        "twig/intl-extra": "^3.0",
         "twig/twig": "^3.0"
     },
     "require-dev": {

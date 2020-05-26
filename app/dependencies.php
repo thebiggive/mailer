@@ -31,6 +31,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Twig\Extra\Intl\IntlExtension;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -139,10 +140,13 @@ return function (ContainerBuilder $containerBuilder) {
         Twig\Environment::class => static function (ContainerInterface $c): Twig\Environment {
             $twigSettings = $c->get('settings')['twig'];
             $loader = new Twig\Loader\FilesystemLoader($twigSettings['templatePath']);
-            return new Twig\Environment($loader, [
+            $env = new Twig\Environment($loader, [
                 'cache' => $twigSettings['cachePath'],
                 'debug' => $twigSettings['debug'],
             ]);
+            $env->addExtension(new IntlExtension());
+
+            return $env;
         },
 
         Validator\SendRequest::class => static function (ContainerInterface $c): Validator\SendRequest {
