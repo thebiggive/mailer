@@ -39,6 +39,21 @@ return function (ContainerBuilder $containerBuilder) {
                         'transactionId',
                     ],
                 ],
+                [
+                    'templateKey' => 'pledger-success',
+                    'subject' => 'Thank you for your pledge',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'campaignEndDate',
+                        'campaignName',
+                        'campaignPledgeSubmissionDeadline',
+                        'campaignStartDate',
+                        'charityName',
+                        'pledgeAmount',
+                        'pledgerFirstName',
+                        'pledgerLastName',
+                    ],
+                ],
             ],
 
             'logger' => [
