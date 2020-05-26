@@ -3,7 +3,7 @@
 {% block content %}
   <p>Dear {{ pledgerFirstName }} {{ pledgerLastName }},</p>
 
-  <p>Thank you for your generous match funding pledge of £{{ pledgeAmount }} to {{ charityName }} for the campaign: {{ campaignName }}. You will be asked to fulfill your pledge promise after the campaign closes on {{ campaignEndDate }}, and by {{ campaignPledgeSubmissionDeadline }}.</p>
+  <p>Thank you for your generous match funding pledge of {{ pledgeAmount | format_currency('GBP', {min_fraction_digit: 0, max_fraction_digit: 2}) }} to {{ charityName }} for the campaign: {{ campaignName }}. You will be asked to fulfill your pledge promise after the campaign closes on {{ campaignEndDate }}, and by {{ campaignPledgeSubmissionDeadline }}.</p>
 
   <p>Please note that by pledging your support at this stage, <strong>you must not make an online donation to {{ charityName }} during the {{ campaignName }} campaign from {{ campaignStartDate }} &ndash; {{ campaignEndDate }}</strong>. You must pay your pledge directly to {{ charityName }} after the campaign has ended, in any payment method that is convenient for you.</p>
 
