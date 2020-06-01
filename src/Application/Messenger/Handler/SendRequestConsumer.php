@@ -8,8 +8,11 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
+use Swift_Image;
 use Swift_Mailer;
+use Swift_Message;
 use Swift_SwiftException;
+use Swift_TransportException;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig;
@@ -56,8 +59,16 @@ class SendRequestConsumer implements MessageHandlerInterface
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
 
-        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params);
-        $bodyPlainText = strip_tags($bodyRenderedHtml);
+        $email = new Swift_Message();
+
+        $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
+        $additionalParams['footerImageRef'] = $this->embedImages($email, 'CCh.png');
+        $additionalParams['renderHtml'] = true;
+
+        $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
+
+        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
+        $bodyPlainText = strip_tags($this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params));
 
         $config = $this->config->get($sendRequest->templateKey);
 
@@ -69,11 +80,10 @@ class SendRequestConsumer implements MessageHandlerInterface
             $subject = "({$this->appEnv}) $subject";
         }
 
-        $email = (new \Swift_Message())
-            ->addTo($sendRequest->recipientEmailAddress)
+        $email->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
-            ->setBody($bodyPlainText)
-            ->addPart($bodyRenderedHtml, 'text/html')
+            ->setBody($bodyRenderedHtml)
+            ->addPart($bodyPlainText, 'text/plain')
             ->setContentType('text/html')
             ->setCharset('utf-8')
             ->setFrom(getenv('SENDER_ADDRESS'));
@@ -84,6 +94,20 @@ class SendRequestConsumer implements MessageHandlerInterface
             if ($numberOfRecipients === 0) {
                 $this->fail($sendRequest->id, 'Email send reached no recipients');
             }
+        } catch (Swift_TransportException $exception) {
+            // It's very likely that the long running process's connection timed out. We don't disconnect after
+            // every send because we ideally want to benefit from the connection sharing when we *do* have a lot
+            // of mails to process in a few seconds. So the best thing to do for the high- and low-volume case is
+            // to catch this error, and when it happens re-connect before proceeding with the send.
+            // See https://stackoverflow.com/a/22629213/2803757
+            $this->mailer->getTransport()->stop();
+            $this->logger->info("Reset connection for ID {$sendRequest->id} following '{$exception->getMessage()}'");
+
+            $numberOfRecipients = $this->mailer->send($email);
+
+            if ($numberOfRecipients === 0) {
+                $this->fail($sendRequest->id, 'Email send reached no recipients on post-transport-error retry');
+            }
         } catch (Swift_SwiftException $exception) {
             // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
             $class = get_class($exception);
@@ -93,9 +117,26 @@ class SendRequestConsumer implements MessageHandlerInterface
         $this->logger->info("Sent ID {$sendRequest->id}");
     }
 
-    private function fail(string $id, string $reason)
+    /**
+     * @param string $id
+     * @param string $reason
+     * @throws RuntimeException
+     */
+    private function fail(string $id, string $reason): void
     {
         $this->logger->error("Sending ID $id failed: $reason");
         throw new RuntimeException($reason);
+    }
+
+    /**
+     * @param Swift_Message $email
+     * @param string $fileName
+     * @return string Path-like reference to embedded image, for use in other parts' HTML.
+     */
+    private function embedImages(Swift_Message $email, string $fileName): string
+    {
+        $pathToImages = dirname(__DIR__, 4) . '/images/';
+
+        return $email->embed(Swift_Image::fromPath($pathToImages . $fileName));
     }
 }

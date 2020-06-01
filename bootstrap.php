@@ -7,6 +7,8 @@ use DI\ContainerBuilder;
 
 require __DIR__ . '/vendor/autoload.php';
 
+Locale::setDefault('en-GB');
+
 $containerBuilder = new ContainerBuilder();
 
 if (getenv('APP_ENV') !== 'local') { // Compile cache on staging & production

@@ -36,7 +36,7 @@ class Console extends Application
         parent::__construct();
     }
 
-    private function getConsumeCommand()
+    private function getConsumeCommand(): ConsumeMessagesCommand
     {
         $receiversContainer = new Container();
         $receiversContainer->set($this->receiverName, $this->transport);

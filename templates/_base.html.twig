@@ -3,17 +3,58 @@
   <head>
     <title>{{ subject }}</title>
     <style type="text/css">
-    p {
-      font-size: 1.2rem;
-    }
+      p, ul, li, blockquote {
+        font-size: 0.9rem;
+      }
+
+      blockquote {
+        font-style: italic;
+      }
+
+      .container {
+        margin: 0 auto;
+        max-width: 500px;
+      }
+
+      .content {
+        text-align: left;
+      }
+
+      .headerImg {
+        max-width: 50%;
+        height: auto;
+        margin: 1rem 0;
+      }
+
+      .postscript {
+        margin-top: 1.5rem;
+        font-size: 0.7rem;
+      }
+
+      .footerImg {
+        max-width: 30%;
+        height: auto;
+      }
     </style>
   </head>
 <body>
-  <div id="content">{% block content %}{% endblock %}</div>
-  <div id="footer">
-    {% block footer %}
-        The Big Give xx
-    {% endblock %}
+  <div class="container">
+    <img class="headerImg" src="{{ headerImageRef }}" alt="The Big Give"/>
+    <div id="content" class="content">
+      {% block content %}{% endblock %}
+    </div>
+    <div id="footer">
+      {% block footer %}
+        <p>
+          Kind regards,<br>
+          The Big Give Team<br>
+          www.thebiggive.org.uk<br>
+        </p>
+
+        <p class="postscript">Powered by Charity Checkout</p>
+        <img class="footerImg" src="{{ footerImageRef }}" alt="Charity Checkout"/>
+      {% endblock %}
+    </div>
   </div>
 </body>
 </html>
