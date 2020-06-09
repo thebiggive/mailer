@@ -47,7 +47,6 @@ class SendRequestConsumer implements MessageHandlerInterface
 
     /**
      * @param SendRequest $sendRequest
-     * @return bool Whether sending succeeded
      */
     public function __invoke(SendRequest $sendRequest): void
     {
@@ -58,6 +57,8 @@ class SendRequestConsumer implements MessageHandlerInterface
             // the message could become valid with an imminent consumer update.
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
         }
+
+        $this->logger->info("Processing ID {$sendRequest->id}...");
 
         $email = new Swift_Message();
 
@@ -88,25 +89,26 @@ class SendRequestConsumer implements MessageHandlerInterface
             ->setCharset('utf-8')
             ->setFrom(getenv('SENDER_ADDRESS'));
 
+        // Deal with the fact that SwiftMailer doesn't have a mechanism to fix stale SMTP connections when
+        // working with long-lived consumers. This lets us keep a live connection but guarantee it's going to
+        // be awake for the coming send. See https://stackoverflow.com/a/22629213/2803757
+        if (!$this->mailer->getTransport()->ping()) {
+            $this->mailer->getTransport()->stop();
+            try {
+                $this->mailer->getTransport()->start();
+            } catch (Swift_TransportException $exception) {
+                $this->fail(
+                    $sendRequest->id,
+                    sprintf('transport start %s: %s', get_class($exception), $exception->getMessage()),
+                );
+            }
+        }
+
         try {
             $numberOfRecipients = $this->mailer->send($email);
 
             if ($numberOfRecipients === 0) {
                 $this->fail($sendRequest->id, 'Email send reached no recipients');
-            }
-        } catch (Swift_TransportException $exception) {
-            // It's very likely that the long running process's connection timed out. We don't disconnect after
-            // every send because we ideally want to benefit from the connection sharing when we *do* have a lot
-            // of mails to process in a few seconds. So the best thing to do for the high- and low-volume case is
-            // to catch this error, and when it happens re-connect before proceeding with the send.
-            // See https://stackoverflow.com/a/22629213/2803757
-            $this->mailer->getTransport()->stop();
-            $this->logger->info("Reset connection for ID {$sendRequest->id} following '{$exception->getMessage()}'");
-
-            $numberOfRecipients = $this->mailer->send($email);
-
-            if ($numberOfRecipients === 0) {
-                $this->fail($sendRequest->id, 'Email send reached no recipients on post-transport-error retry');
             }
         } catch (Swift_SwiftException $exception) {
             // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
