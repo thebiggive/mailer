@@ -115,7 +115,11 @@ return function (ContainerBuilder $containerBuilder) {
                 $transport->setUsername($mailerUrlPieces['user']);
             }
             if (!empty($mailerUrlPieces['pass'])) {
-                $transport->setPassword($mailerUrlPieces['pass']);
+                // AWS generated SMTP passwords often include URL special characters so are URL encoded (following
+                // standards, i.e. the "`raw...`" PHP functions). Because `parse_url()` response pieces "are not
+                // URL decoded" (https://www.php.net/manual/en/function.parse-url.php) we must decode for auth to
+                // work reliably.
+                $transport->setPassword(rawurldecode($mailerUrlPieces['pass']));
             }
             $transport->setTimeout($mailerQuery['timeout'] ?? 3);
 
