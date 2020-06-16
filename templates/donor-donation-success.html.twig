@@ -10,7 +10,7 @@
   <ul>
     <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency('GBP') }}</strong></li>
     <li>Donation: <strong>{{ donationAmount | format_currency('GBP') }}</strong></li>
-    <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency('GBP'}</strong></li>
+    <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency('GBP') }}</strong></li>
     {% if matchedAmount > 0 %}
         <li>Match Funds: <strong>{{ matchedAmount | format_currency('GBP') }}</strong></li>
     {% endif %}
