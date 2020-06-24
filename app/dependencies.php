@@ -121,7 +121,7 @@ return function (ContainerBuilder $containerBuilder) {
                 // work reliably.
                 $transport->setPassword(rawurldecode($mailerUrlPieces['pass']));
             }
-            $transport->setTimeout($mailerQuery['timeout'] ?? 3);
+            $transport->setTimeout($mailerQuery['timeout'] ?? 8);
 
             $mailer = new Swift_Mailer($transport);
             $mailer->registerPlugin(new CssInlinerPlugin());
