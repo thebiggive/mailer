@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Stamp\BusNameStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
@@ -83,7 +84,18 @@ class Send extends Action
             new BusNameStamp('email'),
             new TransportMessageIdStamp($sendRequest->id),
         ];
-        $this->bus->dispatch(new Envelope($sendRequest, $stamps));
+
+        try {
+            $this->bus->dispatch(new Envelope($sendRequest, $stamps));
+        } catch (TransportException $exception) {
+            $this->logger->error(sprintf(
+                'SQS send error %s. Request body: %s.',
+                $exception->getMessage(),
+                $this->request->getBody(),
+            ));
+
+            return $this->respond(new ActionPayload(500));
+        }
 
         return $this->respondWithData(new SendResponse('queued', $sendRequest->id));
     }
