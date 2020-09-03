@@ -46,6 +46,7 @@ class SendRequest
      *       "donorLastName": "Smith",
      *       "giftAidAmountClaimed": 100.00,
      *       "matchedAmount": 200.01,
+     *       "statementReference": "The Big Give The char",
      *       "tipAmount": 10,
      *       "totalChargedAmount": 410.01,
      *       "totalCharityValueAmount": 600.02,
