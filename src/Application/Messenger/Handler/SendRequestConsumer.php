@@ -63,7 +63,6 @@ class SendRequestConsumer implements MessageHandlerInterface
         $email = new Swift_Message();
 
         $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
-        $additionalParams['footerImageRef'] = $this->embedImages($email, 'Enthuse.png');
         $additionalParams['renderHtml'] = true;
 
         $templateMergeParams = array_merge($additionalParams, $sendRequest->params);

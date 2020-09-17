@@ -8,6 +8,7 @@ use DI\Container;
 use Mailer\Application\Actions\ActionPayload;
 use Mailer\Tests\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
@@ -188,20 +189,19 @@ class SendTest extends TestCase
      */
     public function testQueueError(): void
     {
-        $this->expectException(TransportException::class);
-        $this->expectExceptionMessage('Some transport error');
-
         $app = $this->getAppInstance();
         /** @var Container $container */
         $container = $app->getContainer();
+
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->error(Argument::type('string'))->shouldBeCalledOnce();
+        $container->set(LoggerInterface::class, $logger->reveal());
 
         $failingInMemoryTransportProphecy = $this->prophesize(InMemoryTransport::class);
         $failingInMemoryTransportProphecy->send(Argument::type(Envelope::class))->willThrow(
             new TransportException('Some transport error')
         );
-        /** @var InMemoryTransport $transport */
-        $transport = $failingInMemoryTransportProphecy->reveal();
-        $container->set(TransportInterface::class, $transport);
+        $container->set(TransportInterface::class, $failingInMemoryTransportProphecy->reveal());
 
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
@@ -210,7 +210,10 @@ class SendTest extends TestCase
         ], JSON_THROW_ON_ERROR, 512);
 
         $request = $this->createRequest('POST', '/v1/send', $data, $this->getAuthHeader($data));
-        $app->handle($request);
+        $response = $app->handle($request);
+
+        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals('[]', (string) $response->getBody());
     }
 
     public function testSuccess(): void
@@ -254,6 +257,7 @@ class SendTest extends TestCase
             'donorLastName' => 'Smith',
             'giftAidAmountClaimed' => 100.00,
             'matchedAmount' => 200.01,
+            'statementReference' => 'The Big Give The char',
             'tipAmount' => 10,
             'totalChargedAmount' => 410.01,
             'totalCharityValueAmount' => 600.02,
