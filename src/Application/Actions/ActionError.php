@@ -21,7 +21,6 @@ class ActionError implements JsonSerializable
 
     public function __construct(private string $type, private ?string $description)
     {
-
     }
 
     /**
