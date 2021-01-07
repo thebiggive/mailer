@@ -16,11 +16,8 @@ class Console extends Application
 {
     private string $receiverName = 'consumer';
 
-    public function __construct(
-        private RoutableMessageBus $bus,
-        private LoggerInterface $logger,
-        private TransportInterface $transport
-    ) {
+    public function __construct(private RoutableMessageBus $bus, private LoggerInterface $logger, private TransportInterface $transport)
+    {
         $this->addCommands([
             $this->getConsumeCommand(),
         ]);

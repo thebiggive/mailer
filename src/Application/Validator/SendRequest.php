@@ -14,11 +14,8 @@ class SendRequest
     private string $reason;
 
     #[Pure]
-    public function __construct(
-        private Config $config,
-        private Twig\Environment $twig,
-        private array $twigSettings
-    ) {
+    public function __construct(private Config $config, private Twig\Environment $twig, private array $twigSettings)
+    {
     }
 
     public function validate(SendRequestModel $sendRequest, bool $full): bool
