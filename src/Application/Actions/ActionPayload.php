@@ -9,8 +9,11 @@ use JsonSerializable;
 
 class ActionPayload implements JsonSerializable
 {
-    public function __construct(private int $statusCode = 200, private array | object | null $data = null, private ?ActionError $error = null)
-    {
+    public function __construct(
+        private int $statusCode = 200,
+        private array | object | null $data = null,
+        private ?ActionError $error = null
+    ) {
     }
 
     /**

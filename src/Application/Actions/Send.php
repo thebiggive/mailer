@@ -42,8 +42,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class Send extends Action
 {
     #[Pure]
-    public function __construct(LoggerInterface $logger, private RoutableMessageBus $bus, private SerializerInterface $serializer, private Validator\SendRequest $validator)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        private RoutableMessageBus $bus,
+        private SerializerInterface $serializer,
+        private Validator\SendRequest $validator
+    ) {
         parent::__construct($logger);
     }
 

@@ -24,8 +24,14 @@ use Twig;
 class SendRequestConsumer implements MessageHandlerInterface
 {
     #[Pure]
-    public function __construct(private string $appEnv, private Config $configLoader, private LoggerInterface $logger, private Swift_Mailer $mailer, private Twig\Environment $twig, private Validator\SendRequest $validator)
-    {
+    public function __construct(
+        private string $appEnv,
+        private Config $configLoader,
+        private LoggerInterface $logger,
+        private Swift_Mailer $mailer,
+        private Twig\Environment $twig,
+        private Validator\SendRequest $validator
+    ) {
     }
 
     /**

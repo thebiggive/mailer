@@ -19,8 +19,11 @@ class ShutdownHandler
      * @param bool          $displayErrorDetails
      */
     #[Pure]
-    public function __construct(private Request $request, private HttpErrorHandler $errorHandler, private bool $displayErrorDetails)
-    {
+    public function __construct(
+        private Request $request,
+        private HttpErrorHandler $errorHandler,
+        private bool $displayErrorDetails
+    ) {
     }
 
     public function __invoke()

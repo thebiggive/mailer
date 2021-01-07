@@ -19,8 +19,12 @@ class Email
      *                                  and clearer to avoid this.
      */
     #[Pure]
-    public function __construct(public string $templateKey, public string $subject, public array $subjectParams, public array $requiredParams)
-    {
+    public function __construct(
+        public string $templateKey,
+        public string $subject,
+        public array $subjectParams,
+        public array $requiredParams
+    ) {
     }
 
     #[Pure]
