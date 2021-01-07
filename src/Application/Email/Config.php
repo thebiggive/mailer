@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Email;
 
+use JetBrains\PhpStorm\Pure;
 use Mailer\Application\ConfigModels\Email;
 
 class Config
 {
-    /** @var Email[] Keyed on template key */
-    private array $emailSettings;
-
-    public function __construct(array $emailSettings)
+    /** @param $emailSettings[] Keyed on template key */
+    public function __construct(private array $emailSettings)
     {
         $this->emailSettings = array_map(fn ($config) => Email::fromConfigArray($config), $emailSettings);
     }

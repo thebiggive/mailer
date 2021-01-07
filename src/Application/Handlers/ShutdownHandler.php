@@ -4,31 +4,19 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Handlers;
 
+use JetBrains\PhpStorm\Pure;
 use Mailer\Application\ResponseEmitter\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
 
 class ShutdownHandler
 {
-    private Request $request;
-    private HttpErrorHandler $errorHandler;
-    private bool $displayErrorDetails;
-
-    /**
-     * ShutdownHandler constructor.
-     *
-     * @param Request       $request
-     * @param $errorHandler $errorHandler
-     * @param bool          $displayErrorDetails
-     */
+    #[Pure]
     public function __construct(
-        Request $request,
-        HttpErrorHandler $errorHandler,
-        bool $displayErrorDetails
+        private Request $request,
+        private HttpErrorHandler $errorHandler,
+        private bool $displayErrorDetails
     ) {
-        $this->request = $request;
-        $this->errorHandler = $errorHandler;
-        $this->displayErrorDetails = $displayErrorDetails;
     }
 
     public function __invoke()
