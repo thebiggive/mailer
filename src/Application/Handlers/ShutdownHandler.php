@@ -11,13 +11,6 @@ use Slim\Exception\HttpInternalServerErrorException;
 
 class ShutdownHandler
 {
-    /**
-     * ShutdownHandler constructor.
-     *
-     * @param Request       $request
-     * @param $errorHandler $errorHandler
-     * @param bool          $displayErrorDetails
-     */
     #[Pure]
     public function __construct(
         private Request $request,
