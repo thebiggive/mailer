@@ -9,6 +9,7 @@ use Mailer\Application\ConfigModels\Email;
 
 class Config
 {
+    /** @param $emailSettings[] Keyed on template key */
     public function __construct(private array $emailSettings)
     {
         $this->emailSettings = array_map(fn ($config) => Email::fromConfigArray($config), $emailSettings);

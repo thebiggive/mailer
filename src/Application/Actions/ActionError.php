@@ -65,7 +65,7 @@ class ActionError implements JsonSerializable
     }
 
     #[ArrayShape([
-        'type' => 'int',
+        'type' => 'string',
         'description' => 'string'
     ])]
     public function jsonSerialize(): array
