@@ -4,23 +4,10 @@ declare(strict_types=1);
 
 namespace Mailer\Application\ConfigModels;
 
+use JetBrains\PhpStorm\Pure;
+
 class Email
 {
-    /** @var string     Template file must be at "templates/{$templateKey}.html.twig" */
-    public string $templateKey;
-
-    public string $subject;
-
-    /** @var string[]   Parameter values to be sprintf merged into `$subject`, in order. */
-    public array $subjectParams = [];
-
-    /**
-     * @var string[]    Parameters which *must* be populated for emails to be sent. It is current possible to provide
-     *                  additional, optional params and use them in templates on the fly, without defining them in
-     *                  settings.
-     */
-    public array $requiredParams = [];
-
     /**
      * @param string    $templateKey    Template file must be at "templates/{$templateKey}.html.twig"
      * @param string    $subject        Subject with %s placeholders for any merge fields
@@ -31,14 +18,16 @@ class Email
      *                                  currently merge in params without listing them here, but it's probably safer
      *                                  and clearer to avoid this.
      */
-    public function __construct(string $templateKey, string $subject, array $subjectParams, array $requiredParams)
-    {
-        $this->templateKey = $templateKey;
-        $this->subject = $subject;
-        $this->subjectParams = $subjectParams;
-        $this->requiredParams = $requiredParams;
+    #[Pure]
+    public function __construct(
+        public string $templateKey,
+        public string $subject,
+        public array $subjectParams,
+        public array $requiredParams
+    ){
     }
 
+    #[Pure]
     public static function fromConfigArray(array $configArray): Email
     {
         return new Email(

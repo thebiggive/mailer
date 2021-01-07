@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 
@@ -19,8 +20,10 @@ class ActionError implements JsonSerializable
     public const VALIDATION_ERROR = 'VALIDATION_ERROR';
     public const VERIFICATION_ERROR = 'VERIFICATION_ERROR';
 
-    public function __construct(private string $type, private ?string $description)
-    {
+    public function __construct(
+        private string $type,
+        private ?string $description
+    ){
     }
 
     /**
@@ -61,6 +64,10 @@ class ActionError implements JsonSerializable
         return $this;
     }
 
+    #[ArrayShape([
+        'type' => 'int',
+        'description' => 'string'
+    ])]
     public function jsonSerialize(): array
     {
         return [

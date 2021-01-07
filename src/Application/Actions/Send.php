@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
+use JetBrains\PhpStorm\Pure;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\HttpModels\SendResponse;
 use Mailer\Application\Validator;
@@ -40,20 +41,13 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class Send extends Action
 {
-    private RoutableMessageBus $bus;
-    private SerializerInterface $serializer;
-    private Validator\SendRequest $validator;
-
+    #[Pure]
     public function __construct(
         LoggerInterface $logger,
-        RoutableMessageBus $bus,
-        SerializerInterface $serializer,
-        Validator\SendRequest $validator
+        private RoutableMessageBus $bus,
+        private SerializerInterface $serializer,
+        private Validator\SendRequest $validator
     ) {
-        $this->bus = $bus;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
-
         parent::__construct($logger);
     }
 

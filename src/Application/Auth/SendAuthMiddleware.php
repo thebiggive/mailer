@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mailer\Application\Auth;
 
 use Fig\Http\Message\StatusCodeInterface;
+use JetBrains\PhpStorm\Pure;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,11 +15,9 @@ use Slim\Psr7\Response;
 
 class SendAuthMiddleware implements MiddlewareInterface
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    #[Pure]
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
