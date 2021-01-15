@@ -26,7 +26,7 @@ class SendRequestConsumer implements MessageHandlerInterface
     #[Pure]
     public function __construct(
         private string $appEnv,
-        private Config $configLoader,
+        private Config $config,
         private LoggerInterface $logger,
         private Swift_Mailer $mailer,
         private Twig\Environment $twig,
@@ -87,7 +87,7 @@ class SendRequestConsumer implements MessageHandlerInterface
             } catch (Swift_TransportException $exception) {
                 $this->fail(
                     $sendRequest->id,
-                    sprintf('transport start %s: %s', get_class($exception), $exception->getMessage()),
+                    sprintf('Transport start %s: %s', get_class($exception), $exception->getMessage()),
                 );
             }
         }
