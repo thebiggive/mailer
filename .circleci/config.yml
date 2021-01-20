@@ -9,7 +9,7 @@ orbs:
 jobs:
   test: # Also lints first
     docker:
-      - image: circleci/php:7.4
+      - image: circleci/php:8.0
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
@@ -94,6 +94,51 @@ workflows:
                 color: '#009900'
                 message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
                 title: 'Staging: Mailer web deployed!'
+
+  deploy-regression:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - develop
+          context:
+            - docker-hub-creds
+      - aws-ecr/build-and-push-image:
+          requires:
+            - test
+          repo: '${AWS_ECR_REPO_NAME}'
+          region: AWS_REGION
+          tag: 'regression,regression-${CIRCLE_SHA1}'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: '${AWS_REGION}'
+          family: 'tbg-regression-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
+          cluster-name: 'tbg-regression-${AWS_REGION}'
+          container-image-name-updates: 'container=mailer_tasks,tag=regression-${CIRCLE_SHA1}'
+          post-steps:
+            - slack/notify-on-failure: ~
+            - slack/notify:
+                color: '#009900'
+                message: 'We use rolling blue/green deploys. All visitors to regression will see the updated app version within ~30 minutes.'
+                title: 'Regression: Mailer tasks deployed!'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: '${AWS_REGION}'
+          family: 'tbg-regression-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
+          cluster-name: 'tbg-regression-${AWS_REGION}'
+          container-image-name-updates: 'container=mailer_web,tag=regression-${CIRCLE_SHA1}'
+          post-steps:
+            - slack/notify-on-failure: ~
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+            - slack/notify:
+                color: '#009900'
+                message: 'We use rolling blue/green deploys. All visitors to regression will see the updated app version within ~30 minutes.'
+                title: 'Regression: Mailer web deployed!'
 
   deploy-production:
     jobs:

@@ -38,11 +38,11 @@ To start the app and its dependencies locally:
 
 ### First run
 
-To get PHP dependencies and an initial data in structure in place, you'll need to run these once:
+To get PHP dependencies in place, you'll need to run this once:
 
     docker-compose exec web composer install
 
-If dependencies change you may occasionally need to re-run the `composer install`.
+If dependencies change externally you may occasionally need to re-run the command.
 
 ## Run unit tests
 
@@ -54,7 +54,7 @@ Linting is run with
 
     docker-compose exec web composer run lint:check
 
-To understand how these commands are run in CI, see [the CirleCI config file](./.circleci/config.yml).
+To understand how these commands are run in CI, see [the CircleCI config file](./.circleci/config.yml).
 
 ## API
 

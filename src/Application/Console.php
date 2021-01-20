@@ -14,21 +14,13 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class Console extends Application
 {
-    private RoutableMessageBus $bus;
-    private LoggerInterface $logger;
-    private TransportInterface $transport;
-
     private string $receiverName = 'consumer';
 
     public function __construct(
-        RoutableMessageBus $bus,
-        LoggerInterface $logger,
-        TransportInterface $transport
+        private RoutableMessageBus $bus,
+        private LoggerInterface $logger,
+        private TransportInterface $transport
     ) {
-        $this->bus = $bus;
-        $this->logger = $logger;
-        $this->transport = $transport;
-
         $this->addCommands([
             $this->getConsumeCommand(),
         ]);

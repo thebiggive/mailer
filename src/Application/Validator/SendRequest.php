@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Validator;
 
+use JetBrains\PhpStorm\Pure;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest as SendRequestModel;
 use Twig;
 
 class SendRequest
 {
-    private Config $config;
-    private Twig\Environment $twig;
-    private array $twigSettings;
-
     private string $reason;
 
+    #[Pure]
     public function __construct(
-        Config $configLoader,
-        Twig\Environment $twig,
-        array $twigSettings
+        private Config $config,
+        private Twig\Environment $twig,
+        private array $twigSettings
     ) {
-        $this->config = $configLoader;
-        $this->twig = $twig;
-        $this->twigSettings = $twigSettings;
     }
 
     public function validate(SendRequestModel $sendRequest, bool $full): bool
@@ -85,6 +80,7 @@ class SendRequest
     /**
      * @return string
      */
+    #[Pure]
     public function getReason(): string
     {
         return $this->reason;

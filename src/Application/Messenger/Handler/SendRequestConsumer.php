@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Messenger\Handler;
 
+use JetBrains\PhpStorm\Pure;
 use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
@@ -22,27 +23,15 @@ use Twig;
  */
 class SendRequestConsumer implements MessageHandlerInterface
 {
-    private string $appEnv;
-    private Config $config;
-    private LoggerInterface $logger;
-    private Swift_Mailer $mailer;
-    private Twig\Environment $twig;
-    private Validator\SendRequest $validator;
-
+    #[Pure]
     public function __construct(
-        string $appEnv,
-        Config $configLoader,
-        LoggerInterface $logger,
-        Swift_Mailer $mailer,
-        Twig\Environment $twig,
-        Validator\SendRequest $validator
+        private string $appEnv,
+        private Config $config,
+        private LoggerInterface $logger,
+        private Swift_Mailer $mailer,
+        private Twig\Environment $twig,
+        private Validator\SendRequest $validator
     ) {
-        $this->appEnv = $appEnv;
-        $this->config = $configLoader;
-        $this->logger = $logger;
-        $this->mailer = $mailer;
-        $this->twig = $twig;
-        $this->validator = $validator;
     }
 
     /**
@@ -98,7 +87,7 @@ class SendRequestConsumer implements MessageHandlerInterface
             } catch (Swift_TransportException $exception) {
                 $this->fail(
                     $sendRequest->id,
-                    sprintf('transport start %s: %s', get_class($exception), $exception->getMessage()),
+                    sprintf('Transport start %s: %s', get_class($exception), $exception->getMessage()),
                 );
             }
         }

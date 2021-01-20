@@ -36,7 +36,6 @@ use Slim\Exception\HttpNotFoundException;
  */
 abstract class Action
 {
-    protected LoggerInterface $logger;
     protected Request $request;
     protected Response $response;
     protected array $args;
@@ -44,9 +43,8 @@ abstract class Action
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**
