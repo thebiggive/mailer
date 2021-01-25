@@ -11,12 +11,6 @@
             "email": "noel@webful.uk"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/thebiggive/swiftmailer-css-inliner"
-        }
-    ],
     "require": {
         "php": "8.0.*",
         "ext-intl": "*",
