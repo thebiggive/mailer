@@ -90,8 +90,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Staging: Mailer tasks deployed!*",
-                            "emoji": true
+                            "text": "*Staging: Mailer tasks deployed!*"
                           }
                         ]
                       }
@@ -122,8 +121,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Staging: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
-                            "emoji": true
+                            "text": "*Staging: Mailer web deployed!* All visitors should see the updated app version within 30 minutes."
                           }
                         ]
                       }
@@ -166,8 +164,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Regression: Mailer tasks deployed!*",
-                            "emoji": true
+                            "text": "*Regression: Mailer tasks deployed!*"
                           }
                         ]
                       }
@@ -198,8 +195,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Regression: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
-                            "emoji": true
+                            "text": "*Regression: Mailer web deployed!* All visitors should see the updated app version within 30 minutes."
                           }
                         ]
                       }
@@ -242,8 +238,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Production: Mailer tasks deployed!*",
-                            "emoji": true
+                            "text": "*Production: Mailer tasks deployed!*"
                           }
                         ]
                       }
@@ -274,8 +269,7 @@ workflows:
                         "fields": [
                           {
                             "type": "mrkdwn",
-                            "text": "*Production: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
-                            "emoji": true
+                            "text": "*Production: Mailer web deployed!* All visitors should see the updated app version within 30 minutes."
                           }
                         ]
                       }
