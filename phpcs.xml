@@ -4,8 +4,6 @@
     <rule ref="PSR12">
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceAfterEquals" />
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals" />
-        <!--Temp exclusion due to known issue here https://github.com/squizlabs/PHP_CodeSniffer/issues/3167, created MAIL-31 ticket to follow up -->
-        <exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
     </rule>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
     <exclude-pattern>var/*</exclude-pattern>

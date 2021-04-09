@@ -83,7 +83,7 @@ class Send extends Action
             $this->bus->dispatch(new Envelope($sendRequest, $stamps));
         } catch (TransportException $exception) {
             $this->logger->error(sprintf(
-                'SQS send error %s. Request body: %s.',
+                'Queue send error %s. Request body: %s.',
                 $exception->getMessage(),
                 $this->request->getBody(),
             ));
