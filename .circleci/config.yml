@@ -44,6 +44,7 @@ workflows:
       - test:
           context:
             - docker-hub-creds
+            - slack
           post-steps:
             - jira/notify:
                 job_type: build
