@@ -96,6 +96,7 @@ workflows:
                         ]
                       }
                     ]
+                  }
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -127,7 +128,7 @@ workflows:
                         ]
                       }
                     ]
-
+                  }
   deploy-regression:
     jobs:
       - test:
@@ -171,6 +172,7 @@ workflows:
                         ]
                       }
                     ]
+                  }
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -202,7 +204,7 @@ workflows:
                         ]
                       }
                     ]
-
+                  }
   deploy-production:
     jobs:
       - test:
@@ -246,7 +248,7 @@ workflows:
                         ]
                       }
                     ]
-
+                  }
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -278,3 +280,4 @@ workflows:
                         ]
                       }
                     ]
+                  }
