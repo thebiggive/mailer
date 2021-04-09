@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "027bf40021311642aa0a24d7ffb056e0",
+    "content-hash": "49133e871f3ff85916dd122c0fca41f5",
     "packages": [
         {
             "name": "async-aws/core",
@@ -538,16 +538,16 @@
         },
         {
             "name": "openbuildings/swiftmailer-css-inliner",
-            "version": "dev-upgrade-to-php-8.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thebiggive/swiftmailer-css-inliner.git",
-                "reference": "48f438d3e2bcbc16dd35d1e4c3b6d2d3b2f03a3c"
+                "url": "https://github.com/OpenBuildings/swiftmailer-css-inliner.git",
+                "reference": "67a28b2f696c10c84db1edf204fb2100138246f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thebiggive/swiftmailer-css-inliner/zipball/48f438d3e2bcbc16dd35d1e4c3b6d2d3b2f03a3c",
-                "reference": "48f438d3e2bcbc16dd35d1e4c3b6d2d3b2f03a3c",
+                "url": "https://api.github.com/repos/OpenBuildings/swiftmailer-css-inliner/zipball/67a28b2f696c10c84db1edf204fb2100138246f0",
+                "reference": "67a28b2f696c10c84db1edf204fb2100138246f0",
                 "shasum": ""
             },
             "require": {
@@ -565,16 +565,7 @@
                     "Openbuildings\\Swiftmailer\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Openbuildings\\Swiftmailer\\Test\\": "tests/src/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -587,9 +578,10 @@
             ],
             "description": "Inline the css of your html emails",
             "support": {
-                "source": "https://github.com/thebiggive/swiftmailer-css-inliner/tree/upgrade-to-php-8.0"
+                "issues": "https://github.com/OpenBuildings/swiftmailer-css-inliner/issues",
+                "source": "https://github.com/OpenBuildings/swiftmailer-css-inliner/tree/0.7.0"
             },
-            "time": "2021-01-06T09:01:37+00:00"
+            "time": "2021-01-18T10:15:10+00:00"
         },
         {
             "name": "opis/closure",
@@ -7135,7 +7127,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "openbuildings/swiftmailer-css-inliner": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
