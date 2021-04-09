@@ -67,6 +67,8 @@ workflows:
           region: AWS_REGION
           tag: 'staging,staging-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
@@ -93,6 +95,8 @@ workflows:
                     ]
                   }
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
@@ -138,6 +142,8 @@ workflows:
           region: AWS_REGION
           tag: 'regression,regression-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
@@ -164,6 +170,8 @@ workflows:
                     ]
                   }
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
@@ -209,6 +217,8 @@ workflows:
           region: AWS_REGION
           tag: 'production,production-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
@@ -235,6 +245,8 @@ workflows:
                     ]
                   }
       - aws-ecs/deploy-service-update:
+          context:
+            - slack
           requires:
             - aws-ecr/build-and-push-image
           aws-region: AWS_REGION
