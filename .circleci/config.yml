@@ -50,6 +50,7 @@ workflows:
                 environment_type: development
             - slack/notify:
                 event: fail
+                template: basic_fail_1
 
   deploy-staging:
     jobs:
@@ -78,6 +79,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - slack/notify:
                 custom: |
                   {
@@ -86,14 +88,13 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
-                            title: 'Staging: Mailer tasks deployed!'
+                            "type": "plain_text",
+                            "text": "*Staging: Mailer tasks deployed!*",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -106,6 +107,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - jira/notify:
                 job_type: deployment
                 environment_type: staging
@@ -117,14 +119,13 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to staging will see the updated app version within ~30 minutes.'
-                            title: 'Staging: Mailer web deployed!'
+                            "type": "plain_text",
+                            "text": "*Staging: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
 
   deploy-regression:
     jobs:
@@ -153,6 +154,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - slack/notify:
                 custom: |
                   {
@@ -161,14 +163,13 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to regression will see the updated app version within ~30 minutes.'
-                            title: 'Regression: Mailer tasks deployed!'
+                            "type": "plain_text",
+                            "text": "*Regression: Mailer tasks deployed!*",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -181,6 +182,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - jira/notify:
                 job_type: deployment
                 environment_type: staging
@@ -192,14 +194,13 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to regression will see the updated app version within ~30 minutes.'
-                            title: 'Regression: Mailer web deployed!'
+                            "type": "plain_text",
+                            "text": "*Regression: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
 
   deploy-production:
     jobs:
@@ -228,6 +229,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - slack/notify:
                 custom: |
                   {
@@ -236,14 +238,14 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to production will see the updated app version within ~30 minutes.'
-                            title: 'Production: Mailer tasks deployed!'
+                            "type": "plain_text",
+                            "text": "*Production: Mailer tasks deployed!*",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
+
       - aws-ecs/deploy-service-update:
           context:
             - slack
@@ -256,6 +258,7 @@ workflows:
           post-steps:
             - slack/notify:
                 event: fail
+                template: basic_fail_1
             - jira/notify:
                 job_type: deployment
                 environment_type: production
@@ -267,11 +270,10 @@ workflows:
                         "type": "section",
                         "fields": [
                           {
-                            color: '#009900'
-                            message: 'We use rolling blue/green deploys. All visitors to production will see the updated app version within ~30 minutes.'
-                            title: 'Production: Mailer web deployed!'
+                            "type": "plain_text",
+                            "text": "*Production: Mailer web deployed!* All visitors should see the updated app version within 30 minutes.",
+                            "emoji": true
                           }
                         ]
                       }
                     ]
-                  }
