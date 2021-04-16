@@ -172,7 +172,7 @@ Deploys are rolled out by [CirlceCI](https://circleci.com/), as [configured here
 As you can see in the configuration file,
 
 * `develop` commits trigger deploys to staging and regression environments; and
-* `master` commits trigger deploys to production
+* `main` commits trigger deploys to production
 
 These branches are protected on GitHub and you should have a good reason for skipping any checks before merging to them!
 

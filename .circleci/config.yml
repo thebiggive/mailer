@@ -207,7 +207,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
           context:
             - docker-hub-creds
       - aws-ecr/build-and-push-image:
