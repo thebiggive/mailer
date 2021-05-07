@@ -15,11 +15,13 @@
   <p>Here is your donation information:</p>
 
   <ul>
-    <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency('GBP') }}</strong></li>
-    <li>Donation: <strong>{{ donationAmount | format_currency('GBP') }}</strong></li>
-    <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency('GBP') }}</strong></li>
+    <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency(currencyCode) }}</strong></li>
+    <li>Donation: <strong>{{ donationAmount | format_currency(currencyCode) }}</strong></li>
+    {% if currencyCode is same as('GBP') %}
+      <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency(currencyCode) }}</strong></li>
+    {% endif %}
     {% if matchedAmount > 0 %}
-        <li>Match Funds: <strong>{{ matchedAmount | format_currency('GBP') }}</strong></li>
+        <li>Match Funds: <strong>{{ matchedAmount | format_currency(currencyCode) }}</strong></li>
     {% endif %}
   </ul>
 
@@ -29,10 +31,10 @@
   </p>
 
   {% if tipAmount > 0 %}
-    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency('GBP') }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
+    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
   {% endif %}
 
-  <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency('GBP') }}</strong>.</p>
+  <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency(currencyCode) }}</strong>.</p>
 
   <p>If you have any questions, please contact us.</p>
 {% endblock %}

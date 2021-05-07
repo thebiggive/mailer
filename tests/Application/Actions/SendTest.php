@@ -252,6 +252,7 @@ class SendTest extends TestCase
             'campaignName' => 'The campaign',
             'campaignThankYouMessage' => "TYVM\n\nLove, the charity xx",
             'charityName' => 'The charity',
+            'currencyCode' => 'GBP',
             'donationAmount' => 400.01,
             'donorFirstName' => 'Patti',
             'donorLastName' => 'Smith',
