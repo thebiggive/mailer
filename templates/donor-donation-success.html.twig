@@ -1,9 +1,7 @@
 {% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-  <p>Dear {{ donorFirstName }},</p>
-
-  <p>This email is the official receipt for your donation.</p>
+  <h1>Official Donation Receipt</h1>
 
   <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
 
@@ -12,9 +10,27 @@
     <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
   {% endif %}
 
-  <p>Here is your donation information:</p>
+  <h2>Tax receipt for your gift to {{ charityName }}</h2>
+
+  <p>
+    Thank you for your gift to {{ charityName }}, for the "campaignName" campaign.
+    {% if currencyCode is same as('USD') %}
+      {{ charityName }} is a U.S. public charity within the meaning of Sections 501(c)(3) and 509(a)(1) of the Internal
+      Revenue Code, with EIN {{ charityNumber }}.
+    {% elseif currencyCode is same as('GBP') %}
+      {% if charityNumber is empty %}
+        {{ charityName }} is an exempt charitable organisation eligible for UK Gift Aid.
+      {% else %}
+        {{ charityName }} is registered with the {{ charityRegistrationAuthority }} with charity
+        number {{ charityNumber }}.
+      {% endif %}
+    {% endif %} {# else another currency than USD/GBP => no tax details for now. #}
+    This receipt certifies that no goods or services were provided in return for your contribution.
+  </p>
 
   <ul>
+    <li>Donation date: <strong>{{ donationDatetime | date('j F Y, H:i') }}</strong></li>
+    <li>Donor: <strong>{{ donorFirstName }} {{ donorLastName }}</strong></li>
     <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency(currencyCode) }}</strong></li>
     <li>Donation: <strong>{{ donationAmount | format_currency(currencyCode) }}</strong></li>
     {% if currencyCode is same as('GBP') %}
@@ -39,6 +55,30 @@
   {% endif %}
 
   <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency(currencyCode) }}</strong>.</p>
+
+  <div id="charity-details">
+    {% if charityLogoUri is empty %}
+      <h2>{{ charityName }}</h2>
+    {% else %}
+      <h2><img src="{{ charityLogoUri }}" alt="{{ charityName }}" width="200"></h2>
+    {% endif %}
+
+    <ul>
+      <li>
+        <p>{{ charityName }}</p>
+        <p>{{ charityPostalAddress }}</p>
+      </li>
+      {% if charityPhoneNumber is not empty %}
+        <li>Tel: {{ charityPhoneNumber }}</li>
+      {% endif %}
+      {% if charityEmailAddress is not empty %}
+        <li>Email: {{ charityEmailAddress }}</li>
+      {% endif %}
+      {% if charityWebsite is not empty %}
+        <li>Web: <a href="{{ charityWebsite }}">{{ charityWebsite }}</a></li>
+      {% endif %}
+    </ul>
+  </div>
 
   <p>If you have any questions, please contact us.</p>
 {% endblock %}
