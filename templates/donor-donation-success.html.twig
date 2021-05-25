@@ -29,6 +29,8 @@
   </p>
 
   <ul>
+    <li>Donation date: <strong>{{ donationDatetime | date('j F Y, H:i') }}</strong></li>
+    <li>Donor: <strong>{{ donorFirstName }} {{ donorLastName }}</strong></li>
     <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency(currencyCode) }}</strong></li>
     <li>Donation: <strong>{{ donationAmount | format_currency(currencyCode) }}</strong></li>
     {% if currencyCode is same as('GBP') %}

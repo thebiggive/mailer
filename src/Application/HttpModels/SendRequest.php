@@ -50,6 +50,7 @@ class SendRequest
      *       "charityWebsite": "https://example.com",
      *       "currencyCode": "GBP",
      *       "donationAmount": 400.01,
+     *       "donationDatetime": "2021-05-01T00:00:00Z",
      *       "donorFirstName": "Patti",
      *       "donorLastName": "Smith",
      *       "giftAidAmountClaimed": 100.00,
