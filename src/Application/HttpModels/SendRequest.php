@@ -30,6 +30,8 @@ class SendRequest
      */
     public string $recipientEmailAddress;
 
+    public ?bool $forGlobalCampaign = false;
+
     /**
      * @var string[]
      * @OA\Property(
