@@ -216,6 +216,37 @@ class SendTest extends TestCase
         $this->assertEquals('[]', (string) $response->getBody());
     }
 
+    public function testSuccessWithGlobalProp(): void
+    {
+        $app = $this->getAppInstance();
+        /** @var Container $container */
+        $container = $app->getContainer();
+        $transport = new InMemoryTransport();
+        $container->set(TransportInterface::class, $transport);
+
+        $data = json_encode([
+            'templateKey' => 'donor-donation-success',
+            'recipientEmailAddress' => 'test@example.com',
+            'forGlobalCampaign' => true,
+            'params' => $this->getFullDonorParams(),
+        ], JSON_THROW_ON_ERROR, 512);
+
+        $request = $this->createRequest('POST', '/v1/send', $data, $this->getAuthHeader($data));
+        $response = $app->handle($request);
+
+        $payload = (string) $response->getBody();
+        $payloadData = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
+
+        $this->assertEquals('queued', $payloadData['status']);
+        $this->assertMatchesRegularExpression(
+            '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/',
+            $payloadData['id']
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertCount(1, $transport->getSent());
+    }
+
     public function testSuccess(): void
     {
         $app = $this->getAppInstance();

@@ -69,13 +69,17 @@ class SendRequestConsumer implements MessageHandlerInterface
             $subject = "({$this->appEnv}) $subject";
         }
 
+        $fromAddress = $sendRequest->forGlobalCampaign
+            ? getenv('GLOBAL_SENDER_ADDRESS')
+            : getenv('SENDER_ADDRESS');
+
         $email->addTo($sendRequest->recipientEmailAddress)
             ->setSubject($subject)
             ->setBody($bodyRenderedHtml)
             ->addPart($bodyPlainText, 'text/plain')
             ->setContentType('text/html')
             ->setCharset('utf-8')
-            ->setFrom(getenv('SENDER_ADDRESS'));
+            ->setFrom($fromAddress);
 
         // Deal with the fact that SwiftMailer doesn't have a mechanism to fix stale SMTP connections when
         // working with long-lived consumers. This lets us keep a live connection but guarantee it's going to
