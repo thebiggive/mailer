@@ -27,6 +27,7 @@
     <php>
         <env name="APP_ENV" value="test" />
         <env name="BASE_URI" value="https://unit-test-fake-subdomain.thebiggive.org.uk" force="true" />
+        <env name="GLOBAL_SENDER_ADDRESS" value="myGlobalTestFromAddress@example.com" force="true" />
         <env name="MAILER_URL" value="smtp://smtp:25" force="true" />
         <env name="MESSENGER_TRANSPORT_DSN" value="in-memory://" force="true" />
         <env name="SENDER_ADDRESS" value="myTestFromAddress@example.com" force="true" />
