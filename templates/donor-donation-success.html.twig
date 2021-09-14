@@ -46,12 +46,12 @@
     Reference on credit/debit card statement: {{ statementReference | default("Enthuse.com") }}
   </p>
 
+  {% if feeCoverAmount > 0 %}
+    <p>Thank you for covering the platform fee of <strong>{{ feeCoverAmount | format_currency(currencyCode) }}</strong>. This enables {{ charityName }} to benefit from the full value of your donation.</p>
+  {% endif %}
+
   {% if tipAmount > 0 %}
-    {% if tipIsFeeCover %}
-      <p>Thank you for covering the platform fee of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong>. This enables {{ charityName }} to benefit from the full value of your donation.</p>
-    {% else %}
-      <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
-    {% endif %}
+    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
   {% endif %}
 
   <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency(currencyCode) }}</strong>.</p>
