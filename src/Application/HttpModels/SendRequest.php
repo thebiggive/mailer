@@ -60,7 +60,7 @@ class SendRequest
      *       "matchedAmount": 200.01,
      *       "statementReference": "The Big Give The char",
      *       "tipAmount": 10,
-     *       "totalChargedAmount": 410.01,
+     *       "totalChargedAmount": 415.01,
      *       "totalCharityValueAmount": 600.02,
      *       "transactionId": "d290f1ee-6c54-4b01-90e6-d701748f0851",
      *     }
