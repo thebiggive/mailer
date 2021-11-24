@@ -194,5 +194,4 @@ working version live even if a broken release is ever deployed. Because of this,
 about 30 minutes after CircleCI reports that a deploy is done. You can monitor this in the AWS Console.
 
 When things are working correctly, any environment with at least two tasks in its ECS Service should get new app
-versions with no downtime. If you make schema changes, be careful to use a [parallel change (expand / contract)](https://www.martinfowler.com/bliki/ParallelChange.html)]
-pattern to ensure this remains true.
+versions with no downtime.
