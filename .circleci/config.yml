@@ -63,6 +63,8 @@ workflows:
           context:
             - docker-hub-creds
       - aws-ecr/build-and-push-image:
+          context:
+            - ecs-deploys
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
@@ -70,6 +72,7 @@ workflows:
           tag: 'staging,staging-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
@@ -98,6 +101,7 @@ workflows:
                   }
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
@@ -137,6 +141,8 @@ workflows:
           context:
             - docker-hub-creds
       - aws-ecr/build-and-push-image:
+          context:
+            - ecs-deploys
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
@@ -144,6 +150,7 @@ workflows:
           tag: 'regression,regression-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
@@ -172,6 +179,7 @@ workflows:
                   }
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
@@ -211,6 +219,8 @@ workflows:
           context:
             - docker-hub-creds
       - aws-ecr/build-and-push-image:
+          context:
+            - ecs-deploys
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
@@ -218,6 +228,7 @@ workflows:
           tag: 'production,production-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
@@ -246,6 +257,7 @@ workflows:
                   }
       - aws-ecs/deploy-service-update:
           context:
+            - ecs-deploys
             - slack
           requires:
             - aws-ecr/build-and-push-image
