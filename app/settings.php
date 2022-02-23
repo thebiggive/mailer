@@ -63,7 +63,7 @@ return function (ContainerBuilder $containerBuilder) {
                     'subjectParams' => [],
                     'requiredParams' => [
                         'donorFirstName',
-                        'donationReferenceNumber',
+                        'transactionId',
                         'charityName',
                         'donationAmount',
                         'donationTipAmount',
@@ -75,7 +75,8 @@ return function (ContainerBuilder $containerBuilder) {
                     'subjectParams' => [],
                     'requiredParams' => [
                         'donorFirstName',
-                        'donationReferenceNumber',
+                        'transactionId',
+                        'charityName',
                         'donationTipAmount',
                     ],
                 ],

@@ -3,11 +3,11 @@
 {% block content %}
   <p>Dear {{ donorFirstName }},</p>
 
-  <p>The following payment made by you has now been refunded:</p>
+  <p>The following tip you made to us when donating to {{ charityName }} has now been refunded:</p>
 
   <ul>
-    <li>Donation reference: {{donationReferenceNumber}}</li>
-    <li>Donation (tip) to the Big Give: £{{donationTipAmount}}</li>
+    <li>Donation reference: {{ transactionId }}</li>
+    <li>Donation (tip) to the Big Give: £{{ donationTipAmount }}</li>
   </ul>
 
   <p>The refund should appear in your account within ten working days.</p>
