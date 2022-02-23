@@ -57,6 +57,29 @@ return function (ContainerBuilder $containerBuilder) {
                         'pledgerLastName',
                     ],
                 ],
+                [
+                    'templateKey' => 'donor-donation-refund-full',
+                    'subject' => 'Full Donation Refund',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'donorFirstName',
+                        'transactionId',
+                        'charityName',
+                        'donationAmount',
+                        'donationTipAmount',
+                    ],
+                ],
+                [
+                    'templateKey' => 'donor-donation-refund-tip',
+                    'subject' => 'Tip Refund',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'donorFirstName',
+                        'transactionId',
+                        'charityName',
+                        'donationTipAmount',
+                    ],
+                ],
             ],
 
             'logger' => [
