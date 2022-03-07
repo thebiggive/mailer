@@ -1,0 +1,17 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+  <p>Dear {{ donorFirstName }},</p>
+
+  <p>The following donation made by you has now been refunded:</p>
+
+  <ul>
+    <li>Donation reference: {{ transactionId }}</li>
+    <li>Donation to {{ charityName }}: £{{ donationAmount }}</li>
+    <li>Donation (tip) to the Big Give: £{{ donationTipAmount }}</li>
+  </ul>
+
+  <p>The refund should appear in your account within ten working days.</p>
+
+  <p>Please get back to us if you have any questions.</p>
+{% endblock %}
