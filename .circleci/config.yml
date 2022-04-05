@@ -9,17 +9,13 @@ orbs:
 jobs:
   test: # Also lints first
     docker:
-      - image: circleci/php:8.0
+      - image: thebiggive/php:8.1
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN
 
     steps:
       - checkout
-
-      - run: sudo apt-get install -y libzip-dev zip
-      - run: sudo docker-php-ext-install bcmath pdo_mysql zip
-      - run: sudo pecl install redis && sudo docker-php-ext-enable redis
 
       - restore_cache:
           keys:
