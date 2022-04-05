@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Email;
 
-use JetBrains\PhpStorm\Pure;
 use Mailer\Application\ConfigModels\Email;
 
 class Config

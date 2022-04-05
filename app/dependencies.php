@@ -12,9 +12,10 @@ use Mailer\Application\Validator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use Openbuildings\Swiftmailer\CssInlinerPlugin;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsTransportFactory;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
@@ -31,6 +32,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Twig\Extra\CssInliner\CssInlinerExtension;
 use Twig\Extra\Intl\IntlExtension;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -82,7 +84,7 @@ return function (ContainerBuilder $containerBuilder) {
                 $c->get('settings')['appEnv'],
                 $c->get(Config::class),
                 $c->get(LoggerInterface::class),
-                $c->get(Swift_Mailer::class),
+                $c->get(MailerInterface::class),
                 $c->get(Twig\Environment::class),
                 $c->get(Validator\SendRequest::class),
             );
@@ -95,38 +97,13 @@ return function (ContainerBuilder $containerBuilder) {
             return new Serializer($normalizers, $encoders);
         },
 
-        Swift_Mailer::class => static function (ContainerInterface $c): Swift_Mailer {
-            $mailerUrlPieces = parse_url($c->get('settings')['swift']['mailerUrl']);
-            if ($mailerUrlPieces['scheme'] !== 'smtp') {
-                throw new \LogicException("Unsupported mailer URL scheme {$mailerUrlPieces['scheme']}");
-            }
-
-            $mailerQuery = [];
-            if (!empty($mailerUrlPieces['query'])) {
-                parse_str($mailerUrlPieces['query'], $mailerQuery);
-            }
-
-            $transport = new Swift_SmtpTransport(
-                $mailerUrlPieces['host'],
-                $mailerUrlPieces['port'],
-                $mailerQuery['encryption'] ?? null,
+        MailerInterface::class => static function (ContainerInterface $c): MailerInterface {
+            // Timeout comes from php.ini's `default_socket_timeout` – 8 seconds in our Docker base.
+            // See https://symfony.com/doc/current/mailer.html#using-a-3rd-party-transport
+            $transport = (new EsmtpTransportFactory())->create(
+                $c->get('settings')['mailer']['dsn'],
             );
-            if (!empty($mailerUrlPieces['user'])) {
-                $transport->setUsername($mailerUrlPieces['user']);
-            }
-            if (!empty($mailerUrlPieces['pass'])) {
-                // AWS generated SMTP passwords often include URL special characters so are URL encoded (following
-                // standards, i.e. the "`raw...`" PHP functions). Because `parse_url()` response pieces "are not
-                // URL decoded" (https://www.php.net/manual/en/function.parse-url.php) we must decode for auth to
-                // work reliably.
-                $transport->setPassword(rawurldecode($mailerUrlPieces['pass']));
-            }
-            $transport->setTimeout($mailerQuery['timeout'] ?? 8);
-
-            $mailer = new Swift_Mailer($transport);
-            $mailer->registerPlugin(new CssInlinerPlugin());
-
-            return $mailer;
+            return new Symfony\Component\Mailer\Mailer($transport);
         },
 
         TransportInterface::class => static function (ContainerInterface $c): TransportInterface {
@@ -148,6 +125,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'cache' => $twigSettings['cachePath'],
                 'debug' => $twigSettings['debug'],
             ]);
+            $env->addExtension(new CssInlinerExtension());
             $env->addExtension(new IntlExtension());
 
             return $env;

@@ -1,9 +1,10 @@
+{% apply inline_css %}
 <!DOCTYPE html>
 <html lang="en-GB">
   <head>
     <title>{{ subject }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style type="text/css">
+    <style>
       p, ul, li, blockquote {
         font-size: 0.9rem;
       }
@@ -42,7 +43,7 @@
   </head>
 <body>
   <div class="container">
-    <img class="headerImg" src="{{ headerImageRef }}" alt="The Big Give"/>
+    <img class="headerImg" src="cid:tbg-logo" alt="The Big Give"/>
     <div id="content" class="content">
       {% block content %}{% endblock %}
     </div>
@@ -58,3 +59,4 @@
   </div>
 </body>
 </html>
+{% endapply %}
