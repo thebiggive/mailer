@@ -5,7 +5,6 @@ declare(strict_types=1);
 use DI\ContainerBuilder;
 use Mailer\Application\ConfigModels\Email;
 use Monolog\Logger;
-use Symfony\Component\Mailer\Transport\Dsn;
 
 return function (ContainerBuilder $containerBuilder) {
     // Global Settings Object
@@ -92,7 +91,7 @@ return function (ContainerBuilder $containerBuilder) {
             'mailer' => [
                 // Used for various transport configuration by Symfony Mailer.
                 // See https://symfony.com/doc/current/mailer.html#using-built-in-transports
-                'dsn' => Dsn::fromString(getenv('MAILER_DSN')),
+                'dsn' => getenv('MAILER_DSN'),
             ],
 
             'twig' => [

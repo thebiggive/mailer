@@ -15,6 +15,7 @@ use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\Transport\AmazonSqsTransportFactory;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
@@ -101,7 +102,7 @@ return function (ContainerBuilder $containerBuilder) {
             // Timeout comes from php.ini's `default_socket_timeout` – 8 seconds in our Docker base.
             // See https://symfony.com/doc/current/mailer.html#using-a-3rd-party-transport
             $transport = (new EsmtpTransportFactory())->create(
-                $c->get('settings')['mailer']['dsn'],
+                Dsn::fromString($c->get('settings')['mailer']['dsn']),
             );
             return new Symfony\Component\Mailer\Mailer($transport);
         },
