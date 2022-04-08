@@ -88,19 +88,17 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
 
-            'swift' => [
-                // Processed loosely in line with Symfony's conventions for `url` property / `MAILER_URL` env var,
-                // with query param support ONLY for 'encryption' & 'timeout'. Timeout is in seconds and must be
-                // lower than the SQS VisibilityTimeout when using SQS.
-                // https://symfony.com/doc/current/reference/configuration/swiftmailer.html#url
-                'mailerUrl' => getenv('MAILER_URL'),
+            'mailer' => [
+                // Used for various transport configuration by Symfony Mailer.
+                // See https://symfony.com/doc/current/mailer.html#using-built-in-transports
+                'dsn' => getenv('MAILER_DSN'),
             ],
 
             'twig' => [
                 'templatePath' => dirname(__DIR__) . '/templates',
                 'cachePath' => dirname(__DIR__) . '/var/twig',
                 'debug' => (getenv('APP_ENV') === 'local'), // Disables caching & enables debug output
-            ]
+            ],
         ],
     ]);
 };

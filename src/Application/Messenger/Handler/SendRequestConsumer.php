@@ -9,13 +9,11 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
-use Swift_Image;
-use Swift_Mailer;
-use Swift_Message;
-use Swift_SwiftException;
-use Swift_TransportException;
+use Symfony\Component\Mailer\Exception\ExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Mime\Email;
 use Twig;
 
 /**
@@ -28,7 +26,7 @@ class SendRequestConsumer implements MessageHandlerInterface
         private string $appEnv,
         private Config $config,
         private LoggerInterface $logger,
-        private Swift_Mailer $mailer,
+        private MailerInterface $mailer,
         private Twig\Environment $twig,
         private Validator\SendRequest $validator
     ) {
@@ -49,9 +47,9 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         $this->logger->info("Processing ID {$sendRequest->id}...");
 
-        $email = new Swift_Message();
+        $email = new Email();
+        $this->embedImages($email, 'TBG.png', 'tbg-logo');
 
-        $additionalParams['headerImageRef'] = $this->embedImages($email, 'TBG.png');
         $additionalParams['renderHtml'] = true;
 
         $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
@@ -74,36 +72,16 @@ class SendRequestConsumer implements MessageHandlerInterface
             : getenv('SENDER_ADDRESS');
 
         $email->addTo($sendRequest->recipientEmailAddress)
-            ->setSubject($subject)
-            ->setBody($bodyRenderedHtml)
-            ->addPart($bodyPlainText, 'text/plain')
-            ->setContentType('text/html')
-            ->setCharset('utf-8')
-            ->setFrom($fromAddress);
-
-        // Deal with the fact that SwiftMailer doesn't have a mechanism to fix stale SMTP connections when
-        // working with long-lived consumers. This lets us keep a live connection but guarantee it's going to
-        // be awake for the coming send. See https://stackoverflow.com/a/22629213/2803757
-        if (!$this->mailer->getTransport()->ping()) {
-            $this->mailer->getTransport()->stop();
-            try {
-                $this->mailer->getTransport()->start();
-            } catch (Swift_TransportException $exception) {
-                $this->fail(
-                    $sendRequest->id,
-                    sprintf('Transport start %s: %s', get_class($exception), $exception->getMessage()),
-                );
-            }
-        }
+            ->from($fromAddress)
+            ->subject($subject)
+            ->html($bodyRenderedHtml)
+            ->text($bodyPlainText)
+        ;
 
         try {
-            $numberOfRecipients = $this->mailer->send($email);
-
-            if ($numberOfRecipients === 0) {
-                $this->fail($sendRequest->id, 'Email send reached no recipients');
-            }
-        } catch (Swift_SwiftException $exception) {
-            // SwiftMailer transports can bail out with exceptions e.g. on connection timeouts.
+            $this->mailer->send($email);
+        } catch (ExceptionInterface $exception) {
+            // Mailer transports can bail out with exceptions e.g. on connection timeouts.
             $class = get_class($exception);
             $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}");
         }
@@ -123,14 +101,16 @@ class SendRequestConsumer implements MessageHandlerInterface
     }
 
     /**
-     * @param Swift_Message $email
-     * @param string $fileName
-     * @return string Path-like reference to embedded image, for use in other parts' HTML.
+     * @param Email $email
+     * @param string $fileName  Where in top level `images/` to find the original.
+     * @param string $cid       Can be used after `cid:` in templates.
+     * @return Email
+     * @link https://symfony.com/doc/current/mailer.html#embedding-images
      */
-    private function embedImages(Swift_Message $email, string $fileName): string
+    private function embedImages(Email $email, string $fileName, string $cid): Email
     {
         $pathToImages = dirname(__DIR__, 4) . '/images/';
 
-        return $email->embed(Swift_Image::fromPath($pathToImages . $fileName));
+        return $email->embedFromPath($pathToImages . $fileName, $cid);
     }
 }
