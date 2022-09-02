@@ -1,0 +1,10 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+  <p>Dear {{ donorFirstName }},</p>
+
+  <p>You are now registered for the Big Give with the username {{ donorUsername }}. This will make donating to your chosen campaigns much easier in the future.</p>
+
+  <p>We are excited to have you on board!</p>
+
+{% endblock %}

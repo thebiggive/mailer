@@ -80,6 +80,15 @@ return function (ContainerBuilder $containerBuilder) {
                         'donationTipAmount',
                     ],
                 ],
+                [
+                    'templateKey' => 'donor-registered',
+                    'subject' => 'You are registered with the Big Give',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'donorFirstName',
+                        'donorUsername'
+                    ],
+                ],
             ],
 
             'logger' => [

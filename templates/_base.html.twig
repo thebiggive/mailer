@@ -51,9 +51,14 @@
       {% block footer %}
         <p>
           Kind regards,<br>
-          The Big Give Team<br>
+          Big Give Team<br>
           www.thebiggive.org.uk<br>
         </p>
+
+        {% if donorUsername %}
+          <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
+        {% endif %}
+
       {% endblock %}
     </div>
   </div>
