@@ -55,7 +55,8 @@
           www.thebiggive.org.uk<br>
         </p>
 
-        {# This check is added because we don't want this sentence to be included in the pledger-success email. MAIL-17 #}
+        {# This check is added because we don't want this sentence to be included in the pledger-success email,
+        but we want it included in all other templates, which include the `donorFirstName` parameter. MAIL-17 #}
         {% if donorFirstName %}
           <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
         {% endif %}
