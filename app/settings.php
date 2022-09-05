@@ -86,7 +86,7 @@ return function (ContainerBuilder $containerBuilder) {
                     'subjectParams' => [],
                     'requiredParams' => [
                         'donorFirstName',
-                        'donorUsername'
+                        'donorEmail'
                     ],
                 ],
             ],
