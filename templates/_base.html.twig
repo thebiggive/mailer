@@ -51,9 +51,16 @@
       {% block footer %}
         <p>
           Kind regards,<br>
-          The Big Give Team<br>
+          Big Give Team<br>
           www.thebiggive.org.uk<br>
         </p>
+
+        {# This check is added because we don't want this sentence to be included in the pledger-success template,
+        but we want it included in all other templates, which include the `donorFirstName` parameter. MAIL-17 #}
+        {% if donorFirstName is not empty %}
+          <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
+        {% endif %}
+
       {% endblock %}
     </div>
   </div>
