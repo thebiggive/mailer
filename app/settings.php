@@ -82,7 +82,7 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 [
                     'templateKey' => 'donor-registered',
-                    'subject' => 'You are registered with the Big Give',
+                    'subject' => 'You are registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
                         'donorFirstName',

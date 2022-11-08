@@ -3,7 +3,7 @@
 {% block content %}
   <h1>Official Donation Receipt</h1>
 
-  <p>Thank you for supporting {{ charityName }} with your generous gift through the Big Give.<p>
+  <p>Thank you for supporting {{ charityName }} with your generous gift through Big Give.<p>
 
   {% if campaignThankYouMessage %}
     <p>A message from {{ charityName }}:</p>
@@ -51,7 +51,7 @@
   {% endif %}
 
   {% if tipAmount > 0 %}
-    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward the Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
+    <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
   {% endif %}
 
   <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency(currencyCode) }}</strong>.</p>

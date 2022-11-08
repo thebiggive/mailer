@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -11,7 +12,7 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
 /**
- * @OA\Info(title="The Big Give Mailer", version="1"),
+ * @OA\Info(title="Big Give Mailer", version="1"),
  * @OA\Server(
  *     description="Staging",
  *     url="https://mailer-staging.thebiggivetest.org.uk",
