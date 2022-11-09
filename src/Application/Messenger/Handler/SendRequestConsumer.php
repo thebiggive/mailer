@@ -9,7 +9,7 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\ExceptionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Exception\RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -48,7 +48,7 @@ class SendRequestConsumer implements MessageHandlerInterface
         $this->logger->info("Processing ID {$sendRequest->id}...");
 
         $email = new Email();
-        $this->embedImages($email, 'TBG.png', 'tbg-logo');
+        $this->embedImages($email, 'BigGive.png', 'tbg-logo');
 
         $additionalParams['renderHtml'] = true;
 
@@ -80,7 +80,7 @@ class SendRequestConsumer implements MessageHandlerInterface
 
         try {
             $this->mailer->send($email);
-        } catch (ExceptionInterface $exception) {
+        } catch (TransportExceptionInterface $exception) {
             // Mailer transports can bail out with exceptions e.g. on connection timeouts.
             $class = get_class($exception);
             $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}");

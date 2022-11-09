@@ -1,4 +1,4 @@
-# The Big Give Mailer
+# Big Give Mailer
 
 Mailer is a [Slim](https://www.slimframework.com/) PHP microservice for queueing, rendering
 and sending emails.
