@@ -94,8 +94,8 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'Reset your password for Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'first_name',
-                        'last_name',
+                        'firstName',
+                        'lastName',
                         'recipientEmailAddress',
                         'resetLink',
                     ],
