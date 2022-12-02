@@ -96,7 +96,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'requiredParams' => [
                         'firstName',
                         'lastName',
-                        'recipientEmailAddress',
                         'resetLink',
                     ],
                 ],
