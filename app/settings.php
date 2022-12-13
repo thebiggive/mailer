@@ -89,6 +89,16 @@ return function (ContainerBuilder $containerBuilder) {
                         'donorEmail'
                     ],
                 ],
+                [
+                    'templateKey' => 'password-reset-requested',
+                    'subject' => 'Reset your password for Big Give',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'firstName',
+                        'lastName',
+                        'resetLink',
+                    ],
+                ],
             ],
 
             'logger' => [
