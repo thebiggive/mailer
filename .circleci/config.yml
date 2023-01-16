@@ -30,11 +30,16 @@ jobs:
 
       - run: composer run lint:check
 
-      - run: composer run docs # Ensure OpenAPI annotations remain valid
+      - run:
+          name: Generate OpenAPI spec
+          command: composer run docs
 
       - run: composer run sa:check
 
       - run: composer run test
+
+      - store_artifacts:
+          path: docs
 
 workflows:
   build:

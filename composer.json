@@ -63,7 +63,7 @@
         }
     },
     "scripts": {
-        "docs": "openapi --output openapi.yaml src",
+        "docs": "openapi --output docs/openapi.yaml src",
         "lint:check": "phpcs --standard=phpcs.xml -s .",
         "lint:fix": "phpcbf --standard=phpcs.xml -s .",
         "sa:check": "vendor/bin/psalm",
