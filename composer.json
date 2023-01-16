@@ -66,6 +66,7 @@
         "docs": "openapi --output openapi.yaml src",
         "lint:check": "phpcs --standard=phpcs.xml -s .",
         "lint:fix": "phpcbf --standard=phpcs.xml -s .",
+        "sa:check": "vendor/bin/psalm",
         "list-commands": "php mailer-cli.php list",
         "messenger:consume": [
             "Composer\\Config::disableProcessTimeout",

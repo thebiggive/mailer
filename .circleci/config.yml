@@ -32,6 +32,8 @@ jobs:
 
       - run: composer run docs # Ensure OpenAPI annotations remain valid
 
+      - run: composer run sa:check
+
       - run: composer run test
 
 workflows:
