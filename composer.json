@@ -63,9 +63,9 @@
         }
     },
     "scripts": {
-        "docs": "openapi --output openapi.yaml src",
-        "lint:check": "phpcs --standard=phpcs.xml -s .",
-        "lint:fix": "phpcbf --standard=phpcs.xml -s .",
+        "docs": "openapi --output docs/openapi.yaml src",
+        "lint:check": "phpcs --standard=phpcs.xml -s app src tests",
+        "lint:fix": "phpcbf --standard=phpcs.xml -s app src tests",
         "sa:check": "vendor/bin/psalm",
         "list-commands": "php mailer-cli.php list",
         "messenger:consume": [

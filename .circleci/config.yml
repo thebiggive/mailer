@@ -19,22 +19,29 @@ jobs:
 
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.lock" }}
+            - composer-v3-{{ checksum "composer.lock" }}
 
       - run: composer install --no-interaction
+      - run: cd docs && apt update && apt install -y npm && npm i swagger-ui-dist
 
       - save_cache:
           paths:
             - vendor
-          key: composer-v2-{{ checksum "composer.lock" }}
+            - docs/node-modules
+          key: composer-v3-{{ checksum "composer.lock" }}
 
       - run: composer run lint:check
 
-      - run: composer run docs # Ensure OpenAPI annotations remain valid
+      - run:
+          name: Generate OpenAPI spec
+          command: composer run docs
 
       - run: composer run sa:check
 
       - run: composer run test
+
+      - store_artifacts:
+          path: docs
 
 workflows:
   build:
