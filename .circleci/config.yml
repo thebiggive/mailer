@@ -22,7 +22,7 @@ jobs:
             - composer-v3-{{ checksum "composer.lock" }}
 
       - run: composer install --no-interaction
-      - run: cd docs && apt update && apt install -y npm && npm -i swagger-ui-dist
+      - run: cd docs && apt update && apt install -y npm && npm i swagger-ui-dist
 
       - save_cache:
           paths:
