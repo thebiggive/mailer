@@ -67,9 +67,7 @@ class SendRequestConsumer implements MessageHandlerInterface
             $subject = "({$this->appEnv}) $subject";
         }
 
-        $fromAddress = $sendRequest->forGlobalCampaign
-            ? getenv('GLOBAL_SENDER_ADDRESS')
-            : getenv('SENDER_ADDRESS');
+        $fromAddress = getenv('SENDER_ADDRESS');
 
         $email->addTo($sendRequest->recipientEmailAddress)
             ->from($fromAddress)
