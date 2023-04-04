@@ -1,10 +1,10 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@7.0.0
-  aws-ecs: circleci/aws-ecs@2.2.1
+  aws-ecr: circleci/aws-ecr@8.1.3
+  aws-ecs: circleci/aws-ecs@3.2.0
   jira: circleci/jira@1.3.1
-  slack: circleci/slack@4.3.3
+  slack: circleci/slack@4.12.1
 
 jobs:
   test: # Also lints first
@@ -19,20 +19,29 @@ jobs:
 
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.lock" }}
+            - composer-v3-{{ checksum "composer.lock" }}
 
       - run: composer install --no-interaction
+      - run: cd docs && apt update && apt install -y npm && npm i swagger-ui-dist
 
       - save_cache:
           paths:
             - vendor
-          key: composer-v2-{{ checksum "composer.lock" }}
+            - docs/node-modules
+          key: composer-v3-{{ checksum "composer.lock" }}
 
       - run: composer run lint:check
 
-      - run: composer run docs # Ensure OpenAPI annotations remain valid
+      - run:
+          name: Generate OpenAPI spec
+          command: composer run docs
+
+      - run: composer run sa:check
 
       - run: composer run test
+
+      - store_artifacts:
+          path: docs
 
 workflows:
   build:
@@ -40,6 +49,7 @@ workflows:
       - test:
           context:
             - docker-hub-creds
+            - jira
             - slack
           post-steps:
             - jira/notify:
@@ -64,7 +74,6 @@ workflows:
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
-          region: AWS_REGION
           tag: 'staging,staging-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
@@ -72,9 +81,8 @@ workflows:
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-staging-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
-          cluster-name: 'tbg-staging-${AWS_REGION}'
+          cluster: 'tbg-staging-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_tasks,tag=staging-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:
@@ -98,12 +106,12 @@ workflows:
       - aws-ecs/deploy-service-update:
           context:
             - ecs-deploys
+            - jira
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-staging-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
-          cluster-name: 'tbg-staging-${AWS_REGION}'
+          cluster: 'tbg-staging-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_web,tag=staging-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:
@@ -142,7 +150,6 @@ workflows:
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
-          region: AWS_REGION
           tag: 'regression,regression-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
@@ -150,9 +157,8 @@ workflows:
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-regression-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
-          cluster-name: 'tbg-regression-${AWS_REGION}'
+          cluster: 'tbg-regression-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_tasks,tag=regression-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:
@@ -176,12 +182,12 @@ workflows:
       - aws-ecs/deploy-service-update:
           context:
             - ecs-deploys
+            - jira
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-regression-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
-          cluster-name: 'tbg-regression-${AWS_REGION}'
+          cluster: 'tbg-regression-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_web,tag=regression-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:
@@ -220,7 +226,6 @@ workflows:
           requires:
             - test
           repo: '${AWS_ECR_REPO_NAME}'
-          region: AWS_REGION
           tag: 'production,production-${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
           context:
@@ -228,9 +233,8 @@ workflows:
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_TASKS}'
-          cluster-name: 'tbg-production-${AWS_REGION}'
+          cluster: 'tbg-production-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_tasks,tag=production-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:
@@ -254,12 +258,12 @@ workflows:
       - aws-ecs/deploy-service-update:
           context:
             - ecs-deploys
+            - jira
             - slack
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_REGION
           family: 'tbg-production-${AWS_REGION}-${AWS_ECS_SERVICE_SUFFIX_WEB}'
-          cluster-name: 'tbg-production-${AWS_REGION}'
+          cluster: 'tbg-production-${AWS_REGION}'
           container-image-name-updates: 'container=mailer_web,tag=production-${CIRCLE_SHA1}'
           post-steps:
             - slack/notify:

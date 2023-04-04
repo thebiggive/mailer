@@ -36,10 +36,13 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^6.5",
+        "jetbrains/phpstorm-attributes": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.3",
+        "psalm/plugin-phpunit": "^0.18.4",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.6",
+        "vimeo/psalm": "^5.4",
         "zircote/swagger-php": "^3.0"
     },
     "config": {
@@ -60,9 +63,10 @@
         }
     },
     "scripts": {
-        "docs": "openapi --output openapi.yaml src",
-        "lint:check": "phpcs --standard=phpcs.xml -s .",
-        "lint:fix": "phpcbf --standard=phpcs.xml -s .",
+        "docs": "openapi --output docs/openapi.yaml src",
+        "lint:check": "phpcs --standard=phpcs.xml -s app src tests",
+        "lint:fix": "phpcbf --standard=phpcs.xml -s app src tests",
+        "sa:check": "vendor/bin/psalm",
         "list-commands": "php mailer-cli.php list",
         "messenger:consume": [
             "Composer\\Config::disableProcessTimeout",

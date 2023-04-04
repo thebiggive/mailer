@@ -43,7 +43,7 @@ class SendRequest
      *       "campaignName": "The campaign",
      *       "campaignThankYouMessage": "TYVM\n\nLove, the charity xx",
      *       "charityEmailAddress": "charity@example.com",
-     *       "charityLogoUri": "https://donate.thebiggive.org.uk/assets/images/logo.png",
+     *       "charityLogoUri": "https://donate.biggive.org/assets/images/logo.png",
      *       "charityName": "The charity",
      *       "charityNumber": "1234765",
      *       "charityPhoneNumber": "+1 111 111122",

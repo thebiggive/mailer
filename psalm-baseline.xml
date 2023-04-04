@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.4.0@62db5d4f6a7ae0a20f7cc5a4952d730272fc0863">
+  <file src="app/dependencies.php">
+    <MixedArgument occurrences="15">
+      <code>$c-&gt;get('settings')['appEnv']</code>
+      <code>$c-&gt;get('settings')['emails']</code>
+      <code>$c-&gt;get('settings')['mailer']['dsn']</code>
+      <code>$c-&gt;get('settings')['twig']</code>
+      <code>$c-&gt;get(Config::class)</code>
+      <code>$c-&gt;get(Config::class)</code>
+      <code>$c-&gt;get(LoggerInterface::class)</code>
+      <code>$c-&gt;get(LoggerInterface::class)</code>
+      <code>$c-&gt;get(MailerInterface::class)</code>
+      <code>$c-&gt;get(Twig\Environment::class)</code>
+      <code>$c-&gt;get(Twig\Environment::class)</code>
+      <code>$c-&gt;get(Validator\SendRequest::class)</code>
+      <code>$loggerSettings['name']</code>
+      <code>$loggerSettings['path']</code>
+      <code>$twigSettings['templatePath']</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>[SendRequest::class =&gt; [$c-&gt;get(SendRequestConsumer::class)]]</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess occurrences="12">
+      <code>$c-&gt;get('settings')['appEnv']</code>
+      <code>$c-&gt;get('settings')['emails']</code>
+      <code>$c-&gt;get('settings')['mailer']</code>
+      <code>$c-&gt;get('settings')['twig']</code>
+      <code>$c-&gt;get('settings')['twig']</code>
+      <code>$loggerSettings['level']</code>
+      <code>$loggerSettings['name']</code>
+      <code>$loggerSettings['path']</code>
+      <code>$settings['logger']</code>
+      <code>$twigSettings['cachePath']</code>
+      <code>$twigSettings['debug']</code>
+      <code>$twigSettings['templatePath']</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="3">
+      <code>$loggerSettings</code>
+      <code>$settings</code>
+      <code>$twigSettings</code>
+    </MixedAssignment>
+    <PossiblyFalseArgument occurrences="1">
+      <code>getenv('MESSENGER_TRANSPORT_DSN')</code>
+    </PossiblyFalseArgument>
+    <UnusedClosureParam occurrences="2">
+      <code>$c</code>
+      <code>$c</code>
+    </UnusedClosureParam>
+  </file>
+  <file src="public/index.php">
+    <MixedArgument occurrences="1">
+      <code>$app-&gt;getContainer()-&gt;get(LoggerInterface::class)</code>
+    </MixedArgument>
+    <MixedArrayAccess occurrences="1">
+      <code>$container-&gt;get('settings')['displayErrorDetails']</code>
+    </MixedArrayAccess>
+    <PossiblyNullReference occurrences="1">
+      <code>get</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Application/Actions/Action.php">
+    <PropertyNotSetInConstructor occurrences="3">
+      <code>$args</code>
+      <code>$request</code>
+      <code>$response</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Application/Actions/ActionError.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;description</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Application/Actions/Send.php">
+    <ImplicitToStringCast occurrences="1">
+      <code>$this-&gt;request-&gt;getBody()</code>
+    </ImplicitToStringCast>
+    <PropertyNotSetInConstructor occurrences="3">
+      <code>Send</code>
+      <code>Send</code>
+      <code>Send</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Application/Actions/Status.php">
+    <PropertyNotSetInConstructor occurrences="3">
+      <code>Status</code>
+      <code>Status</code>
+      <code>Status</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Application/Auth/SendAuthMiddleware.php">
+    <PossiblyFalseArgument occurrences="1">
+      <code>getenv('SEND_SECRET')</code>
+    </PossiblyFalseArgument>
+  </file>
+  <file src="src/Application/ConfigModels/Email.php">
+    <MixedArgument occurrences="4">
+      <code>$configArray['requiredParams']</code>
+      <code>$configArray['subject']</code>
+      <code>$configArray['subjectParams']</code>
+      <code>$configArray['templateKey']</code>
+    </MixedArgument>
+  </file>
+  <file src="src/Application/Email/Config.php">
+    <MixedArgument occurrences="1">
+      <code>$config</code>
+    </MixedArgument>
+    <MixedInferredReturnType occurrences="1">
+      <code>?Email</code>
+    </MixedInferredReturnType>
+    <MixedPropertyFetch occurrences="1">
+      <code>$theSetting-&gt;templateKey</code>
+    </MixedPropertyFetch>
+    <MixedReturnStatement occurrences="1">
+      <code>current($configs)</code>
+    </MixedReturnStatement>
+  </file>
+  <file src="src/Application/Handlers/HttpErrorHandler.php">
+    <PropertyNotSetInConstructor occurrences="7">
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+      <code>HttpErrorHandler</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Application/HttpModels/SendRequest.php">
+    <PossiblyFalsePropertyAssignmentValue occurrences="1">
+      <code>getenv('APP_ENV')</code>
+    </PossiblyFalsePropertyAssignmentValue>
+    <PropertyNotSetInConstructor occurrences="3">
+      <code>$params</code>
+      <code>$recipientEmailAddress</code>
+      <code>$templateKey</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Application/Messenger/Handler/SendRequestConsumer.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$param</code>
+    </MissingClosureParamType>
+    <MixedArrayOffset occurrences="1">
+      <code>$sendRequest-&gt;params[$param]</code>
+    </MixedArrayOffset>
+    <PossiblyFalseArgument occurrences="1">
+      <code>$fromAddress</code>
+    </PossiblyFalseArgument>
+    <PossiblyNullArgument occurrences="2">
+      <code>$config-&gt;subject</code>
+      <code>$config-&gt;subjectParams</code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch occurrences="2">
+      <code>$config-&gt;subject</code>
+      <code>$config-&gt;subjectParams</code>
+    </PossiblyNullPropertyFetch>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$additionalParams</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Application/Validator/SendRequest.php">
+    <MixedArgument occurrences="1">
+      <code>$subjectParam</code>
+    </MixedArgument>
+    <MixedArrayOffset occurrences="1">
+      <code>$sendRequest-&gt;params[$requiredParam]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="1">
+      <code>$requiredParam</code>
+    </MixedAssignment>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$reason</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="tests/Application/Actions/SendTest.php">
+    <MixedArgument occurrences="2">
+      <code>$payloadData['id']</code>
+      <code>$payloadData['id']</code>
+    </MixedArgument>
+    <MixedArrayAccess occurrences="4">
+      <code>$payloadData['id']</code>
+      <code>$payloadData['id']</code>
+      <code>$payloadData['status']</code>
+      <code>$payloadData['status']</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="2">
+      <code>$payloadData</code>
+      <code>$payloadData</code>
+    </MixedAssignment>
+    <PossiblyFalseArgument occurrences="1">
+      <code>getenv('SEND_SECRET')</code>
+    </PossiblyFalseArgument>
+  </file>
+  <file src="tests/Application/Auth/SendAuthMiddlewareTest.php">
+    <DeprecatedFunction occurrences="1">
+      <code>Psr7\stream_for($body)</code>
+    </DeprecatedFunction>
+  </file>
+  <file src="tests/TestCase.php">
+    <MixedArgument occurrences="1">
+      <code>$value</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$name</code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment occurrences="1">
+      <code>$value</code>
+    </MixedAssignment>
+  </file>
+</files>
