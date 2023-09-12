@@ -31,6 +31,7 @@ return function (ContainerBuilder $containerBuilder) {
                         'currencyCode',
                         'donationAmount',
                         'donorFirstName',
+                        'paymentMethodType',
                         'donorLastName',
                         'feeCoverAmount',
                         'giftAidAmountClaimed',
