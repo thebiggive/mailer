@@ -1,0 +1,48 @@
+  <h1>Official Donation Receipt</h1>
+
+  <p>Thank you for supporting CHARITY with your generous gift through Big Give.<p>
+
+      <p>A message from CHARITY:</p>
+    <blockquote>Thank you from our campaign!</blockquote>
+  
+  <h2>Tax receipt for your gift to CHARITY</h2>
+
+  <p>
+    Thank you for your gift to CHARITY, for the "CAMPAIGN" campaign.
+                  CHARITY is registered with the Charity reg authority with charity
+        number 123CHARITY_NUMBER_4567.
+               This receipt certifies that no goods or services were provided in return for your contribution.
+  </p>
+
+  <ul>
+    <li>Donation date: <strong>30 January 2023, 00:00 GMT</strong></li>
+    <li>Donor: <strong>Joe Bloggs</strong></li>
+    <li>Total for CHARITY: <strong>£50,000.00</strong></li>
+    <li>Donation: <strong>£25,000.00</strong></li>
+          <li>Gift Aid: <strong>£1,000.00</strong></li>
+                <li>Match Funds: <strong>£25,000.00</strong></li>
+      </ul>
+
+  <p>
+    Donation reference: <strong>xyz_transaction_id_zyz</strong><br>
+      </p>
+
+  
+  
+  <p>Total amount you have been charged is <strong>£0.00</strong>.</p>
+
+  <div id="charity-details">
+          <h2>CHARITY</h2>
+    
+    <ul>
+      <li>
+        <p>CHARITY</p>
+        <p></p>
+      </li>
+                      </ul>
+  </div>
+
+  <p>If you have any questions, please contact us.</p>
+    Kind regards,
+    Big Give Team
+    BigGive.org

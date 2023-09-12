@@ -43,7 +43,9 @@
 
   <p>
     Donation reference: <strong>{{ transactionId }}</strong><br>
-    Reference on credit/debit card statement: {{ statementReference | default("Enthuse.com") }}
+    {% if paymentMethodType is same as('card') %}
+      Reference on credit/debit card statement: {{ statementReference | default("Enthuse.com") }}
+    {% endif %}
   </p>
 
   {% if feeCoverAmount > 0 %}
