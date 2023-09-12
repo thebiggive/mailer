@@ -29,7 +29,7 @@
 
   
   
-  <p>Total amount you have been charged is <strong>£0.00</strong>.</p>
+  <p>Total amount you have been charged is <strong>£25,000.00</strong>.</p>
 
   <div id="charity-details">
           <h2>CHARITY</h2>

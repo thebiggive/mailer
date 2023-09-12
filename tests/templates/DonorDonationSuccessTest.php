@@ -33,6 +33,7 @@ class DonorDonationSuccessTest extends TestCase
             'donorFirstName' => 'Joe',
             'donorLastName' => 'Bloggs',
             'totalCharityValueAmount' => 50_000,
+            'totalChargedAmount' => 25_000,
             'donationAmount' => 25_000,
             'giftAidAmountClaimed' => 1_000,
             'matchedAmount' => 25_000,
