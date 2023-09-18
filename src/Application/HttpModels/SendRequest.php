@@ -47,6 +47,7 @@ class SendRequest
      *       "charityName": "The charity",
      *       "charityNumber": "1234765",
      *       "charityPhoneNumber": "+1 111 111122",
+     *       "paymentMethodType": "card",
      *       "charityPostalAddress": "123 Main St, London, N1 1AA, United Kingdom",
      *       "charityRegistrationAuthority": "Charity Commission for England and Wales",
      *       "charityWebsite": "https://example.com",
