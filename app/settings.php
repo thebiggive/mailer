@@ -82,6 +82,16 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
+                    'templateKey' => 'donor-funds-thanks',
+                    'subject' => 'Donation Funds Received',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'donorFirstName',
+                        'transferAmount',
+                        'newBalance',
+                    ],
+                ],
+                [
                     'templateKey' => 'donor-registered',
                     'subject' => 'You are registered with Big Give',
                     'subjectParams' => [],
