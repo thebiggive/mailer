@@ -84,3 +84,9 @@
 
   <p>If you have any questions, please contact us.</p>
 {% endblock %}
+{% block cardDetailsHeldByStripe %}
+{% if paymentMethodType is same as('card') %}
+  {# If it was customer_balance then it would not make sense to talk about card details here. #}
+  <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
+{% endif %}
+{% endblock %}
