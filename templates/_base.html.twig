@@ -56,12 +56,10 @@
           BigGive.org<br>
         </p>
 
-        {# This check is added because we don't want this sentence to be included in the pledger-success template,
-        but we want it included in all other templates, which include the `donorFirstName` parameter. MAIL-17 #}
-        {% if donorFirstName is not empty %}
-          <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
-        {% endif %}
-
+      {% endblock %}
+      {# Included by default - override with an empty block in templates where this is not relavent. #}
+      {% block cardDetailsHeldByStripe %}
+        <p>Your card details are held securely by Stripe. We do not have access to your card details.</p>
       {% endblock %}
     </div>
   </div>
