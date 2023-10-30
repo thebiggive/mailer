@@ -83,7 +83,7 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 [
                     'templateKey' => 'donor-funds-thanks',
-                    'subject' => 'Donation Funds Received',
+                    'subject' => 'Confirmation of Donation Funds Received',
                     'subjectParams' => [],
                     'requiredParams' => [
                         'donorFirstName',
