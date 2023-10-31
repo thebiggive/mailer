@@ -25,7 +25,6 @@ class DonorFundsThanksTest extends TestCase
                 // donor-donation-success take money amounts as numbers and format them, I feel like its better to give
                 // the responsibility for formatting money amount as a string to the calling service e.g. matchbot.
                 'transferAmount' => "£500",
-                'newBalance' => "£15,000",
             ]
         );
 

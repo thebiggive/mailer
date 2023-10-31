@@ -4,10 +4,16 @@
 
     <p>
         Thank you for transferring £500 into your Big Give account.
-        £15,000 is now available for you to donate to your chosen charities in our campaign. Please note that
+    </p>
+    <p>
+        Your funds are now available for you to donate to your chosen charities in our campaign. Please note that
         your funds will not count as a donation until you have completed the following steps:
     </p>
-
+    <p>
+        If you have kindly supported Big Give with a tip when you set up your account, then you should have a separate
+        email to thank you for that tip donation. The funds in your Big Give account will be reduced by the amount you
+        tipped.
+    </p>
     <ul>
         <li>Select a charity</li>
 
