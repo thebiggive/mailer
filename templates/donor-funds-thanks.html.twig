@@ -1,0 +1,32 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+    <p>
+        Dear {{ donorFirstName }},
+    </p>
+
+    <p>
+        Thank you for transferring {{ transferAmount }} into your Big Give account.
+        {{ newBalance }} is now available for you to donate to your chosen charities in our campaign. Please note that
+        your funds will not count as a donation until you have completed the following steps:
+    </p>
+
+    <ul>
+        <li>Select a charity</li>
+
+        <li>Click the 'Donate now' button on the charity's campaign page</li>
+
+        <li>Click on 'Log in' to access your account, using the email and password you set when you first created it.
+        </li>
+
+        <li>Choose the amount you'd like to donate to the charity. The donation payment will be taken from your
+            available balance.
+        </li>
+    </ul>
+
+    <p>
+        Any unspent funds will remain in your account for 90 days. If they are not used in this time, any remaining
+        balance will be automatically refunded to you.
+    </p>
+{% endblock %}
+{% block cardDetailsHeldByStripe %}{% endblock %}
