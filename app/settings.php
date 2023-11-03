@@ -88,7 +88,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'requiredParams' => [
                         'donorFirstName',
                         'transferAmount',
-                        'newBalance',
                     ],
                 ],
                 [
