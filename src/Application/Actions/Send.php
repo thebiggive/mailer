@@ -58,7 +58,6 @@ class Send extends Action
     protected function action(): Response
     {
         try {
-            /** @var SendRequest $sendRequest */
             $sendRequest = $this->serializer->deserialize(
                 $this->request->getBody(),
                 SendRequest::class,
