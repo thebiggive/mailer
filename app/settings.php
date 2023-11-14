@@ -31,6 +31,7 @@ return function (ContainerBuilder $containerBuilder) {
                         'currencyCode',
                         'donationAmount',
                         'donorFirstName',
+                        'paymentMethodType',
                         'donorLastName',
                         'feeCoverAmount',
                         'giftAidAmountClaimed',
@@ -78,6 +79,15 @@ return function (ContainerBuilder $containerBuilder) {
                         'transactionId',
                         'charityName',
                         'donationTipAmount',
+                    ],
+                ],
+                [
+                    'templateKey' => 'donor-funds-thanks',
+                    'subject' => 'Confirmation of Donation Funds Received',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'donorFirstName',
+                        'transferAmount',
                     ],
                 ],
                 [

@@ -1,0 +1,39 @@
+    <p>
+        Dear Josh,
+    </p>
+
+    <p>
+        Thank you for transferring £500 into your Big Give account.
+    </p>
+    <p>
+        If you have kindly supported Big Give with a tip when you set up your account, then you should have a separate
+        email to thank you for that tip donation. The funds in your Big Give account will be reduced by the amount you
+        tipped.
+    </p>
+    <p>
+        Your funds are now available for you to donate to your chosen charities in our campaign. Please note that
+        your funds will not count as a donation until you have completed the following steps:
+    </p>
+    <ul>
+        <li>Select a charity</li>
+
+        <li>Click the 'Donate now' button on the charity's campaign page</li>
+
+        <li>Click on 'Log in' to access your account, using the email and password you set when you first created it.
+        </li>
+
+        <li>Choose the amount you'd like to donate to the charity. The donation payment will be taken from your
+            available balance.
+        </li>
+    </ul>
+
+    <p>
+        Any unspent funds will remain in your account for 90 days. If they are not used in this time, any remaining
+        balance will be automatically refunded to you.
+    </p>
+    Kind regards,
+    Big Give Team
+
+    Big Give, Dragon Court, 27-29 Macklin Street, London, WC2B 5LX
+    Email: hello@biggive.org   Web: https://biggive.org
+    The Big Give Trust (charity number: 1136547; company number: 07273065)
