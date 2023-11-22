@@ -59,6 +59,7 @@ class SendRequest
      *       "feeCoverAmount": 5,
      *       "giftAidAmountClaimed": 100.00,
      *       "matchedAmount": 200.01,
+     *       "paymentMethodType": "card",
      *       "statementReference": "The Big Give The char",
      *       "tipAmount": 10,
      *       "totalChargedAmount": 415.01,

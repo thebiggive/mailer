@@ -11,15 +11,16 @@ use Mailer\Application\Validator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\RuntimeException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Mime\Email;
 use Twig;
 
 /**
  * Takes `SendRequest`s off the SQS/Redis queue and (tries to) send emails.
  */
-class SendRequestConsumer implements MessageHandlerInterface
+#[AsMessageHandler]
+class SendRequestConsumer
 {
     #[Pure]
     public function __construct(
@@ -32,9 +33,6 @@ class SendRequestConsumer implements MessageHandlerInterface
     ) {
     }
 
-    /**
-     * @param SendRequest $sendRequest
-     */
     public function __invoke(SendRequest $sendRequest): void
     {
         // Config can change over time and roll out to the API & consumers at slightly different times, so we should
