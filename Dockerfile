@@ -1,4 +1,4 @@
-FROM thebiggive/php:8.1
+FROM thebiggive/php:8.2
 
 # Artifacts are immutable so *never* bother re-checking files - this makes opcache.revalidate_freq irrelevant
 # See https://www.scalingphpbook.com/blog/2014/02/14/best-zend-opcache-settings.html
