@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Mailer\Application\HttpModels;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(
  *     type="object",

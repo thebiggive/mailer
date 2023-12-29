@@ -35,12 +35,14 @@ class SendRequestConsumer
 
     public function __invoke(SendRequest $sendRequest): void
     {
+        $donationId = $sendRequest->params['transactionId'] ?? null;
+
         // Config can change over time and roll out to the API & consumers at slightly different times, so we should
         // re-validate our `SendRequest`'s params before sending.
         if (!$this->validator->validate($sendRequest, true)) {
             // We don't treat this as permanent (`UnrecoverableExceptionInterface`) in case a change is rolling out and
             // the message could become valid with an imminent consumer update.
-            $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}");
+            $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}", $donationId);
         }
 
         $this->logger->info("Processing ID {$sendRequest->id}...");
@@ -79,7 +81,7 @@ class SendRequestConsumer
         } catch (TransportExceptionInterface $exception) {
             // Mailer transports can bail out with exceptions e.g. on connection timeouts.
             $class = get_class($exception);
-            $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}");
+            $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}", $donationId);
         }
 
         $this->logger->info("Sent ID {$sendRequest->id}");
@@ -90,9 +92,9 @@ class SendRequestConsumer
      * @param string $reason
      * @throws RuntimeException
      */
-    private function fail(string $id, string $reason): void
+    private function fail(string $id, string $reason, ?string $donationId): void
     {
-        $this->logger->error("Sending ID $id failed: $reason");
+        $this->logger->error("Sending ID $id failed: $reason" . ($donationId ? " (donation ID $donationId)" : ''));
         throw new RuntimeException($reason);
     }
 
@@ -100,13 +102,11 @@ class SendRequestConsumer
      * @param Email $email
      * @param string $fileName  Where in top level `images/` to find the original.
      * @param string $cid       Can be used after `cid:` in templates.
-     * @return Email
      * @link https://symfony.com/doc/current/mailer.html#embedding-images
      */
-    private function embedImages(Email $email, string $fileName, string $cid): Email
+    private function embedImages(Email $email, string $fileName, string $cid): void
     {
         $pathToImages = dirname(__DIR__, 4) . '/images/';
-
-        return $email->embedFromPath($pathToImages . $fileName, $cid);
+        $email->embedFromPath($pathToImages . $fileName, $cid);
     }
 }
