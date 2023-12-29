@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\HttpModels;
 
+use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Uuid;
 
 /**
