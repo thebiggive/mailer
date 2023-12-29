@@ -35,7 +35,6 @@ class SendRequestConsumer
 
     public function __invoke(SendRequest $sendRequest): void
     {
-        /** @var string|null $donationId */
         $donationId = $sendRequest->params['transactionId'] ?? null;
 
         // Config can change over time and roll out to the API & consumers at slightly different times, so we should
