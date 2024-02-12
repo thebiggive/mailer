@@ -6,6 +6,7 @@
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals" />
     </rule>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
-    <exclude-pattern>var/*</exclude-pattern>
+    <exclude-pattern>var/cache/*</exclude-pattern>
+    <exclude-pattern>var/twig/*</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
 </ruleset>
