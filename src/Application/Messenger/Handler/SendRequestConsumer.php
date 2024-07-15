@@ -22,6 +22,8 @@ use Twig;
 #[AsMessageHandler]
 class SendRequestConsumer
 {
+    private string $logPepper;
+
     #[Pure]
     public function __construct(
         private string $appEnv,
@@ -31,6 +33,7 @@ class SendRequestConsumer
         private Twig\Environment $twig,
         private Validator\SendRequest $validator
     ) {
+        $this->logPepper = getenv('LOG_PEPPER') ?: '';
     }
 
     public function __invoke(SendRequest $sendRequest): void
@@ -54,10 +57,12 @@ class SendRequestConsumer
 
         $templateMergeParams = array_merge($additionalParams, $sendRequest->params);
 
-        $bodyRenderedHtml = $this->twig->render("{$sendRequest->templateKey}.html.twig", $templateMergeParams);
-        $bodyPlainText = strip_tags($this->twig->render("{$sendRequest->templateKey}.html.twig", $sendRequest->params));
+        $templateKey = $sendRequest->templateKey;
 
-        $config = $this->config->get($sendRequest->templateKey);
+        $bodyRenderedHtml = $this->twig->render("{$templateKey}.html.twig", $templateMergeParams);
+        $bodyPlainText = strip_tags($this->twig->render("{$templateKey}.html.twig", $sendRequest->params));
+
+        $config = $this->config->get($templateKey);
 
         // For each $p in the configured subjectParams, we need an array element with $emailData->params[$p].
         $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
@@ -84,7 +89,15 @@ class SendRequestConsumer
             $this->fail($sendRequest->id, "Email send failed. $class: {$exception->getMessage()}", $donationId);
         }
 
-        $this->logger->info("Sent ID {$sendRequest->id}");
+        $pepperedEmailHash = hash('md5', $this->logPepper . '|' . $sendRequest->recipientEmailAddress);
+
+        // to generate a matching hash on Unix command line for use in searching logs,
+        // assuming recipient email address is 'fred@example.com' and logPepper is 'myLocalLogPepper', run
+        // echo -n "myLocalLogPepper|fred@example.com" | md5sum
+
+        // In production the pepper will be random and unguessable.
+
+        $this->logger->info("Sent ID {$sendRequest->id}, recipientHash: $pepperedEmailHash, template: $templateKey, ");
     }
 
     /**
