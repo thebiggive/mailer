@@ -57,7 +57,6 @@ class SendRequest
      *       "donationDatetime": "2021-05-01T00:00:00Z",
      *       "donorFirstName": "Patti",
      *       "donorLastName": "Smith",
-     *       "feeCoverAmount": 5,
      *       "giftAidAmountClaimed": 100.00,
      *       "matchedAmount": 200.01,
      *       "paymentMethodType": "card",

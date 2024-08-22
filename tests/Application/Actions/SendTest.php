@@ -288,7 +288,6 @@ class SendTest extends TestCase
             'donorFirstName' => 'Patti',
             'donorLastName' => 'Smith',
             'paymentMethodType' => 'card',
-            'feeCoverAmount' => 0,
             'giftAidAmountClaimed' => 100.00,
             'matchedAmount' => 200.01,
             'statementReference' => 'The Big Give The char',
