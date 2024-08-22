@@ -33,7 +33,6 @@ return function (ContainerBuilder $containerBuilder) {
                         'donorFirstName',
                         'paymentMethodType',
                         'donorLastName',
-                        'feeCoverAmount',
                         'giftAidAmountClaimed',
                         'matchedAmount',
                         'tipAmount',
