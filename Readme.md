@@ -34,13 +34,13 @@ In advance of the first app run:
 
 To start the app and its dependencies locally:
 
-    docker-compose up -d web
+    docker compose up -d web
 
 ### First run
 
 To get PHP dependencies in place, you'll need to run this once:
 
-    docker-compose exec web composer install
+    docker compose exec web composer install
 
 If dependencies change externally you may occasionally need to re-run the command.
 
@@ -48,11 +48,11 @@ If dependencies change externally you may occasionally need to re-run the comman
 
 Once you have the app running, you can test with: 
 
-    docker-compose exec web composer run test
+    docker compose exec web composer run test
 
 Linting is run with
 
-    docker-compose exec web composer run lint:check
+    docker compose exec web composer run lint:check
 
 To understand how these commands are run in CI, see [the CircleCI config file](./.circleci/config.yml).
 
@@ -62,7 +62,7 @@ Actions are annotated with [swagger-php](https://github.com/zircote/swagger-php)
 
 Generate OpenAPI documentation corresponding to your local codebase with:
 
-    docker-compose exec web composer run docs
+    docker compose exec web composer run docs
 
 The latest stable docs should be copied to their [live home on SwaggerHub](https://app.swaggerhub.com/apis/thebiggive/mailer/)
 after any changes.
@@ -94,7 +94,7 @@ and send. See [`Console`](./src/Application/Console.php) to understand how the c
 There is a Composer script `list-commands` which calls `list` to read the registered commands.
 With an already-running Docker `web` container, you can run
 
-    docker-compose exec web composer list-commands
+    docker compose exec web composer list-commands
 
 Currently we define no custom commands, instead pulling in the Symfony dependencies
 necessary to use the `symfony/messenger` component and its built-in commands.
@@ -104,7 +104,7 @@ necessary to use the `symfony/messenger` component and its built-in commands.
 To run a consumer worker similarly to how our ECS tasks will (distinct from
 the `web` container), run:
 
-    docker-compose run --rm consumer
+    docker compose run --rm consumer
 
 As you can see in `docker-compose.yml`, this is just a shortcut to get a standalone
 CLI process to run the long-running worker task defined with
