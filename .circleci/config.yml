@@ -76,6 +76,8 @@ workflows:
             - ecs-deploys
           requires:
             - test
+          account_id: ${AWS_ECR_REGISTRY_ID}
+          region: '${AWS_REGION}'
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'staging,staging-${CIRCLE_SHA1}'
           auth:
@@ -167,6 +169,8 @@ workflows:
             - ecs-deploys
           requires:
             - test
+          account_id: ${AWS_ECR_REGISTRY_ID}
+          region: '${AWS_REGION}'
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'regression,regression-${CIRCLE_SHA1}'
           auth:
@@ -258,6 +262,8 @@ workflows:
             - ecs-deploys
           requires:
             - test
+          account_id: ${AWS_ECR_REGISTRY_ID}
+          region: '${AWS_REGION}'
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'production,production-${CIRCLE_SHA1}'
           auth:
