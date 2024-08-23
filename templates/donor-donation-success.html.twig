@@ -48,10 +48,6 @@
     {% endif %}
   </p>
 
-  {% if feeCoverAmount > 0 %}
-    <p>Thank you for covering the platform fee of <strong>{{ feeCoverAmount | format_currency(currencyCode) }}</strong>. This enables {{ charityName }} to benefit from the full value of your donation.</p>
-  {% endif %}
-
   {% if tipAmount > 0 %}
     <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward Big Give. We are a charity too, and your donation helps us to keep developing the platform and to run match funding campaigns. Thank you for your support.</p>
   {% endif %}
