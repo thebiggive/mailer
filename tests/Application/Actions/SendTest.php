@@ -227,7 +227,6 @@ class SendTest extends TestCase
         $data = json_encode([
             'templateKey' => 'donor-donation-success',
             'recipientEmailAddress' => 'test@example.com',
-            'forGlobalCampaign' => true,
             'params' => $this->getFullDonorParams(),
         ], JSON_THROW_ON_ERROR, 512);
 

@@ -8,6 +8,7 @@ use JetBrains\PhpStorm\Pure;
 use Mailer\Application\HttpModels\SendRequest;
 use Mailer\Application\HttpModels\SendResponse;
 use Mailer\Application\Validator;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
@@ -19,26 +20,24 @@ use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/**
- * @OA\Post(
- *     path="/v1/send",
- *     summary="Send an email",
- *     operationId="send",
- *     security={
- *         {"sendHash": {}}
- *     },
- *     @OA\RequestBody(
- *         description="All details needed to send an email",
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/SendRequest")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Email queued to send",
- *         @OA\JsonContent(ref="#/components/schemas/SendResponse"),
- *     ),
- * ),
- */
+#[OA\Post(
+    path: '/v1/send',
+    summary: 'Send an email',
+    operationId: 'send',
+    security: [
+        ['sendHash' => []]
+    ],
+    requestBody: new OA\RequestBody(
+        description: 'All details needed to send an email',
+        required: true,
+        content: new OA\JsonContent(ref: SendRequest::class),
+    ),
+    responses: [new OA\Response(
+        response: 200,
+        description: 'Email queued to send',
+        content: new OA\JsonContent(ref: SendResponse::class),
+    )],
+)]
 class Send extends Action
 {
     #[Pure]
