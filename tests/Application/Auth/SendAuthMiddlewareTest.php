@@ -52,7 +52,7 @@ class SendAuthMiddlewareTest extends TestCase
 
     private function buildRequest(string $body, ?string $hash = null): Request
     {
-        $headers = $hash ? new Headers(['x-send-verify-hash' => $hash]) : new Headers();
+        $headers = $hash === null ? new Headers() : new Headers(['x-send-verify-hash' => $hash]);
 
         return (new Request(
             'get',
