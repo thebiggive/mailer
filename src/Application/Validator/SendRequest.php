@@ -24,10 +24,6 @@ class SendRequest
     public function validate(SendRequestModel $sendRequest, bool $full): bool
     {
         foreach (array_keys(get_class_vars(SendRequestModel::class)) as $property) {
-            if ($property === 'forGlobalCampaign') {
-                continue; // This is optional for now.
-            }
-
             if (empty($sendRequest->{$property})) {
                 $this->reason = 'Missing required data';
                 return false;

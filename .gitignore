@@ -6,5 +6,5 @@
 !/logs/README.md
 /.phpunit.result.cache
 
-# Ignored so that PHP annotations remain the source of truth. Run `composer run docs` to generate.
-openapi.yaml
+# Ignored so that PHP attributes remain the source of truth. Run `composer run docs` to generate.
+docs/openapi.yaml
