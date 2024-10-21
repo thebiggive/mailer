@@ -33,7 +33,8 @@ class SendRequestConsumer
         private Twig\Environment $twig,
         private Validator\SendRequest $validator
     ) {
-        $this->logPepper = getenv('LOG_PEPPER') ?: '';
+        $pepper = getenv('LOG_PEPPER');
+        $this->logPepper = $pepper === false ? '' : $pepper;
     }
 
     public function __invoke(SendRequest $sendRequest): void
@@ -107,7 +108,9 @@ class SendRequestConsumer
      */
     private function fail(string $id, string $reason, ?string $donationId): void
     {
-        $this->logger->error("Sending ID $id failed: $reason" . ($donationId ? " (donation ID $donationId)" : ''));
+        $this->logger->error(
+            "Sending ID $id failed: $reason" . ($donationId === null ? '' : " (donation ID $donationId)")
+        );
         throw new RuntimeException($reason);
     }
 

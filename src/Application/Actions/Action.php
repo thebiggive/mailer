@@ -4,25 +4,21 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Actions;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
-/**
- * @OA\Info(title="Big Give Mailer", version="1"),
- * @OA\Server(
- *     description="Staging",
- *     url="https://mailer-staging.thebiggivetest.org.uk",
- * ),
- * @OA\SecurityScheme(
- *     type="apiKey",
- *     in="header",
- *     securityScheme="sendHash",
- *     name="x-send-verify-hash",
- *     description="A variable content hash based on a shared webhook secret. To calculate
+#[OA\Info(title: "Big Give Mailer", version: "1")]
+#[OA\Server(description: "Staging", url: "https://mailer-staging.thebiggivetest.org.uk")]
+#[OA\SecurityScheme(
+    type: "apiKey",
+    in: "header",
+    securityScheme: "sendHash",
+    name: "x-send-verify-hash",
+    description: "A variable content hash based on a shared webhook secret. To calculate
                     the expected hash, trim leading and trailing whitespace from the
                     JSON body, and get an HMAC SHA-256 digest using your `SEND_SECRET` as
                     the key. Convert the hash digest to lowercase hexits. So, in pseudocode,
@@ -33,8 +29,7 @@ use Slim\Exception\HttpNotFoundException;
                             SEND_SECRET
                         )
                     )"
- * ),
- */
+)]
 abstract class Action
 {
     protected Request $request;
