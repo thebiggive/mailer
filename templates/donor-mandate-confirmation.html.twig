@@ -1,0 +1,68 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+    <h1>Regular Giving Mandate for {{ charityName }}</h1>
+
+    <p>
+    Thank you for supporting {{ charityName }} with your generous gift through Big Give.
+    </p>
+
+    <p>
+    A message from {{ charityName }}:
+    </p>
+    <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
+
+    <p>
+        {{ campaignThankYouEmail }}
+    </p>
+
+    <h2>Regular Giving Mandate Details</h2>
+    <p>
+        Thank you for setting up your regular gift to {{ charityName }} for the {{ campaignName }} campaign. {{ charityName }}
+        is registered with the Charity Commission for England and Wales with charity number {{ charityNumber }}. This email
+        certifies that no goods or services will be provided in return for your contribution.
+    </p>
+
+    <ul>
+        <li>Regular gift sign up date: {{ signupDate}}</li>
+        <li>Donor: {{ donorName }}</li>
+        <li>Schedule: {{ schedule }}</li>
+        <li>Next expected payment date: {{ nextPaymentDate }}</li>
+        <li>Amount: {{ amount }}</li>
+        <li>Gift aid value: {{ giftAidValue }}</li>
+        <li>Total with gift aid: {{totalIncGiftAid }}</li>
+    </ul>
+    <p>Total amount you have been charged is {{ totalCharged }}</p>
+
+    <h2>First donation details</h2>
+
+    <ul>
+        <li>First donation: {{firstDonation.donationAmount | format_currency(firstDonation.currencyCode) }}</li>
+        <li>Donation date: {{firstDonation.donationDatetime | date('j F Y, H:i T', 'Europe/London') }}</li>
+        <li>Gift aid value: {{firstDonation.giftAidAmountClaimed | format_currency(firstDonation.currencyCode) }}</li>
+        <li>Total with gift aid: {{firstDonation.totalWithGiftAid | format_currency(firstDonation.currencyCode) }}</li>
+        <li>Matched amount: {{firstDonation.matchedAmount | format_currency(firstDonation.currencyCode) }}</li>
+        <li>Total for {{ firstDonation.charityName }}: {{ firstDonation.totalCharityValueAmount | format_currency(firstDonation.currencyCode) }}</li>
+        <li>Donation reference: {{ firstDonation.transactionId }}</li>
+        <li>Reference on credit/debit card statement: {{ firstDonation.statementReference }}</li>
+    </ul>
+
+    <h2>{{charityName}}</h2>
+
+    <ul>
+        <li>
+            <p>{{ charityName }}</p>
+            <p>{{ charityPostalAddress }}</p>
+        </li>
+        {% if charityPhoneNumber is not empty %}
+            <li>Tel: {{ charityPhoneNumber }}</li>
+        {% endif %}
+        {% if charityEmailAddress is not empty %}
+            <li>Email: {{ charityEmailAddress }}</li>
+        {% endif %}
+        {% if charityWebsite is not empty %}
+            <li>Web: <a href="{{ charityWebsite }}">{{ charityWebsite }}</a></li>
+        {% endif %}
+    </ul>
+
+{% endblock %}
