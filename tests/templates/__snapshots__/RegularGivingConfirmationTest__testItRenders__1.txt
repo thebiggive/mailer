@@ -39,8 +39,6 @@
         <li>Donation reference: [PSP Transaction ID]</li>
         <li>Reference on credit/debit card statement: The Big Give [Charity Name]</li>
     </ul>
-
-    <h2>[Charity Name]</h2>
     Kind regards,
     Big Give Team
 
