@@ -12,10 +12,6 @@
     </p>
     <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
 
-    <p>
-        {{ campaignThankYouEmail }}
-    </p>
-
     <h2>Regular Giving Mandate Details</h2>
     <p>
         Thank you for setting up your regular gift to {{ charityName }} for the {{ campaignName }} campaign. {{ charityName }}
@@ -48,21 +44,4 @@
     </ul>
 
     <h2>{{charityName}}</h2>
-
-    <ul>
-        <li>
-            <p>{{ charityName }}</p>
-            <p>{{ charityPostalAddress }}</p>
-        </li>
-        {% if charityPhoneNumber is not empty %}
-            <li>Tel: {{ charityPhoneNumber }}</li>
-        {% endif %}
-        {% if charityEmailAddress is not empty %}
-            <li>Email: {{ charityEmailAddress }}</li>
-        {% endif %}
-        {% if charityWebsite is not empty %}
-            <li>Web: <a href="{{ charityWebsite }}">{{ charityWebsite }}</a></li>
-        {% endif %}
-    </ul>
-
 {% endblock %}

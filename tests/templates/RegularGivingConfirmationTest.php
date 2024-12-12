@@ -18,7 +18,6 @@ class RegularGivingConfirmationTest extends TestCase
                 'campaignName' => '[Campaign Name]',
                 'charityNumber' => '[Charity Number]',
                 'campaignThankYouMessage' => '[Campaign Thank You Message]',
-                'campaignThankYouEmail' => 'campaign@thankyou.email',
 
                 'signupDate' => 'DD/MM/YYYY HH:MM',
                 'donorName' => '[Donor Name]',
@@ -28,10 +27,6 @@ class RegularGivingConfirmationTest extends TestCase
                 'giftAidValue' => '£4.00',
                 'totalIncGiftAid' => '£24.00',
                 'totalCharged' => '£20.00',
-                'charityPostalAddress' => '[Charity Postal Address]',
-                'charityPhoneNumber' => '[Charity Phone Number]',
-                'charityEMailAddress' => '[Charity E-Mail Address]',
-                'charityWebsite' => 'https://charity.website',
 
                 'firstDonation' => [
                     // mostly same keys as used on the donorDonationSuccess email

@@ -9,10 +9,6 @@
     </p>
     <blockquote>[Campaign Thank You Message]</blockquote>
 
-    <p>
-        campaign@thankyou.email
-    </p>
-
     <h2>Regular Giving Mandate Details</h2>
     <p>
         Thank you for setting up your regular gift to [Charity Name] for the [Campaign Name] campaign. [Charity Name]
@@ -45,16 +41,6 @@
     </ul>
 
     <h2>[Charity Name]</h2>
-
-    <ul>
-        <li>
-            <p>[Charity Name]</p>
-            <p>[Charity Postal Address]</p>
-        </li>
-                    <li>Tel: [Charity Phone Number]</li>
-                                    <li>Web: <a href="https://charity.website">https://charity.website</a></li>
-            </ul>
-
     Kind regards,
     Big Give Team
 
