@@ -33,12 +33,16 @@
     <h2>First donation details</h2>
 
     <ul>
-        <li>First donation: {{firstDonation.donationAmount | format_currency(firstDonation.currencyCode) }}</li>
-        <li>Donation date: {{firstDonation.donationDatetime | date('j F Y, H:i T', 'Europe/London') }}</li>
-        <li>Gift aid value: {{firstDonation.giftAidAmountClaimed | format_currency(firstDonation.currencyCode) }}</li>
-        <li>Total with gift aid: {{firstDonation.totalWithGiftAid | format_currency(firstDonation.currencyCode) }}</li>
-        <li>Matched amount: {{firstDonation.matchedAmount | format_currency(firstDonation.currencyCode) }}</li>
-        <li>Total for {{ firstDonation.charityName }}: {{ firstDonation.totalCharityValueAmount | format_currency(firstDonation.currencyCode) }}</li>
+        {% include 'donation-details-partial.html.twig' with {
+            'donationAmount': firstDonation.donationAmount,
+            'donationDatetime': firstDonation.donationDatetime,
+            'donorName': donorName,
+            'charityName': charityName,
+            'totalCharityValueAmount': firstDonation.totalCharityValueAmount,
+            'currencyCode': firstDonation.currencyCode,
+            'giftAidAmountClaimed': firstDonation.giftAidAmountClaimed,
+            'matchedAmount': firstDonation.matchedAmount,
+        } only %}
         <li>Donation reference: {{ firstDonation.transactionId }}</li>
         <li>Reference on credit/debit card statement: {{ firstDonation.statementReference }}</li>
     </ul>

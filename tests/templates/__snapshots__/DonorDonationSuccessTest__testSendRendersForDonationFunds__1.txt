@@ -15,11 +15,11 @@
   </p>
 
   <ul>
-    <li>Donation date: <strong>30 January 2023, 00:00 GMT</strong></li>
+        <li>Donation date: <strong>30 January 2023, 00:00 GMT</strong></li>
     <li>Donor: <strong>Joe Bloggs</strong></li>
     <li>Total for CHARITY: <strong>£50,000.00</strong></li>
     <li>Donation: <strong>£25,000.00</strong></li>
-          <li>Gift Aid: <strong>£1,000.00</strong></li>
+            <li>Gift Aid: <strong>£1,000.00</strong></li>
                 <li>Match Funds: <strong>£25,000.00</strong></li>
       </ul>
 

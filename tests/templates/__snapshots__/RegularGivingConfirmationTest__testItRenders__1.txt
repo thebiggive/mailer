@@ -30,13 +30,13 @@
     <h2>First donation details</h2>
 
     <ul>
-        <li>First donation: £25,000.00</li>
-        <li>Donation date: 30 January 2023, 00:00 GMT</li>
-        <li>Gift aid value: £1,000.00</li>
-        <li>Total with gift aid: £26,000.00</li>
-        <li>Matched amount: £25,000.00</li>
-        <li>Total for [Charity Name]: £50,000.00</li>
-        <li>Donation reference: [PSP Transaction ID]</li>
+            <li>Donation date: <strong>30 January 2023, 00:00 GMT</strong></li>
+    <li>Donor: <strong>[Donor Name]</strong></li>
+    <li>Total for [Charity Name]: <strong>£50,000.00</strong></li>
+    <li>Donation: <strong>£25,000.00</strong></li>
+            <li>Gift Aid: <strong>£1,000.00</strong></li>
+                <li>Match Funds: <strong>£25,000.00</strong></li>
+            <li>Donation reference: [PSP Transaction ID]</li>
         <li>Reference on credit/debit card statement: The Big Give [Charity Name]</li>
     </ul>
     Kind regards,
