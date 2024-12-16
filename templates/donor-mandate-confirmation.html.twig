@@ -28,7 +28,6 @@
         <li>Gift aid value: {{ giftAidValue }}</li>
         <li>Total with gift aid: {{totalIncGiftAid }}</li>
     </ul>
-    <p>Total amount you have been charged is {{ totalCharged }}</p>
 
     <h2>First donation details</h2>
 
@@ -46,4 +45,8 @@
         <li>Donation reference: {{ firstDonation.transactionId }}</li>
         <li>Reference on credit/debit card statement: {{ firstDonation.statementReference }}</li>
     </ul>
+
+    <p>Total amount you have been charged is {{ totalCharged }}</p>
+
+
 {% endblock %}
