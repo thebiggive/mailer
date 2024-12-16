@@ -25,7 +25,6 @@
         <li>Gift aid value: £4.00</li>
         <li>Total with gift aid: £24.00</li>
     </ul>
-    <p>Total amount you have been charged is £20.00</p>
 
     <h2>First donation details</h2>
 
@@ -39,6 +38,10 @@
             <li>Donation reference: [PSP Transaction ID]</li>
         <li>Reference on credit/debit card statement: The Big Give [Charity Name]</li>
     </ul>
+
+    <p>Total amount you have been charged is £20.00</p>
+
+
     Kind regards,
     Big Give Team
 
