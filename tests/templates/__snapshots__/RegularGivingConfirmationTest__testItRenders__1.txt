@@ -1,0 +1,52 @@
+    <h1>Regular Giving Mandate for [Charity Name]</h1>
+
+    <p>
+    Thank you for supporting [Charity Name] with your generous gift through Big Give.
+    </p>
+
+    <p>
+    A message from [Charity Name]:
+    </p>
+    <blockquote>[Campaign Thank You Message]</blockquote>
+
+    <h2>Regular Giving Mandate Details</h2>
+    <p>
+        Thank you for setting up your regular gift to [Charity Name] for the [Campaign Name] campaign. [Charity Name]
+        is registered with the Charity Commission for England and Wales with charity number [Charity Number]. This email
+        certifies that no goods or services will be provided in return for your contribution.
+    </p>
+
+    <ul>
+        <li>Regular gift sign up date: DD/MM/YYYY HH:MM</li>
+        <li>Donor: [Donor Name]</li>
+        <li>Schedule: Monthly on day #3</li>
+        <li>Next expected payment date: MM/DD/YYYY</li>
+        <li>Amount: £20.00</li>
+        <li>Gift aid value: £4.00</li>
+        <li>Total with gift aid: £24.00</li>
+    </ul>
+
+    <h2>First donation details</h2>
+
+    <ul>
+            <li>Donation date: <strong>30 January 2023, 00:00 GMT</strong></li>
+    <li>Donor: <strong>[Donor Name]</strong></li>
+    <li>Total for [Charity Name]: <strong>£50,000.00</strong></li>
+    <li>Donation: <strong>£25,000.00</strong></li>
+            <li>Gift Aid: <strong>£1,000.00</strong></li>
+                <li>Match Funds: <strong>£25,000.00</strong></li>
+            <li>Donation reference: [PSP Transaction ID]</li>
+        <li>Reference on credit/debit card statement: The Big Give [Charity Name]</li>
+    </ul>
+
+    <p>Total amount you have been charged is £20.00</p>
+
+
+    Kind regards,
+    Big Give Team
+
+    Big Give, Dragon Court, 27-29 Macklin Street, London, WC2B 5LX
+    Email: hello@biggive.org   Web: https://biggive.org
+    The Big Give Trust (charity number: 1136547; company number: 07273065)
+
+    Your card details are held securely by Stripe. We do not have access to your card details.

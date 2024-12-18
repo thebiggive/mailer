@@ -1,0 +1,10 @@
+    <li>Donation date: <strong>{{ donationDatetime | date('j F Y, H:i T', 'Europe/London') }}</strong></li>
+    <li>Donor: <strong>{{ donorName }}</strong></li>
+    <li>Total for {{ charityName }}: <strong>{{ totalCharityValueAmount | format_currency(currencyCode) }}</strong></li>
+    <li>Donation: <strong>{{ donationAmount | format_currency(currencyCode) }}</strong></li>
+    {% if currencyCode is same as('GBP') %}
+        <li>Gift Aid: <strong>{{ giftAidAmountClaimed | format_currency(currencyCode) }}</strong></li>
+    {% endif %}
+    {% if matchedAmount > 0 %}
+        <li>Match Funds: <strong>{{ matchedAmount | format_currency(currencyCode) }}</strong></li>
+    {% endif %}

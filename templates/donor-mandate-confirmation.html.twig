@@ -1,0 +1,52 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+    <h1>Regular Giving Mandate for {{ charityName }}</h1>
+
+    <p>
+    Thank you for supporting {{ charityName }} with your generous gift through Big Give.
+    </p>
+
+    <p>
+    A message from {{ charityName }}:
+    </p>
+    <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
+
+    <h2>Regular Giving Mandate Details</h2>
+    <p>
+        Thank you for setting up your regular gift to {{ charityName }} for the {{ campaignName }} campaign. {{ charityName }}
+        is registered with the Charity Commission for England and Wales with charity number {{ charityNumber }}. This email
+        certifies that no goods or services will be provided in return for your contribution.
+    </p>
+
+    <ul>
+        <li>Regular gift sign up date: {{ signupDate}}</li>
+        <li>Donor: {{ donorName }}</li>
+        <li>Schedule: {{ schedule }}</li>
+        <li>Next expected payment date: {{ nextPaymentDate }}</li>
+        <li>Amount: {{ amount }}</li>
+        <li>Gift aid value: {{ giftAidValue }}</li>
+        <li>Total with gift aid: {{totalIncGiftAid }}</li>
+    </ul>
+
+    <h2>First donation details</h2>
+
+    <ul>
+        {% include 'donation-details-partial.html.twig' with {
+            'donationAmount': firstDonation.donationAmount,
+            'donationDatetime': firstDonation.donationDatetime,
+            'donorName': donorName,
+            'charityName': charityName,
+            'totalCharityValueAmount': firstDonation.totalCharityValueAmount,
+            'currencyCode': firstDonation.currencyCode,
+            'giftAidAmountClaimed': firstDonation.giftAidAmountClaimed,
+            'matchedAmount': firstDonation.matchedAmount,
+        } only %}
+        <li>Donation reference: {{ firstDonation.transactionId }}</li>
+        <li>Reference on credit/debit card statement: {{ firstDonation.statementReference }}</li>
+    </ul>
+
+    <p>Total amount you have been charged is {{ totalCharged }}</p>
+
+
+{% endblock %}
