@@ -17,6 +17,7 @@ class RegularGivingConfirmationTest extends TestCase
                 'charityName' => '[Charity Name]',
                 'campaignName' => '[Campaign Name]',
                 'charityNumber' => '[Charity Number]',
+                'charityRegistrationAuthority' => '[Some Commission]',
                 'campaignThankYouMessage' => '[Campaign Thank You Message]',
 
                 'signupDate' => 'DD/MM/YYYY HH:MM',
