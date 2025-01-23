@@ -61,7 +61,8 @@ class SendRequest implements MessageGroupAwareInterface
         $this->env = getenv('APP_ENV');
     }
 
-    public function getMessageGroupId(): ?string
+    #[\Override]
+    public function getMessageGroupId(): string
     {
         return "send-request-{$this->id}";
     }
