@@ -6,9 +6,10 @@ namespace Mailer\Application\HttpModels;
 
 use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Bridge\AmazonSqs\MessageGroupAwareInterface;
 
 #[OA\Schema(type: 'object', title: 'Send Request', required: ['templateKey', 'recipientEmailAddress', 'params'])]
-class SendRequest
+class SendRequest implements MessageGroupAwareInterface
 {
     #[OA\Property(example: "donor-donation-success")]
     public string $templateKey;
@@ -58,5 +59,10 @@ class SendRequest
     {
         $this->id = (Uuid::uuid4())->toString();
         $this->env = getenv('APP_ENV');
+    }
+
+    public function getMessageGroupId(): ?string
+    {
+        return "send-request-{$this->id}";
     }
 }
