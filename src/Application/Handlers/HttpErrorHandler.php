@@ -74,8 +74,13 @@ class HttpErrorHandler extends SlimErrorHandler
         $response = $this->responseFactory->createResponse($statusCode);
         $response->getBody()->write($encodedPayload);
 
+        $uri = $_SERVER['REQUEST_URI'] ?? '';
+        $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
+
         $this->logError(
-            get_class($this->exception) . ": {$this->exception->getMessage()} - {$this->exception->getTraceAsString()}"
+            get_class($this->exception) .
+            ": {$this->exception->getMessage()} - {$this->exception->getTraceAsString()} " .
+            "- Request URI: {$uri} - Remote Addr: {$remoteAddr}"
         );
 
         return $response->withHeader('Content-Type', 'application/json');
