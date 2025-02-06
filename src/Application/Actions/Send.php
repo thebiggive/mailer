@@ -63,12 +63,19 @@ class Send extends Action
                 'json'
             );
         } catch (UnexpectedValueException $exception) { // This is the Serializer one, not the global one
+            // Only authorized, backend clients (e.g. Salesforce & Matchbot) should be able to send requests here, so
+            //we can afford to generate an alarm if we have any failure.
+
             $error = new ActionError(ActionError::BAD_REQUEST, 'Non-deserialisable data');
+            $this->logger->error("UnexpectedValueException during Send request: " . $exception->getMessage());
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
         if (!$this->validator->validate($sendRequest, false)) {
             $error = new ActionError(ActionError::BAD_REQUEST, $this->validator->getReason());
+
+            $this->logger->error("Validation failure during send request: " . $this->validator->getReason());
+
             return $this->respond(new ActionPayload(400, null, $error));
         }
 

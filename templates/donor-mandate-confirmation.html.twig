@@ -14,9 +14,14 @@
 
     <h2>Regular Giving Mandate Details</h2>
     <p>
-        Thank you for setting up your regular gift to {{ charityName }} for the {{ campaignName }} campaign. {{ charityName }}
-        is registered with the Charity Commission for England and Wales with charity number {{ charityNumber }}. This email
-        certifies that no goods or services will be provided in return for your contribution.
+        Thank you for setting up your regular gift to {{ charityName }} for the {{ campaignName }} campaign.
+        {% if charityNumber is empty %}
+            {{ charityName }} is an exempt charitable organisation eligible for UK Gift Aid.
+        {% else %}
+            {{ charityName }} is registered with the {{ charityRegistrationAuthority }} with charity
+        number {{ charityNumber }}.
+        {% endif %}
+        This email certifies that no goods or services will be provided in return for your contribution.
     </p>
 
     <ul>

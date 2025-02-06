@@ -11,9 +11,10 @@
 
     <h2>Regular Giving Mandate Details</h2>
     <p>
-        Thank you for setting up your regular gift to [Charity Name] for the [Campaign Name] campaign. [Charity Name]
-        is registered with the Charity Commission for England and Wales with charity number [Charity Number]. This email
-        certifies that no goods or services will be provided in return for your contribution.
+        Thank you for setting up your regular gift to [Charity Name] for the [Campaign Name] campaign.
+                    [Charity Name] is registered with the [Some Commission] with charity
+        number [Charity Number].
+                This email certifies that no goods or services will be provided in return for your contribution.
     </p>
 
     <ul>
