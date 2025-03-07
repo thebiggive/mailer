@@ -24,6 +24,10 @@ class SendRequest
     public function validate(SendRequestModel $sendRequest, bool $full): bool
     {
         foreach (array_keys(get_class_vars(SendRequestModel::class)) as $property) {
+            if ($property === 'sendingApplication') {
+                // not required
+                continue;
+            }
             if (empty($sendRequest->{$property})) {
                 $this->reason = 'Missing required data';
                 return false;
