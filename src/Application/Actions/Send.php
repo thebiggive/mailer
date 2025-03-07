@@ -72,7 +72,7 @@ class Send extends Action
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
-        $sender = $this->request->getHeaderLine('x-sending-application');
+        $sender = $this->request->getHeaderLine('User-Agent');
         if ($sender) {
             $sendRequest->sendingApplication = $sender;
         }
