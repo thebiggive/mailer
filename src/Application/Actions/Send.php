@@ -72,6 +72,11 @@ class Send extends Action
             return $this->respond(new ActionPayload(400, null, $error));
         }
 
+        $sender = $this->request->getHeaderLine('x-sending-application');
+        if ($sender) {
+            $sendRequest->sendingApplication = $sender;
+        }
+
         $stamps = [
             new BusNameStamp('email'),
             new TransportMessageIdStamp($sendRequest->id),

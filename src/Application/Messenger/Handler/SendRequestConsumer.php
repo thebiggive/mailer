@@ -70,7 +70,9 @@ class SendRequestConsumer
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         if ($this->appEnv !== 'production') {
-            $subject = "({$this->appEnv}) $subject";
+            $subject = (bool)$sendRequest->sendingApplication ?
+                "({$this->appEnv} / $sendRequest->sendingApplication) $subject" :
+                "({$this->appEnv}) $subject";
         }
 
         $fromAddress = getenv('SENDER_ADDRESS');
