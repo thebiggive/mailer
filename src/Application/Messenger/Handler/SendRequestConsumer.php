@@ -48,8 +48,9 @@ class SendRequestConsumer
             // the message could become valid with an imminent consumer update.
             $this->fail($sendRequest->id, "Validation failed: {$this->validator->getReason()}", $donationId);
         }
+        $userAgent = $sendRequest->sendingApplication;
 
-        $this->logger->info("Processing ID {$sendRequest->id}...");
+        $this->logger->info("Processing ID {$sendRequest->id} for agent $userAgent...");
 
         $email = new Email();
         $this->embedImages($email, 'BigGive.png', 'tbg-logo');
@@ -70,8 +71,8 @@ class SendRequestConsumer
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
         if ($this->appEnv !== 'production') {
-            $subject = (bool)$sendRequest->sendingApplication ?
-                "({$this->appEnv} / $sendRequest->sendingApplication) $subject" :
+            $subject = (bool)$userAgent ?
+                "({$this->appEnv} / $userAgent) $subject" :
                 "({$this->appEnv}) $subject";
         }
 
@@ -100,7 +101,8 @@ class SendRequestConsumer
 
         // In production the pepper will be random and unguessable.
 
-        $this->logger->info("Sent ID {$sendRequest->id}, recipientHash: $pepperedEmailHash, template: $templateKey, ");
+        $this->logger->info("Sent ID {$sendRequest->id}, recipientHash: $pepperedEmailHash, template: $templateKey, " .
+            "for agent $userAgent");
     }
 
     /**
