@@ -55,10 +55,17 @@ class SendRequest implements MessageGroupAwareInterface
     public string $id;
     public string $env;
 
+    /**
+     * Identifies the application that asked Mailer to send this message. Not necassarily sent by all applications,
+     * so may be null.
+     */
+    public ?string $sendingApplication = null;
+
     public function __construct()
     {
         $this->id = (Uuid::uuid4())->toString();
         $this->env = getenv('APP_ENV');
+        $this->sendingApplication = null;
     }
 
     #[\Override]
