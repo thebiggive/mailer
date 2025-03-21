@@ -26,7 +26,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subjectParams' => ['donorFirstName'],
                     'requiredParams' => [
                         'campaignName',
-                        'campaignThankYouMessage',
                         'charityName',
                         'currencyCode',
                         'donationAmount',

@@ -7,10 +7,12 @@
     Thank you for supporting {{ charityName }} with your generous gift through Big Give.
     </p>
 
+{% if campaignThankYouMessage %}
     <p>
     A message from {{ charityName }}:
     </p>
     <blockquote>{{ campaignThankYouMessage | nl2br }}</blockquote>
+{% endif %}
 
     <h2>Regular Giving Mandate Details</h2>
     <p>
