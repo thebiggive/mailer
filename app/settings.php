@@ -95,7 +95,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'requiredParams' => [
                         'charityName',
                         'campaignName',
-                        'campaignThankYouMessage',
                         'signupDate',
                         'donorName',
                         'schedule',
