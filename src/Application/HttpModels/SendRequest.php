@@ -35,6 +35,7 @@ class SendRequest implements MessageGroupAwareInterface
             "charityPostalAddress" => "123 Main St, London, N1 1AA, United Kingdom",
             "charityRegistrationAuthority" => "Charity Commission for England and Wales",
             "charityWebsite" => "https://example.com",
+            "createAccountUri" => "https://donate.biggive.org/register?c=000000&u=11112222-6c54-4b01-90e6-d701748f0852",
             "currencyCode" => "GBP",
             "donationAmount" => 400.01,
             "donationDatetime" => "2021-05-01T00:00:00Z",
