@@ -125,6 +125,14 @@ return function (ContainerBuilder $containerBuilder) {
                         'resetLink',
                     ],
                 ],
+                [
+                    'templateKey' => 'new-account-email-verification',
+                    'subject' => '%s is your Big Give verification code',
+                    'subjectParams' => ['secretCode'],
+                    'requiredParams' => [
+                        'secretCode',
+                    ],
+                ],
             ],
 
             'logger' => [
