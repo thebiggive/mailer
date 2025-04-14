@@ -133,6 +133,14 @@ return function (ContainerBuilder $containerBuilder) {
                         'secretCode',
                     ],
                 ],
+                [
+                    'templateKey' => 'new-account-email-already-registered',
+                    'subject' => 'You are already registered with Big Give',
+                    'subjectParams' => ['secretCode'],
+                    'requiredParams' => [
+                        'firstName',
+                    ],
+                ],
             ],
 
             'logger' => [
