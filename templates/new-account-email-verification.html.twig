@@ -1,0 +1,18 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+<p>
+    Enter your verification code to finish signing up.
+</p>
+<p style="font-size: 3em; text-align: center; margin-bottom: 2em; margin-top: 2em">
+    {{ secretCode }}
+</p>
+<p>
+    If you didn’t make this request, you can ignore this email.
+</p>
+<p>
+    If you need any more help setting up or logging in to your Big Give account, <a href="https://biggive.org/support/">
+    check out our support FAQs or contact us</a>.
+</p>
+
+{% endblock %}
