@@ -1,0 +1,21 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+    <p>Dear {{ firstName }},</p>
+
+    <p>You (or someone using your email address) have asked to register a Big Give account.</p>
+
+    <p>
+        There is already an account registered for this email address. If you don't have the password for this account
+        please use the "Forgot Password" option at https://donate.biggive.org/login.
+    </p>
+
+    <p>
+        If you didn’t make this request, you can ignore this email. If you need any more help setting up or logging in
+        to your Big Give account, <a href="https://biggive.org/support/">check out our FAQs or contact us</a>.
+    </p>
+
+    <p>Thanks,</p>
+
+    <p>Big Give team</p>
+{% endblock %}
