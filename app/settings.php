@@ -95,7 +95,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'requiredParams' => [
                         'charityName',
                         'campaignName',
-                        'campaignThankYouMessage',
                         'signupDate',
                         'donorName',
                         'schedule',
@@ -124,6 +123,22 @@ return function (ContainerBuilder $containerBuilder) {
                         'firstName',
                         'lastName',
                         'resetLink',
+                    ],
+                ],
+                [
+                    'templateKey' => 'new-account-email-verification',
+                    'subject' => '%s is your Big Give verification code',
+                    'subjectParams' => ['secretCode'],
+                    'requiredParams' => [
+                        'secretCode',
+                    ],
+                ],
+                [
+                    'templateKey' => 'new-account-email-already-registered',
+                    'subject' => 'You are already registered with Big Give',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                        'firstName',
                     ],
                 ],
             ],

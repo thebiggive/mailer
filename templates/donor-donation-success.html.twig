@@ -54,6 +54,16 @@
 
   <p>Total amount you have been charged is <strong>{{ totalChargedAmount | format_currency(currencyCode) }}</strong>.</p>
 
+  {% if createAccountUri is not empty %}
+    <p>For a smoother giving experience, create a Big Give account. Your information will be saved
+    securely, making future donations quicker and easier.</p>
+    <p><strong>
+        <a href="{{ createAccountUri }}" id="create-account">
+          Create a Big Give donor account</a>
+      </strong>.</p>
+    <p>This is a special link that gives access to your information from this donation, so don't share it or forward this email.</p>
+  {% endif %}
+
   <div id="charity-details">
     {% if charityLogoUri is empty %}
       <h2>{{ charityName }}</h2>

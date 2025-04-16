@@ -1,0 +1,22 @@
+<p>
+    Enter your verification code to finish signing up.
+</p>
+<p style="font-size: 2em; text-align: center; ">
+    123321
+</p>
+<p>
+    If you didn’t make this request, you can ignore this email.
+</p>
+<p>
+    If you need any more help setting up or logging in to your Big Give account, <a href="https://biggive.org/support/">
+    check out our support FAQs or contact us</a>.
+</p>
+
+    Kind regards,
+    Big Give Team
+
+    Big Give, Dragon Court, 27-29 Macklin Street, London, WC2B 5LX
+    Email: hello@biggive.org   Web: https://biggive.org
+    The Big Give Trust (charity number: 1136547; company number: 07273065)
+
+    Your card details are held securely by Stripe. We do not have access to your card details.
