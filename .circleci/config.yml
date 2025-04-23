@@ -48,6 +48,17 @@ workflows:
   build:
     jobs:
       - test:
+          filters:
+            branches:
+              ignore: ['main', 'develop', 'trunk']
+          context:
+            - docker-hub-creds
+  build-and-notify:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only: ['main', 'develop', 'trunk']
           context:
             - docker-hub-creds
             - jira
