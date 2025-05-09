@@ -87,7 +87,13 @@ class SendRequestConsumer
             ->text($bodyPlainText)
         ;
 
-        if ($isNotProduction && \str_contains($sendRequest->recipientEmailAddress, 'NO_SEND_EMAIL')) {
+        if (
+            $isNotProduction && (
+            \str_contains($sendRequest->recipientEmailAddress, 'NO_SEND_EMAIL') ||
+            \str_contains($sendRequest->recipientEmailAddress, 'tech+regression+credits') ||
+            \str_contains($sendRequest->recipientEmailAddress, 'tech+regression+donor')
+            )
+        ) {
             // saves our usage allowance for testing emails.
             $this->logger->info("Skipping email send for message to $sendRequest->recipientEmailAddress");
             return;
