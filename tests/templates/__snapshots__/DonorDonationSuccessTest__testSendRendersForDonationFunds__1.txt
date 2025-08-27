@@ -4,7 +4,7 @@
 
       <p>A message from CHARITY:</p>
     <blockquote>Thank you from our campaign!</blockquote>
-  
+
   <h2>Tax receipt for your gift to CHARITY</h2>
 
   <p>
@@ -27,17 +27,16 @@
     Donation reference: <strong>xyz_transaction_id_zyz</strong><br>
       </p>
 
-  
+
   <p>Total amount you have been charged is <strong>£25,000.00</strong>.</p>
 
-  
+
   <div id="charity-details">
           <h2>CHARITY</h2>
-    
+
     <ul>
       <li>
         <p>CHARITY</p>
-        <p></p>
       </li>
                       </ul>
   </div>
