@@ -37,7 +37,6 @@
     <ul>
       <li>
         <p>CHARITY</p>
-        <p></p>
       </li>
                       </ul>
   </div>

@@ -70,7 +70,9 @@ class SendRequestConsumer
         $subjectMergeValues = array_map(fn($param) => $sendRequest->params[$param], $config->subjectParams);
         $subject = vsprintf($config->subject, $subjectMergeValues);
 
-        if ($this->appEnv !== 'production') {
+        $isNotProduction = $this->appEnv !== 'production';
+
+        if ($isNotProduction) {
             $subject = (bool)$userAgent ?
                 "({$this->appEnv} / $userAgent) $subject" :
                 "({$this->appEnv}) $subject";
@@ -84,6 +86,18 @@ class SendRequestConsumer
             ->html($bodyRenderedHtml)
             ->text($bodyPlainText)
         ;
+
+        if (
+            $isNotProduction && (
+            \str_contains($sendRequest->recipientEmailAddress, 'NO_SEND_EMAIL') ||
+            \str_contains($sendRequest->recipientEmailAddress, 'tech+regression+credits') ||
+            \str_contains($sendRequest->recipientEmailAddress, 'tech+regression+donor')
+            )
+        ) {
+            // saves our usage allowance for testing emails.
+            $this->logger->info("Skipping email send for message to $sendRequest->recipientEmailAddress");
+            return;
+        }
 
         try {
             $this->mailer->send($email);
