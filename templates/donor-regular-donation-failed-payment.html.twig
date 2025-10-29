@@ -1,0 +1,13 @@
+{#Placeholder copy - replace with improved copy (and include more data from matchbot) before using in prod #}
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+  <p>Dear {{ donorFirstName }},</p>
+
+  <p>Your card payment failed as we were attempting to collect your regular donation for {{ charityName }}</p>
+  <p>We will re-try collecting your donation a limited number times - if it continues to fail we will automatically cancel
+      your regular giving mandate.</p>
+
+    <p>If you would like to continue donating to {{ charityName }} please contact your card issuer to resolve the problem,
+        or visit your account page at Big Give and provide a new payment method for regular giving.</p>
+{% endblock %}
