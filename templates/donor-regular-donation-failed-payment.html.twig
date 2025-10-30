@@ -2,12 +2,23 @@
 {% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-  <p>Dear {{ donorFirstName }},</p>
+    <p>Dear {{ donorFirstName }},<p>
 
-  <p>Your card payment failed as we were attempting to collect your regular donation for {{ charityName }}</p>
-  <p>We will re-try collecting your donation a limited number times - if it continues to fail we will automatically cancel
-      your regular giving mandate.</p>
+    <p>
+       We tried to process your regular donation to {{ charityName }}, but unfortunately, the payment didn't go through.
+       We’ll automatically try again over the next few days.
+    <p>
 
-    <p>If you would like to continue donating to {{ charityName }} please contact your card issuer to resolve the problem,
-        or visit your account page at Big Give and provide a new payment method for regular giving.</p>
+    <p>
+        If the payment continues to fail, your regular giving donation will be cancelled. To ensure your support
+        continues without interruption, please contact your card provider to resolve the issue or
+        <a href="https://donate.biggive.org/my-account">
+            log in to your Big Give account
+        </a>
+        to check and update your payment method.
+    <p>
+
+    <p>
+        Thank you for your ongoing generosity. Your donations are making a real difference to {{ charityName }}.
+    <p>
 {% endblock %}
