@@ -69,6 +69,14 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
+                    'templateKey' => 'donor-regular-donation-failed-payment',
+                    'subject' => "We couldn't collect your regular donation for %s",
+                    'subjectParams' => ['charityName'],
+                    'requiredParams' => [
+                        'charityName',
+                    ],
+                ],
+                [
                     'templateKey' => 'donor-donation-refund-tip',
                     'subject' => 'Tip Refund',
                     'subjectParams' => [],

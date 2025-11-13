@@ -88,7 +88,7 @@ workflows:
           requires:
             - test
           account_id: ${AWS_ECR_REGISTRY_ID}
-          region: '${AWS_REGION}'
+          region: 'us-east-1' # For performant builds; auto-replicated to our local regions.
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'staging,staging-${CIRCLE_SHA1}'
           auth:
@@ -181,7 +181,7 @@ workflows:
           requires:
             - test
           account_id: ${AWS_ECR_REGISTRY_ID}
-          region: '${AWS_REGION}'
+          region: 'us-east-1' # For performant builds; auto-replicated to our local regions.
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'regression,regression-${CIRCLE_SHA1}'
           auth:
@@ -274,7 +274,7 @@ workflows:
           requires:
             - test
           account_id: ${AWS_ECR_REGISTRY_ID}
-          region: '${AWS_REGION}'
+          region: 'us-east-1' # For performant builds; auto-replicated to our local regions.
           repo: '${AWS_ECR_REPO_NAME}'
           tag: 'production,production-${CIRCLE_SHA1}'
           auth:
