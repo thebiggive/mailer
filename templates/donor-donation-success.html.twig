@@ -32,7 +32,7 @@
     {% include 'donation-details-partial.html.twig' with {
       'donationAmount': donationAmount,
       'donationDatetime': donationDatetime,
-      'donorName': donorFirstName ~ ' ' ~ donorLastName,
+      'donorName': donorFirstName ? (donorFirstName ~ ' ' ~ donorLastName) : donorLastName,
       'charityName': charityName,
       'totalCharityValueAmount': totalCharityValueAmount,
       'currencyCode': currencyCode,

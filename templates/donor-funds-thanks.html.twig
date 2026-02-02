@@ -2,7 +2,7 @@
 
 {% block content %}
     <p>
-        Dear {{ donorFirstName }},
+        Dear {{ donorFirstName ? donorFirstName : donorLastName }},
     </p>
 
     <p>
