@@ -1,7 +1,7 @@
 {% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-  <p>Dear {{ donorFirstName }},</p>
+  <p>Dear {{ donorFirstName ? donorFirstName : donorLastName }},</p>
 
   <p>The following tip you made to us when donating to {{ charityName }} has now been refunded:</p>
 
