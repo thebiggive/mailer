@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # This script is taken from https://aws.amazon.com/blogs/security/how-to-manage-secrets-for-amazon-ec2-container-service-based-applications-by-using-amazon-s3-and-docker/
 # and is used to set up app secrets in ECS without exposing them as widely as using ECS env vars directly would.

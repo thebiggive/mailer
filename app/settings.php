@@ -29,7 +29,6 @@ return function (ContainerBuilder $containerBuilder) {
                         'charityName',
                         'currencyCode',
                         'donationAmount',
-                        'donorFirstName',
                         'paymentMethodType',
                         'donorLastName',
                         'giftAidAmountClaimed',
@@ -61,7 +60,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'Full Donation Refund',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'donorFirstName',
                         'transactionId',
                         'charityName',
                         'donationAmount',
@@ -81,7 +79,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'Tip Refund',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'donorFirstName',
                         'transactionId',
                         'charityName',
                         'donationTipAmount',
@@ -92,7 +89,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'Confirmation of Donation Funds Received',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'donorFirstName',
                         'transferAmount',
                     ],
                 ],
@@ -119,7 +115,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'You are registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'donorFirstName',
                         'donorEmail'
                     ],
                 ],
@@ -128,7 +123,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'Reset your password for Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'firstName',
                         'lastName',
                         'resetLink',
                     ],
@@ -146,7 +140,6 @@ return function (ContainerBuilder $containerBuilder) {
                     'subject' => 'You are already registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
-                        'firstName',
                     ],
                 ],
             ],

@@ -1,7 +1,7 @@
 {% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-    <p>Dear {{ firstName }},</p>
+    <p>Dear {{ donorFirstName ? donorFirstName : donorLastName }},</p>
 
     <p>You (or someone using your email address) have asked to register a Big Give account.</p>
 

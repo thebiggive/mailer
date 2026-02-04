@@ -2,7 +2,7 @@
 {% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
 
 {% block content %}
-    <p>Dear {{ donorFirstName }},<p>
+    <p>Dear {{ donorFirstName ? donorFirstName : donorLastName }},<p>
 
     <p>
        We tried to process your regular donation to {{ charityName }}, but unfortunately, the payment didn't go through.
