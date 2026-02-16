@@ -4,7 +4,7 @@ volumes:
 
 services:
   web:
-    image: thebiggive/php:dev-8.3
+    image: thebiggive/php:dev-8.5
     ports:
       - 30040:80
     volumes:
@@ -15,7 +15,7 @@ services:
       - redis
 
   consumer:
-    image: thebiggive/php:dev-8.3
+    image: thebiggive/php:dev-8.5
     entrypoint: docker-php-entrypoint
     command: composer run messenger:consume
     volumes:
