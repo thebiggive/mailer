@@ -9,7 +9,7 @@ use Mailer\Application\Email\Config;
 use Mailer\Application\HttpModels\SendRequest as SendRequestModel;
 use Twig;
 
-class SendRequest
+final class SendRequest
 {
     private string $reason;
 

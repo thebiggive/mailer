@@ -17,12 +17,13 @@ use Slim\Exception\HttpBadRequestException;
         new OA\Response(response: 500, description: 'Having some trouble'),
     ],
 )]
-class Status extends Action
+final class Status extends Action
 {
     /**
      * @return Response
      * @throws HttpBadRequestException
      */
+    #[\Override]
     protected function action(): Response
     {
         return $this->respondWithData(['status' => 'OK']);

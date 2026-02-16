@@ -13,13 +13,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Response;
 
-class SendAuthMiddleware implements MiddlewareInterface
+final class SendAuthMiddleware implements MiddlewareInterface
 {
     #[Pure]
     public function __construct(private LoggerInterface $logger)
     {
     }
 
+    #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!$this->verify($request)) {
@@ -35,7 +36,7 @@ class SendAuthMiddleware implements MiddlewareInterface
 
         /** @var ResponseInterface $response */
         $response = new Response(StatusCodeInterface::STATUS_UNAUTHORIZED);
-        $response->getBody()->write(json_encode(['error' => 'Unauthorized'], JSON_PRETTY_PRINT));
+        $response->getBody()->write(json_encode(['error' => 'Unauthorized'], JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR));
 
         return $response->withHeader('Content-Type', 'application/json');
     }

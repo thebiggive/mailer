@@ -38,7 +38,7 @@ use Symfony\Component\Serializer\SerializerInterface;
         content: new OA\JsonContent(ref: SendResponse::class),
     )],
 )]
-class Send extends Action
+final class Send extends Action
 {
     #[Pure]
     public function __construct(
@@ -54,6 +54,7 @@ class Send extends Action
      * @return Response
      * @throws HttpBadRequestException
      */
+    #[\Override]
     protected function action(): Response
     {
         try {

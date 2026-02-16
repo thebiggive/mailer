@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
 use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-class Console extends Application
+final class Console extends Application
 {
     private string $receiverName = 'consumer';
 

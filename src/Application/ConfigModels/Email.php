@@ -6,7 +6,7 @@ namespace Mailer\Application\ConfigModels;
 
 use JetBrains\PhpStorm\Pure;
 
-class Email
+final class Email
 {
     /**
      * @param string    $templateKey    Template file must be at "templates/{$templateKey}.html.twig"

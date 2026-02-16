@@ -5,7 +5,7 @@ namespace Mailer\Tests\templates;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class DonorDonationSuccessTest extends TestCase
+final class DonorDonationSuccessTest extends TestCase
 {
     use MatchesSnapshots;
 

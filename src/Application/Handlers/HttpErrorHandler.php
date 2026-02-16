@@ -18,12 +18,13 @@ use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 
-class HttpErrorHandler extends SlimErrorHandler
+final class HttpErrorHandler extends SlimErrorHandler
 {
     /**
      * @inheritdoc
      * @throws \JsonException
      */
+    #[\Override]
     protected function respond(): Response
     {
         $exception = $this->exception;

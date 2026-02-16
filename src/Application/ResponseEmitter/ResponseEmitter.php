@@ -7,11 +7,12 @@ namespace Mailer\Application\ResponseEmitter;
 use Psr\Http\Message\ResponseInterface;
 use Slim\ResponseEmitter as SlimResponseEmitter;
 
-class ResponseEmitter extends SlimResponseEmitter
+final class ResponseEmitter extends SlimResponseEmitter
 {
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function emit(ResponseInterface $response): void
     {
         // This variable should be set to the allowed host from which your API can be accessed with

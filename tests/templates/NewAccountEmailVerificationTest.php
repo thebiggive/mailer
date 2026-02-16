@@ -11,7 +11,7 @@ use Twig\Extra\CssInliner\CssInlinerExtension;
 use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 
-class NewAccountEmailVerificationTest extends TestCase
+final class NewAccountEmailVerificationTest extends TestCase
 {
     use MatchesSnapshots;
 
