@@ -7,7 +7,7 @@ namespace Mailer\Tests\Application\Actions;
 use Mailer\Application\Actions\ActionPayload;
 use Mailer\Tests\TestCase;
 
-class StatusTest extends TestCase
+final class StatusTest extends TestCase
 {
     public function testSuccess(): void
     {

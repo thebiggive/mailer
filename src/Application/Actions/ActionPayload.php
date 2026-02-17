@@ -7,7 +7,7 @@ namespace Mailer\Application\Actions;
 use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 
-class ActionPayload implements JsonSerializable
+final class ActionPayload implements JsonSerializable
 {
     public function __construct(
         private int $statusCode = 200,
@@ -43,6 +43,7 @@ class ActionPayload implements JsonSerializable
         return $this->error;
     }
 
+    #[\Override]
     public function jsonSerialize(): array|object|null
     {
         $payload = [];

@@ -8,7 +8,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 
-class ActionError implements JsonSerializable
+final class ActionError implements JsonSerializable
 {
     public const string BAD_REQUEST = 'BAD_REQUEST';
     public const string INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
@@ -64,6 +64,7 @@ class ActionError implements JsonSerializable
         return $this;
     }
 
+    #[\Override]
     #[ArrayShape([
         'type' => 'string',
         'description' => 'string'

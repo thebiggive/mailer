@@ -6,7 +6,7 @@ namespace Mailer\Application\Email;
 
 use Mailer\Application\ConfigModels\Email;
 
-class Config
+final class Config
 {
     /** @param $emailSettings[] Keyed on template key */
     public function __construct(private array $emailSettings)

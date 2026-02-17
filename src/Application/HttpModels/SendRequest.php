@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Bridge\AmazonSqs\MessageGroupAwareInterface;
 
 #[OA\Schema(type: 'object', title: 'Send Request', required: ['templateKey', 'recipientEmailAddress', 'params'])]
-class SendRequest implements MessageGroupAwareInterface
+final class SendRequest implements MessageGroupAwareInterface
 {
     #[OA\Property(example: "donor-donation-success")]
     public string $templateKey;

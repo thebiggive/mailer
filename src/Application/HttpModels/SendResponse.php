@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     title: "Send Response",
     type: "object",
 )]
-class SendResponse
+final class SendResponse
 {
     #[OA\Property(description: '"queued" on success', example: "queued")]
     public string $status;
