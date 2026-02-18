@@ -10,7 +10,7 @@ orbs:
 jobs:
   test: # Also lints first
     docker:
-      - image: thebiggive/php:8.3
+      - image: thebiggive/php:8.5
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_ACCESS_TOKEN

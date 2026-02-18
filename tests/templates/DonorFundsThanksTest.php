@@ -11,7 +11,7 @@ use Twig\Extra\CssInliner\CssInlinerExtension;
 use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 
-class DonorFundsThanksTest extends TestCase
+final class DonorFundsThanksTest extends TestCase
 {
     use MatchesSnapshots;
 

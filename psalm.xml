@@ -18,4 +18,19 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <!-- Since PHP 8.5 upgrade Psalm doesn't seem to quite work with prophecy hence suppressing these
+        two issues in tests directory only. Hoping Psalm 7 will be out soon and resolve these. Alternatively
+        if not and we need to do signifcant work here we can migrate to PHPStan -->
+        <UndefinedMagicMethod>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </UndefinedMagicMethod>
+        <MixedMethodCall>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </MixedMethodCall>
+    </issueHandlers>
 <plugins><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>

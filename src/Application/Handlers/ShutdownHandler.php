@@ -9,7 +9,7 @@ use Mailer\Application\ResponseEmitter\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
 
-class ShutdownHandler
+final class ShutdownHandler
 {
     #[Pure]
     public function __construct(

@@ -20,7 +20,7 @@ use Twig;
  * Takes `SendRequest`s off the SQS/Redis queue and (tries to) send emails.
  */
 #[AsMessageHandler]
-class SendRequestConsumer
+final class SendRequestConsumer
 {
     private string $logPepper;
 

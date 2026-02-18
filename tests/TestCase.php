@@ -78,6 +78,7 @@ class TestCase extends PHPUnitTestCase
     ): Request {
         $uri = new Uri('', '', 80, $path);
         $handle = fopen('php://temp', 'w+b');
+        \assert(\is_resource($handle));
 
         if ($bodyString === '') {
             $stream = (new StreamFactory())->createStreamFromResource($handle);

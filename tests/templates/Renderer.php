@@ -7,7 +7,7 @@ use Twig\Extra\CssInliner\CssInlinerExtension;
 use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 
-class Renderer
+final class Renderer
 {
     public static function renderMessage(string $templateFileName, array $data): string
     {

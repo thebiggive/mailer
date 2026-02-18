@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-class SendTest extends TestCase
+final class SendTest extends TestCase
 {
     public function testMissingAuth(): void
     {

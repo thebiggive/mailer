@@ -16,7 +16,7 @@ use Slim\Psr7\Response;
 use Slim\Psr7\Uri;
 use Slim\Routing\Route;
 
-class SendAuthMiddlewareTest extends TestCase
+final class SendAuthMiddlewareTest extends TestCase
 {
     public function testMissingAuthRejected(): void
     {
