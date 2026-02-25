@@ -23,13 +23,14 @@ return function (ContainerBuilder $containerBuilder) {
                 [
                     'templateKey' => 'donor-donation-success',
                     'subject' => 'Thanks for your donation, %s!',
-                    'subjectParams' => ['donorFirstName'],
+                    'subjectParams' => ['donorGreetingName'],
                     'requiredParams' => [
                         'campaignName',
                         'charityName',
                         'currencyCode',
                         'donationAmount',
                         'paymentMethodType',
+                        'donorGreetingName',
                         'donorLastName',
                         'giftAidAmountClaimed',
                         'matchedAmount',

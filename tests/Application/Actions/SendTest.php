@@ -285,6 +285,7 @@ final class SendTest extends TestCase
             'currencyCode' => 'GBP',
             'donationAmount' => 400.01,
             'donorFirstName' => 'Patti',
+            'donorGreetingName' => 'Patti',
             'donorLastName' => 'Smith',
             'paymentMethodType' => 'card',
             'giftAidAmountClaimed' => 100.00,
