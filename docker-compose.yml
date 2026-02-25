@@ -5,8 +5,9 @@ volumes:
 services:
   web:
     image: thebiggive/php:dev-8.5
+    platform: linux/amd64
     ports:
-      - 30040:80
+      - "30040:80"
     volumes:
       - .:/var/www/html
     env_file:
@@ -16,6 +17,7 @@ services:
 
   consumer:
     image: thebiggive/php:dev-8.5
+    platform: linux/amd64
     entrypoint: docker-php-entrypoint
     command: composer run messenger:consume
     volumes:
