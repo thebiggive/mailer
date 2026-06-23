@@ -194,11 +194,6 @@
       <code>getenv('SEND_SECRET')</code>
     </PossiblyFalseArgument>
   </file>
-  <file src="tests/Application/Auth/SendAuthMiddlewareTest.php">
-    <DeprecatedFunction occurrences="1">
-      <code>Psr7\stream_for($body)</code>
-    </DeprecatedFunction>
-  </file>
   <file src="tests/TestCase.php">
     <MixedArgument occurrences="1">
       <code>$value</code>
