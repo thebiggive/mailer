@@ -60,7 +60,7 @@ final class SendAuthMiddlewareTest extends TestCase
             $headers,
             [],
             [],
-            Psr7\stream_for($body)
+            Psr7\Utils::streamFor($body)
         ));
     }
 
