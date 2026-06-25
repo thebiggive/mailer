@@ -35,7 +35,7 @@
         "twig/twig": "^3.0"
     },
     "require-dev": {
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.12",
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.3",
@@ -74,6 +74,6 @@
             "php mailer-cli.php messenger:consume -vv --time-limit=86400"
         ],
         "start": "php -S localhost:8080 -t public",
-        "test": "phpunit"
+        "test": "phpunit -d --update-snapshots"
     }
 }
