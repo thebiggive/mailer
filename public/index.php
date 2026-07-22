@@ -36,6 +36,7 @@ $errorHandler = new HttpErrorHandler(
 );
 
 $logger = $container->get(LoggerInterface::class);
+\assert($logger instanceof LoggerInterface);
 
 // Create Shutdown Handler
 $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails, $logger);

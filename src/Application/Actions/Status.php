@@ -26,7 +26,10 @@ final class Status extends Action
     #[\Override]
     protected function action(): Response
     {
-        if (getenv('APP_ENV') !== 'production' && ($this->request->getQueryParams()['issue-warning-please'] ?? null)) {
+        if (
+            getenv('APP_ENV') !== 'production' &&
+            \array_key_exists('issue-warning-please', $this->request->getQueryParams())
+        ) {
             \trigger_error(
                 message: 'Testing how we handle warnings, you asked to issue-warning-please',
                 error_level: \E_USER_WARNING
