@@ -86,15 +86,16 @@ final class ShutdownHandler
                 // the output is probably better than nothing - if it wasn't, we would have had an error
                 // so we return here to avoid issuing output that will break JSON parsing by the frontend.
 
-                // A possible enhancement in future might be to include details of the error in a header or an additional
-                // key added to the JSON response so that frontend can choose to display it.
+                // A possible enhancement in future might be to include details of the error in a header or an
+                // additional key added to the JSON response so that frontend can choose to display it.
 
                 return;
             }
 
             $exception = new HttpInternalServerErrorException(
                 $this->request,
-                $this->displayErrorDetails ? $message : 'An error while processing your request. Please try again later.'
+                $this->displayErrorDetails ?
+                    $message : 'An error while processing your request. Please try again later.'
             );
             $response = $this->errorHandler->__invoke(
                 $this->request,
