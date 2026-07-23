@@ -16,6 +16,10 @@ final class Config
 
     public function get(string $templateKey): ?Email
     {
+        if (getenv('APP_ENV') !== 'production' && $templateKey === 'issue-warning-please') {
+            \trigger_error('Testing how we handle warnings', \E_USER_WARNING);
+        }
+
         $configs = array_filter($this->emailSettings, fn($theSetting) => $theSetting->templateKey === $templateKey);
         if (count($configs) === 0) {
             return null;

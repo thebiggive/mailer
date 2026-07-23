@@ -35,8 +35,11 @@ $errorHandler = new HttpErrorHandler(
     $app->getContainer()->get(LoggerInterface::class),
 );
 
+$logger = $container->get(LoggerInterface::class);
+\assert($logger instanceof LoggerInterface);
+
 // Create Shutdown Handler
-$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
+$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails, $logger);
 register_shutdown_function($shutdownHandler);
 
 // Add Routing Middleware
