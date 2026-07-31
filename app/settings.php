@@ -137,7 +137,22 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
+                    'templateKey' => 'new-account-email-verification-regular-giving',
+                    'subject' => 'Your temporary password for regular giving',
+                    'subjectParams' => ['secretCode'],
+                    'requiredParams' => [
+                        'secretCode',
+                    ],
+                ],
+                [
                     'templateKey' => 'new-account-email-already-registered',
+                    'subject' => 'You are already registered with Big Give',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                    ],
+                ],
+                [
+                    'templateKey' => 'new-account-email-already-registered-regular-giving',
                     'subject' => 'You are already registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
