@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mailer\Application\Email;
 
+use JetBrains\PhpStorm\FileReference;
 use Mailer\Application\ConfigModels\Email;
 
 final class Config
@@ -26,5 +27,13 @@ final class Config
         }
 
         return current($configs);
+    }
+
+    /**
+     * @psalm-suppress UndefinedAttributeClass - only needs to be defined inside PHPStorm
+     */
+    public static function key(#[FileReference('templates')] string $filename): string
+    {
+        return str_replace(search: '.html.twig', replace: '', subject: $filename);
     }
 }

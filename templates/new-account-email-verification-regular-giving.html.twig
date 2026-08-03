@@ -1,0 +1,14 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+<p>
+    Use the temporary password below code to continue setting up your regular giving agreement.
+</p>
+<p style="font-size: 2em; text-align: center; ">
+    {{ secretCode }}
+</p>
+<p>
+    If you didn’t make this request, you can ignore this email.
+</p>
+
+{% endblock %}
