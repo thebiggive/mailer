@@ -6,10 +6,6 @@ namespace Mailer\Tests\templates;
 
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
-use Twig\Environment;
-use Twig\Extra\CssInliner\CssInlinerExtension;
-use Twig\Extra\Intl\IntlExtension;
-use Twig\Loader\FilesystemLoader;
 
 final class NewAccountEmailVerificationTest extends TestCase
 {
