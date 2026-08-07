@@ -175,34 +175,4 @@
       <code>$reason</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="tests/Application/Actions/SendTest.php">
-    <MixedArgument occurrences="2">
-      <code>$payloadData['id']</code>
-      <code>$payloadData['id']</code>
-    </MixedArgument>
-    <MixedArrayAccess occurrences="4">
-      <code>$payloadData['id']</code>
-      <code>$payloadData['id']</code>
-      <code>$payloadData['status']</code>
-      <code>$payloadData['status']</code>
-    </MixedArrayAccess>
-    <MixedAssignment occurrences="2">
-      <code>$payloadData</code>
-      <code>$payloadData</code>
-    </MixedAssignment>
-    <PossiblyFalseArgument occurrences="1">
-      <code>getenv('SEND_SECRET')</code>
-    </PossiblyFalseArgument>
-  </file>
-  <file src="tests/TestCase.php">
-    <MixedArgument occurrences="1">
-      <code>$value</code>
-    </MixedArgument>
-    <MixedArgumentTypeCoercion occurrences="1">
-      <code>$name</code>
-    </MixedArgumentTypeCoercion>
-    <MixedAssignment occurrences="1">
-      <code>$value</code>
-    </MixedAssignment>
-  </file>
 </files>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Mailer\Application\ConfigModels\Email;
+use Mailer\Application\Email\Config as C;
 use Monolog\Logger;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -21,7 +22,7 @@ return function (ContainerBuilder $containerBuilder) {
              */
             'emails' => [
                 [
-                    'templateKey' => 'donor-donation-success',
+                    'templateKey' => C::key('donor-donation-success.html.twig'),
                     'subject' => 'Thanks for your donation, %s!',
                     'subjectParams' => ['donorGreetingName'],
                     'requiredParams' => [
@@ -41,7 +42,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'pledger-success',
+                    'templateKey' => C::key('pledger-success.html.twig'),
                     'subject' => 'Thank you for your pledge',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -57,7 +58,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-donation-refund-full',
+                    'templateKey' => C::key('donor-donation-refund-full.html.twig'),
                     'subject' => 'Full Donation Refund',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -68,7 +69,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-regular-donation-failed-payment',
+                    'templateKey' => C::key('donor-regular-donation-failed-payment.html.twig'),
                     'subject' => "We couldn't collect your regular donation for %s",
                     'subjectParams' => ['charityName'],
                     'requiredParams' => [
@@ -76,7 +77,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-donation-refund-tip',
+                    'templateKey' => C::key('donor-donation-refund-tip.html.twig'),
                     'subject' => 'Tip Refund',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -86,7 +87,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-funds-thanks',
+                    'templateKey' => C::key('donor-funds-thanks.html.twig'),
                     'subject' => 'Confirmation of Donation Funds Received',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -94,7 +95,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-mandate-confirmation',
+                    'templateKey' => C::key('donor-mandate-confirmation.html.twig'),
                     'subject' => 'Thanks for setting up a regular gift to %s',
                     'subjectParams' => ['charityName'],
                     'requiredParams' => [
@@ -112,7 +113,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'donor-registered',
+                    'templateKey' => C::key('donor-registered.html.twig'),
                     'subject' => 'You are registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -120,7 +121,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'password-reset-requested',
+                    'templateKey' => C::key('password-reset-requested.html.twig'),
                     'subject' => 'Reset your password for Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [
@@ -129,7 +130,7 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'new-account-email-verification',
+                    'templateKey' => C::key('new-account-email-verification.html.twig'),
                     'subject' => '%s is your Big Give verification code',
                     'subjectParams' => ['secretCode'],
                     'requiredParams' => [
@@ -137,7 +138,22 @@ return function (ContainerBuilder $containerBuilder) {
                     ],
                 ],
                 [
-                    'templateKey' => 'new-account-email-already-registered',
+                    'templateKey' => C::key('new-account-email-verification-regular-giving.html.twig'),
+                    'subject' => 'Your temporary password for regular giving',
+                    'subjectParams' => ['secretCode'],
+                    'requiredParams' => [
+                        'secretCode',
+                    ],
+                ],
+                [
+                    'templateKey' => C::key('new-account-email-already-registered.html.twig'),
+                    'subject' => 'You are already registered with Big Give',
+                    'subjectParams' => [],
+                    'requiredParams' => [
+                    ],
+                ],
+                [
+                    'templateKey' => C::key('new-account-email-already-registered-regular-giving.html.twig'),
                     'subject' => 'You are already registered with Big Give',
                     'subjectParams' => [],
                     'requiredParams' => [

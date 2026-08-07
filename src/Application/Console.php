@@ -21,11 +21,11 @@ final class Console extends Application
         private LoggerInterface $logger,
         private TransportInterface $transport
     ) {
+        parent::__construct();
+
         $this->addCommands([
             $this->getConsumeCommand(),
         ]);
-
-        parent::__construct();
     }
 
     private function getConsumeCommand(): ConsumeMessagesCommand

@@ -6,15 +6,19 @@ namespace Mailer\Tests\templates;
 
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
+use Twig\Environment;
+use Twig\Extra\CssInliner\CssInlinerExtension;
+use Twig\Extra\Intl\IntlExtension;
+use Twig\Loader\FilesystemLoader;
 
-final class NewAccountEmailVerificationTest extends TestCase
+final class NewAccountRegularGivingEmailVerificationTest extends TestCase
 {
     use MatchesSnapshots;
 
     public function testItRendersEmailToThankDonorForFundingAnAccount(): void
     {
         $rendered = Renderer::renderMessage(
-            'new-account-email-verification.html.twig',
+            'new-account-email-verification-regular-giving.html.twig',
             [
                 'secretCode' => '123321',
             ]

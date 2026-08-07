@@ -1,0 +1,21 @@
+{% extends renderHtml ? '_base.html.twig' : '_base.text.twig' %}
+
+{% block content %}
+    <p>Dear {{ donorFirstName ? donorFirstName : donorLastName }},</p>
+
+    <p>You (or someone using your email address) have asked set up a regular giving agreement.</p>
+
+    <p>
+        There is already a Big Give donor account for this email address, so please use your password
+        on the regular giving page to continue.
+    </p>
+    <p>
+        If you don't know the password for this account,
+        please use the "Forgot Password" option at https://donate.biggive.org/login.
+    </p>
+
+    <p>
+        If you didn’t make this request, you can ignore this email. If you need any more help setting up
+        your regular giving agreement, <a href="https://biggive.org/support/">check out our FAQs or contact us</a>.
+    </p>
+{% endblock %}
