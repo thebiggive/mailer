@@ -13,6 +13,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\RuntimeException;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig;
 
@@ -79,9 +80,10 @@ final class SendRequestConsumer
         }
 
         $fromAddress = getenv('SENDER_ADDRESS');
+        $from = new Address($fromAddress, 'Big Give');
 
         $email->addTo($sendRequest->recipientEmailAddress)
-            ->from($fromAddress)
+            ->from($from)
             ->subject($subject)
             ->html($bodyRenderedHtml)
             ->text($bodyPlainText)
