@@ -27,6 +27,8 @@ final class DonorDonationSuccessTest extends TestCase
                 'totalChargedAmount' => 25_000,
                 'donationAmount' => 25_000,
                 'giftAidAmountClaimed' => 1_000,
+                'tipAmount' => 99.0,
+                'tipGiftAidAmountClaimed' => 24.75,
                 'matchedAmount' => 25_000,
                 'transactionId' => 'xyz_transaction_id_zyz',
                 'paymentMethodType' => 'customer_balance',
