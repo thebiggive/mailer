@@ -45,6 +45,7 @@ final class SendRequest implements MessageGroupAwareInterface
             "paymentMethodType" => "card",
             "statementReference" => "The Big Give The char",
             "tipAmount" => 10,
+            "tipGiftAidAmountClaimed" => 2.5,
             "totalChargedAmount" => 415.01,
             "totalCharityValueAmount" => 600.02,
             "transactionId" => "d290f1ee-6c54-4b01-90e6-d701748f0851",

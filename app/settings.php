@@ -36,6 +36,7 @@ return function (ContainerBuilder $containerBuilder) {
                         'giftAidAmountClaimed',
                         'matchedAmount',
                         'tipAmount',
+                        'tipGiftAidAmountClaimed',
                         'totalChargedAmount',
                         'totalCharityValueAmount',
                         'transactionId',
