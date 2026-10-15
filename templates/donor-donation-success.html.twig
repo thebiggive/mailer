@@ -48,7 +48,7 @@
     {% endif %}
   </p>
 
-  {% if tipAmount > 0 and tipGiftAidAmountClaimed > 0%}
+  {% if tipAmount > 0 and tipGiftAidAmountClaimed > 0 %}
     <p>Thank you for leaving a tip of <strong>{{ tipAmount | format_currency(currencyCode) }}</strong> toward Big Give,
       and allowing us to claim an additional <strong>{{ tipGiftAidAmountClaimed | format_currency(currencyCode) }}</strong> in Gift Aid.
       We are a charity too, and your donation helps us to keep developing the platform and to run match
