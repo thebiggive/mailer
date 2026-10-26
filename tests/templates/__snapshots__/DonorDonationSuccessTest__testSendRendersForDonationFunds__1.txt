@@ -27,6 +27,10 @@
     Donation reference: <strong>xyz_transaction_id_zyz</strong><br>
       </p>
 
+      <p>Thank you for leaving a tip of <strong>£99.00</strong> toward Big Give,
+      and allowing us to claim an additional <strong>£24.75</strong> in Gift Aid.
+      We are a charity too, and your donation helps us to keep developing the platform and to run match
+      funding campaigns. Thank you for your support.</p>
   
   <p>Total amount you have been charged is <strong>£25,000.00</strong>.</p>
 
